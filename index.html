@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AWS Cloud Practitioner Practice Exam</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><span class="logo">&#9729;</span> CLF-C02 Practice</div>
+  <div id="timer" class="timer hidden" aria-live="off"></div>
+</header>
+
+<main>
+  <!-- Start screen -->
+  <section id="start" class="card">
+    <h1>AWS Certified Cloud Practitioner</h1>
+    <p class="lead">Practice for the CLF-C02 exam with a bank of <strong id="bankSize"></strong> unofficial questions across all four exam domains.</p>
+
+    <div class="modes">
+      <label class="mode"><input type="radio" name="mode" value="exam" checked>
+        <span><strong>Exam simulation</strong><small>65 questions, 90 minutes, answers shown at the end. Pass mark 70%.</small></span></label>
+      <label class="mode"><input type="radio" name="mode" value="practice">
+        <span><strong>Practice mode</strong><small>Instant feedback and explanations after each question. No timer.</small></span></label>
+      <label class="mode"><input type="radio" name="mode" value="quick">
+        <span><strong>Quick quiz</strong><small>20 random questions with instant feedback.</small></span></label>
+    </div>
+
+    <div class="field">
+      <label for="domainSel">Domain focus</label>
+      <select id="domainSel"></select>
+    </div>
+
+    <button id="startBtn" class="btn primary">Start</button>
+
+    <div class="weights" id="weights"></div>
+    <p class="note">Unofficial practice questions written for study purposes. Not affiliated with or endorsed by AWS.</p>
+  </section>
+
+  <!-- Quiz screen -->
+  <section id="quiz" class="card hidden">
+    <div class="progress-row">
+      <span id="counter"></span>
+      <span id="domainTag" class="tag"></span>
+    </div>
+    <div class="bar"><div id="barFill"></div></div>
+    <h2 id="question"></h2>
+    <p id="hint" class="hint"></p>
+    <div id="options" class="options" role="radiogroup"></div>
+    <div id="feedback" class="feedback hidden"></div>
+    <div class="nav">
+      <button id="prevBtn" class="btn">Previous</button>
+      <button id="flagBtn" class="btn ghost">Flag for review</button>
+      <button id="checkBtn" class="btn primary hidden">Check answer</button>
+      <button id="nextBtn" class="btn primary">Next</button>
+    </div>
+    <div id="map" class="map"></div>
+  </section>
+
+  <!-- Results screen -->
+  <section id="results" class="card hidden">
+    <h1>Results</h1>
+    <div class="score-wrap">
+      <div id="scoreCircle" class="score-circle"><span id="scorePct"></span></div>
+      <div>
+        <p id="verdict" class="verdict"></p>
+        <p id="scoreText"></p>
+        <p id="timeText"></p>
+      </div>
+    </div>
+    <h3>By domain</h3>
+    <div id="domainBreakdown"></div>
+    <h3>Review</h3>
+    <div class="filters">
+      <button class="btn small active" data-f="all">All</button>
+      <button class="btn small" data-f="wrong">Incorrect</button>
+      <button class="btn small" data-f="flagged">Flagged</button>
+    </div>
+    <div id="review"></div>
+    <div class="nav">
+      <button id="retryWrong" class="btn">Retry incorrect</button>
+      <button id="restart" class="btn primary">New attempt</button>
+    </div>
+  </section>
+</main>
+
+<script src="questions.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
