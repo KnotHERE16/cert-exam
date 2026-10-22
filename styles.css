@@ -8,7 +8,7 @@
 body{margin:0;font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
 .hidden{display:none!important}
 .top{background:var(--navy);color:#fff;display:flex;justify-content:space-between;align-items:center;padding:12px 24px;position:sticky;top:0;z-index:5}
-.brand{font-weight:700;letter-spacing:.3px}
+.brand{font-weight:700;letter-spacing:.3px;color:#fff;text-decoration:none}
 .logo{color:var(--accent);margin-right:6px}
 .timer{font-variant-numeric:tabular-nums;background:#0f1822;padding:4px 12px;border-radius:999px;font-weight:600}
 .timer.low{background:var(--bad)}
@@ -76,3 +76,14 @@ select{width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--line);
 @media(max-width:520px){.card{padding:18px}.top{padding:10px 14px}}
 
 .hint{color:var(--muted);font-size:.9rem;margin:-8px 0 12px}
+
+.cert-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;margin:22px 0}
+.cert-card{display:flex;flex-direction:column;gap:6px;text-align:left;font:inherit;width:100%;background:var(--card);border:1.5px solid var(--line);border-radius:14px;padding:22px;cursor:pointer;color:var(--ink);box-shadow:0 2px 10px rgba(20,30,50,.05)}
+.cert-card:hover{border-color:var(--accent);transform:translateY(-1px)}
+.cert-card .level{align-self:flex-start;background:#eef2f6;color:var(--muted);border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:600}
+.cert-card .code{font-size:1.5rem;font-weight:800;color:var(--navy)}
+.cert-card .title{font-weight:600}
+.cert-card .blurb{color:var(--muted);font-size:.92rem}
+.cert-card .meta{color:var(--muted);font-size:.82rem;margin-top:6px}
+.back{font:inherit;background:none;border:0;color:var(--muted);cursor:pointer;padding:0;margin-bottom:14px}
+.back:hover{color:var(--ink)}

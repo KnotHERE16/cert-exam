@@ -1,8 +1,8 @@
 (() => {
   const $ = id => document.getElementById(id);
-  const PASS = 70, EXAM_SECONDS = 90 * 60;
   const LETTERS = "ABCDEF";
 
+  let cert = null, DOMAINS = [], QUESTIONS = [], PASS = 70, EXAM_SECONDS = 0, EXAM_COUNT = 65;
   let session = null; // {mode, items, idx, startedAt, deadline, timerId, finished}
 
   const shuffle = arr => {
@@ -16,11 +16,51 @@
   const same = (a, b) => a.length === b.length && a.every(x => b.includes(x));
   const letters = idxs => idxs.map(i => LETTERS[i]).join(" and ");
 
-  // ---------- Setup ----------
-  $("bankSize").textContent = QUESTIONS.length;
-  $("domainSel").innerHTML = '<option value="all">All domains (weighted)</option>' +
-    DOMAINS.map((d, i) => `<option value="${i}">${d.name}</option>`).join("");
-  $("weights").innerHTML = DOMAINS.map(d => `<span>${d.name}: ${d.weight}%</span>`).join("");
+  // ---------- Home / setup ----------
+  $("certGrid").innerHTML = Object.entries(window.CERTS).map(([id, c]) => `
+    <button class="cert-card" type="button" data-id="${id}">
+      <span class="level">${c.level}</span>
+      <span class="code">${c.code}</span>
+      <span class="title">${c.title}</span>
+      <span class="blurb">${c.blurb}</span>
+      <span class="meta">${c.questions.length} questions &middot; ${c.exam.count} question exam &middot; ${c.exam.minutes} min</span>
+    </button>`).join("");
+  document.querySelectorAll(".cert-card").forEach(b => { b.onclick = () => selectCert(b.dataset.id); });
+
+  function showHome() {
+    cert = null;
+    session = null;
+    $("brandText").textContent = "AWS Certification Practice";
+    show("home");
+  }
+
+  function selectCert(id) {
+    cert = window.CERTS[id];
+    DOMAINS = cert.domains;
+    QUESTIONS = cert.questions;
+    PASS = cert.exam.pass;
+    EXAM_COUNT = cert.exam.count;
+    EXAM_SECONDS = cert.exam.minutes * 60;
+    $("brandText").textContent = `${cert.code} Practice`;
+    $("certTitle").textContent = cert.title;
+    $("certCode").textContent = cert.code;
+    $("bankSize").textContent = QUESTIONS.length;
+    $("domainCount").textContent = DOMAINS.length;
+    $("examDesc").textContent = `${EXAM_COUNT} questions, ${cert.exam.minutes} minutes, answers shown at the end. Pass mark ${PASS}%.`;
+    $("domainSel").innerHTML = '<option value="all">All domains (weighted)</option>' +
+      DOMAINS.map((d, i) => `<option value="${i}">${d.name}</option>`).join("");
+    $("weights").innerHTML = DOMAINS.map(d => `<span>${d.name}: ${d.weight}%</span>`).join("");
+    show("start");
+  }
+
+  $("backHome").onclick = showHome;
+  $("brand").onclick = e => {
+    e.preventDefault();
+    if (session && !session.finished && !$("quiz").classList.contains("hidden") && !confirm("Leave this attempt and go back to the certification list?")) return;
+    clearInterval(session && session.timerId);
+    $("timer").classList.add("hidden");
+    showHome();
+  };
 
   // Question shape: q.o = options (for single-answer, first option is correct).
   // Multiple-response questions set q.ma = indices (into q.o) of ALL correct options.
@@ -44,22 +84,22 @@
     if (mode === "exam" && domain === "all") {
       let chosen = [];
       DOMAINS.forEach((dm, i) => {
-        const n = Math.round(65 * dm.weight / 100);
+        const n = Math.round(EXAM_COUNT * dm.weight / 100);
         const p = shuffle(QUESTIONS.filter(q => q.d === i));
         chosen = chosen.concat(p.slice(0, n));
       });
-      if (chosen.length < 65) {
+      if (chosen.length < EXAM_COUNT) {
         const rest = shuffle(QUESTIONS.filter(q => !chosen.includes(q)));
-        chosen = chosen.concat(rest.slice(0, 65 - chosen.length));
+        chosen = chosen.concat(rest.slice(0, EXAM_COUNT - chosen.length));
       }
-      return shuffle(chosen).slice(0, 65);
+      return shuffle(chosen).slice(0, EXAM_COUNT);
     }
-    const n = mode === "quick" ? 20 : mode === "exam" ? 65 : pool.length;
+    const n = mode === "quick" ? 20 : mode === "exam" ? EXAM_COUNT : pool.length;
     return shuffle(pool).slice(0, n);
   }
 
   function show(id) {
-    ["start", "quiz", "results"].forEach(s => $(s).classList.toggle("hidden", s !== id));
+    ["home", "start", "quiz", "results"].forEach(s => $(s).classList.toggle("hidden", s !== id));
     window.scrollTo(0, 0);
   }
 
@@ -272,6 +312,8 @@
     start(wrong.map(w => prepare(w.src)), "practice");
   };
   $("restart").onclick = () => show("start");
+
+  showHome();
 
   $("startBtn").onclick = () => {
     const mode = document.querySelector('input[name="mode"]:checked').value;

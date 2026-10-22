@@ -3,24 +3,33 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AWS Cloud Practitioner Practice Exam</title>
+<title>AWS Certification Practice</title>
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <header class="top">
-  <div class="brand"><span class="logo">&#9729;</span> CLF-C02 Practice</div>
+  <a href="#" id="brand" class="brand"><span class="logo">&#9729;</span> <span id="brandText">AWS Certification Practice</span></a>
   <div id="timer" class="timer hidden" aria-live="off"></div>
 </header>
 
 <main>
+  <!-- Home screen -->
+  <section id="home">
+    <h1>Choose a certification</h1>
+    <p class="lead">Pick an exam to practice. Each one has its own question bank, domains, and exam simulation.</p>
+    <div id="certGrid" class="cert-grid"></div>
+    <p class="note">Unofficial practice questions written for study purposes. Not affiliated with or endorsed by AWS.</p>
+  </section>
+
   <!-- Start screen -->
-  <section id="start" class="card">
-    <h1>AWS Certified Cloud Practitioner</h1>
-    <p class="lead">Practice for the CLF-C02 exam with a bank of <strong id="bankSize"></strong> unofficial questions across all four exam domains.</p>
+  <section id="start" class="card hidden">
+    <button id="backHome" class="back" type="button">&larr; All certifications</button>
+    <h1 id="certTitle"></h1>
+    <p class="lead">Practice for the <span id="certCode"></span> exam with a bank of <strong id="bankSize"></strong> unofficial questions across <span id="domainCount"></span> exam domains.</p>
 
     <div class="modes">
       <label class="mode"><input type="radio" name="mode" value="exam" checked>
-        <span><strong>Exam simulation</strong><small>65 questions, 90 minutes, answers shown at the end. Pass mark 70%.</small></span></label>
+        <span><strong>Exam simulation</strong><small id="examDesc"></small></span></label>
       <label class="mode"><input type="radio" name="mode" value="practice">
         <span><strong>Practice mode</strong><small>Instant feedback and explanations after each question. No timer.</small></span></label>
       <label class="mode"><input type="radio" name="mode" value="quick">
@@ -85,7 +94,8 @@
   </section>
 </main>
 
-<script src="questions.js"></script>
+<script src="certs/clf-c02.js"></script>
+<script src="certs/dva-c02.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
