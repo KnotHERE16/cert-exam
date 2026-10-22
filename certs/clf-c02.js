@@ -1,13 +1,19 @@
-// Question bank. The FIRST option in each "o" array is the correct answer;
-// the app shuffles options at runtime. d = domain index.
-const DOMAINS = [
-  { name: "Cloud Concepts", weight: 24 },
-  { name: "Security and Compliance", weight: 30 },
-  { name: "Cloud Technology and Services", weight: 34 },
-  { name: "Billing, Pricing, and Support", weight: 12 }
-];
-
-const QUESTIONS = [
+window.CERTS = window.CERTS || {};
+window.CERTS["clf-c02"] = {
+  code: "CLF-C02",
+  title: "AWS Certified Cloud Practitioner",
+  level: "Foundational",
+  blurb: "Cloud concepts, security, core services, and billing.",
+  exam: { count: 65, minutes: 90, pass: 70 },
+  domains: [
+    { name: "Cloud Concepts", weight: 24 },
+    { name: "Security and Compliance", weight: 30 },
+    { name: "Cloud Technology and Services", weight: 34 },
+    { name: "Billing, Pricing, and Support", weight: 12 }
+  ],
+  // First option in each "o" array is the correct answer (the app shuffles). d = domain index.
+  // ma = indices of all correct options for choose-two questions.
+  questions: [
 // ---------- Domain 0: Cloud Concepts ----------
 {d:0,q:"Which benefit of AWS cloud computing lets you replace large upfront capital expenses with variable expenses?",o:["Trade fixed expense for variable expense","Go global in minutes","Increase speed and agility","Stop guessing capacity"],e:"Instead of buying data centers and servers up front, you pay only for what you consume."},
 {d:0,q:"A company wants to deploy its application in multiple countries within minutes. Which cloud advantage does this describe?",o:["Go global in minutes","Benefit from massive economies of scale","Stop spending money running data centers","Trade fixed expense for variable expense"],e:"AWS Regions around the world let you deploy close to users quickly."},
@@ -20,7 +26,6 @@ const QUESTIONS = [
 {d:0,q:"A company wants high availability for its application. What is the recommended approach?",o:["Deploy across multiple Availability Zones","Deploy in a single Availability Zone","Use a larger instance in one AZ","Deploy only in an edge location"],e:"Spreading across AZs protects against the failure of a single data center."},
 {d:0,q:"Which cloud deployment model uses a mix of on-premises infrastructure and public cloud resources?",o:["Hybrid","Public cloud","Cloud-native","Private only"],e:"Hybrid connects on-premises resources with cloud resources."},
 {d:0,q:"Which cloud computing model provides the most control over the underlying infrastructure (networking, servers, storage)?",o:["Infrastructure as a Service (IaaS)","Platform as a Service (PaaS)","Software as a Service (SaaS)","Function as a Service only"],e:"IaaS (e.g., Amazon EC2) gives access to building blocks; you manage OS and up."},
-{d:0,q:"Amazon RDS is an example of which cloud model?",o:["Platform as a Service (PaaS)","Infrastructure as a Service (IaaS)","On-premises","Private hosting"],e:"RDS manages hardware, OS patching, and backups; you manage data and schema. It is generally classed as a managed (PaaS-like) service."},
 {d:0,q:"Which AWS migration strategy moves an application to the cloud with no changes (lift and shift)?",o:["Rehost","Refactor","Repurchase","Retire"],e:"Rehosting moves workloads as-is to AWS."},
 {d:0,q:"Which of the following is a benefit of the economies of scale AWS achieves?",o:["Lower pay-as-you-go prices for customers","Free support for all customers","Unlimited free storage","No need for IAM"],e:"AWS aggregates usage from many customers, passing savings on as lower prices."},
 {d:0,q:"A company wants to stop guessing infrastructure capacity needs. Which benefit applies?",o:["Scale resources up and down based on demand","Pay more for reserved capacity","Buy extra servers for peak","Use only on-premises servers"],e:"Cloud elasticity removes the need to guess capacity."},
@@ -62,7 +67,6 @@ const QUESTIONS = [
 {d:1,q:"Which AWS service helps investigate and visualize the root cause of potential security issues?",o:["Amazon Detective","Amazon Macie","AWS WAF","AWS Artifact"],e:"Detective analyzes and visualizes data to find the root cause of findings."},
 {d:1,q:"Which service aggregates security findings from several AWS services into one place?",o:["AWS Security Hub","AWS Budgets","Amazon SQS","AWS Batch"],e:"Security Hub provides a comprehensive view of security alerts and compliance status."},
 {d:1,q:"What do IAM policies do?",o:["Define permissions as JSON documents","Encrypt data in transit","Provision EC2 instances","Monitor billing"],e:"Policies are JSON documents that allow or deny actions on resources."},
-{d:1,q:"Who is responsible for encrypting customer data stored in Amazon S3, according to the Shared Responsibility Model?",o:["The customer","AWS","Both equally by default with no customer action","The auditor"],e:"Customers choose whether and how to encrypt their data."},
 {d:1,q:"Which of the following is a shared control between AWS and the customer?",o:["Patch management","Physical and environmental controls","Hypervisor management","Storage device decommissioning"],e:"AWS patches infrastructure; customers patch guest OS and applications."},
 {d:1,q:"Which approach should be used to give an EC2 instance permission to access S3 securely?",o:["Attach an IAM role to the instance","Store access keys in the application code","Use the root user credentials","Open the bucket to the public"],e:"Instance profiles with IAM roles avoid embedding long-term credentials."},
 {d:1,q:"Which of the following can be used to restrict permissions across multiple accounts in an AWS Organization?",o:["Service control policies (SCPs)","Security groups","Route tables","Amazon Inspector"],e:"SCPs set permission guardrails for member accounts."},
@@ -140,7 +144,6 @@ const QUESTIONS = [
 {d:3,q:"Which service is a digital catalog of third-party software that can be deployed on AWS?",o:["AWS Marketplace","AWS Artifact","AWS Organizations","AWS Service Catalog"],e:"Marketplace lets you find, buy, and deploy third-party software."},
 {d:3,q:"Which type of AWS Partner helps customers via services such as consulting and migration?",o:["Services partner (Consulting Partner)","Technology partner only","Hardware only","Marketplace buyer"],e:"APN consulting/services partners provide implementation and migration help."},
 {d:3,q:"Which pricing characteristic is true of AWS data transfer?",o:["Data transfer into AWS is generally free; transfer out to the internet is charged","All data transfer is free","Transfer into AWS is charged but out is free","Transfer between Regions is always free"],e:"Inbound data is mostly free; outbound to the internet and cross-Region transfer cost money."},
-{d:3,q:"Which of these is an AWS Free Tier offer type that is available to all new customers for 12 months?",o:["12-months free","Always free","Trials only","Spot credits"],e:"The Free Tier includes 12-month free, always free, and short-term trial offers."},
 {d:3,q:"What is the benefit of using Amazon EC2 On-Demand Instances?",o:["Pay by the hour or second with no long-term commitment","Largest discount available","Guaranteed hardware dedicated to you","Prepay for 3 years"],e:"On-Demand is flexible and suitable for short-term, unpredictable workloads."},
 {d:3,q:"Which EC2 option provides a physical server fully dedicated to your use, helpful for existing server-bound software licenses?",o:["Dedicated Hosts","Spot Instances","Reserved Instances","Lightsail"],e:"Dedicated Hosts give visibility into sockets and cores for licensing compliance."},
 {d:3,q:"Which service lets you create and manage multiple AWS accounts centrally with governance?",o:["AWS Organizations","AWS IAM Identity Center only","AWS Config","Amazon Cognito"],e:"Organizations groups accounts into OUs and applies policies."},
@@ -148,7 +151,6 @@ const QUESTIONS = [
 {d:3,q:"Which charge applies to Amazon S3 usage?",o:["Storage, requests, and data transfer out","Only the number of buckets","Only the number of users","Nothing: S3 is always free"],e:"S3 is billed on storage amount, requests, retrieval, and outbound data transfer."},
 
 // ---------- Added after checking the current CLF-C02 exam guide ----------
-{d:3,q:"Which AWS Support option is included at no cost with every AWS account?",o:["Basic Support","Business Support+","Enterprise Support","Unified Operations"],e:"Basic Support includes 24/7 customer service, documentation, whitepapers, and AWS re:Post."},
 {d:3,q:"Which AWS Support offering provides incident management engineers who respond within minutes for mission-critical workloads?",o:["AWS Unified Operations","Basic Support","Business Support+","AWS re:Post"],e:"Unified Operations is the highest support tier, built around critical workloads (check the AWS Support plans page for current details)."},
 {d:3,q:"Which AWS Support plans give access to 24/7 technical support by phone, web, and chat?",o:["Paid plans such as Business Support+ and above","Basic Support","Only AWS re:Post","No plan; support is email only"],e:"Basic Support covers customer service, docs, and community; technical case support comes with paid plans."},
 {d:3,q:"A company discovers someone using AWS resources for abusive activity such as spam. Which AWS team should it contact?",o:["AWS Trust and Safety team","AWS Billing team","AWS Professional Services","AWS Partner Network"],e:"The Trust & Safety team handles abuse reports for AWS resources."},
@@ -158,7 +160,6 @@ const QUESTIONS = [
 {d:3,q:"What is the benefit of being an AWS Partner?",o:["Partner training and certification, events, and volume discounts","Free unlimited compute","Exemption from the Shared Responsibility Model","Automatic root access"],e:"The exam guide lists partner training, events, and discounts as benefits."},
 {d:3,q:"Which EC2 option reserves capacity in a specific Availability Zone for any duration, regardless of billing commitment?",o:["On-Demand Capacity Reservations","Spot Instances","Savings Plans","Dedicated Hosts only"],e:"Capacity Reservations guarantee capacity; discounts come from Savings Plans or Reserved Instances."},
 {d:3,q:"How do Reserved Instance discounts behave in an AWS Organization with consolidated billing?",o:["Discounts can be shared across member accounts","Each account must buy its own","They apply only to the management account","They never apply to member accounts"],e:"Unused Reserved Instance discounts can apply to matching usage in other accounts of the organization."},
-{d:3,q:"Which tool in the exam guide is used to estimate costs of a planned workload, as opposed to analyzing past spend?",o:["AWS Pricing Calculator","AWS Cost Explorer","AWS Cost and Usage Report","AWS Budgets"],e:"Cost Explorer and CUR look at actual spend; the Pricing Calculator models future workloads."},
 {d:3,q:"Which type of tag can be activated for billing reports so costs can be grouped by project?",o:["Cost allocation tag","Security group tag","IAM policy tag","Subnet tag"],e:"Cost allocation tags appear in Cost Explorer and the Cost and Usage Report once activated."},
 {d:1,q:"Which service provisions and manages public and private SSL/TLS certificates for AWS services?",o:["AWS Certificate Manager (ACM)","AWS KMS","AWS Secrets Manager","AWS WAF"],e:"ACM handles certificate provisioning and renewal for services like CloudFront and ELB."},
 {d:1,q:"Which service lets you set up and run Microsoft Active Directory in AWS or connect to an on-premises directory?",o:["AWS Directory Service","Amazon Cognito","AWS Shield","AWS Artifact"],e:"Directory Service provides managed Microsoft AD and directory connectors."},
@@ -203,4 +204,5 @@ const QUESTIONS = [
 {d:1,q:"Which TWO services help you store secrets or manage cryptographic keys?",o:["AWS KMS","AWS Secrets Manager","AWS Artifact","Amazon Inspector"],ma:[0,1],e:"KMS manages encryption keys; Secrets Manager stores and rotates credentials."},
 {d:0,q:"Which TWO are cloud economic benefits?",o:["Scale capacity up and down with demand","Pay for capacity you never use","Lower prices as usage aggregates across customers","Permanent fixed capacity commitment"],ma:[0,2],e:"Elasticity and economies of scale both reduce cost and waste."},
 {d:3,q:"Which TWO AWS tools help you monitor and control costs?",o:["AWS Budgets","AWS Cost Explorer","AWS Config","Amazon Macie"],ma:[0,1],e:"Budgets sends alerts on thresholds; Cost Explorer visualizes spend and forecasts."}
-];
+]
+};
