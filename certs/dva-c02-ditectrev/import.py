@@ -4,12 +4,13 @@ import sys
 import urllib.request
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parent.parent
-README = ROOT / "data" / "ditectrev-dva-c02" / "README.md"
-OUT_JSON = ROOT / "data" / "ditectrev-dva-c02" / "questions.json"
-OUT_JS = ROOT / "certs" / "dva-c02-ditectrev.js"
-EXPLANATIONS = ROOT / "data" / "ditectrev-dva-c02" / "explanations.json"
-ASSET_DIR = ROOT / "assets" / "ditectrev-dva-c02"
+HERE = Path(__file__).resolve().parent
+README = HERE / "data" / "README.md"
+OUT_JSON = HERE / "data" / "questions.json"
+OUT_JS = HERE / "bank.js"
+EXPLANATIONS = HERE / "data" / "explanations.json"
+ASSET_DIR = HERE / "assets"
+CERT_ID = HERE.name
 ASSET_URL = "https://raw.githubusercontent.com/Ditectrev/Amazon-Web-Services-AWS-Developer-Associate-DVA-C02-Practice-Tests-Exams-Questions-Answers/main/images/"
 IMG_RE = re.compile(r"^!\[([^\]]*)\]\(images/([^)\s]+)\)\s*$")
 OPT_RE = re.compile(r"^- \[([ x])\] (.*)$")
@@ -38,7 +39,7 @@ def parse(text):
                     correct.append(len(options) - 1)
             elif img:
                 target = option_images[-1] if options else images
-                target.append({"path": f"assets/ditectrev-dva-c02/{img.group(2)}", "alt": img.group(1)})
+                target.append({"path": f"assets/{img.group(2)}", "alt": img.group(1)})
             elif not options:
                 stem.append(line)
         if not options or not correct:
@@ -86,7 +87,7 @@ def main():
     }
     OUT_JSON.write_text(json.dumps(bank, indent=2, ensure_ascii=False), encoding="utf-8")
     OUT_JS.write_text(
-        'window.CERTS = window.CERTS || {};\nwindow.CERTS["dva-c02-ditectrev"] = '
+        'window.CERTS = window.CERTS || {};\nwindow.CERTS["' + CERT_ID + '"] = '
         + json.dumps(bank, indent=2, ensure_ascii=True) + ";\n",
         encoding="utf-8",
     )

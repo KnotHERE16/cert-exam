@@ -1,7 +1,4 @@
 .playwright-mcp
 __pycache__/
-# Session cookies and raw cached pages can contain private account information.
-cookies*.txt
-*.cookies.txt
-data/examtopics-dva-c02/pages/
 .browser-test-profile/
+certs/*/source.pdf

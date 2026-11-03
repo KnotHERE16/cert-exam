@@ -18,42 +18,32 @@ frame.onload = () => {
       passed.push(label);
     };
     win.confirm = () => true;
-    assert(doc.querySelectorAll(".cert-card").length === 4, "All four banks load locally");
-    const imported = win.CERTS["dva-c02-examtopics"];
-    assert(imported.questions.length > 0, "Imported question bank is nonempty");
-    doc.querySelector('[data-id="dva-c02-examtopics"]').click();
+    assert(doc.querySelectorAll(".cert-card").length === 2, "Both banks load locally");
+    const bank = win.CERTS["dva-c02-pdf"];
+    assert(bank.questions.length > 0, "PDF question bank is nonempty");
+    doc.querySelector('[data-id="dva-c02-pdf"]').click();
     assert($("bankNotice").textContent.includes("not independently verified"), "Imported accuracy warning is visible");
-    assert($("bankSize").textContent === String(imported.questions.length), "Bank count matches export");
-    if (imported.questions.length < 65) {
-      assert($("examDesc").textContent.includes("limited by available bank"), "Partial bank has a shorter-exam warning");
-    }
+    assert($("bankSize").textContent === String(bank.questions.length), "Bank count matches export");
     doc.querySelector('input[value="practice"]').checked = true;
     $("startBtn").click();
     assert(!$("quiz").classList.contains("hidden"), "Practice starts");
-    assert($("questionSource").querySelector("a").href.startsWith("https://www.examtopics.com/"), "Question source is retained");
-    const question = imported.questions.find(q => q.q === $("question").textContent);
+    const question = bank.questions.find(q => q.q === $("question").textContent);
     const correct = question.ma.map(index => question.o[index]);
     Array.from(doc.querySelectorAll(".opt")).forEach(button => {
       if (correct.includes(button.lastChild.firstChild.textContent)) button.click();
     });
     if (correct.length > 1) $("checkBtn").click();
     assert($("feedback").classList.contains("ok"), "Shuffled imported answers score correctly");
-    assert($("feedback").textContent.includes("ExamTopics stated answer"), "Imported answer provenance is shown");
+    assert($("feedback").textContent.includes("not independently verified"), "Imported answer provenance is shown");
     Array.from($("map").children).at(-1).click();
     $("nextBtn").click();
     assert(!$("results").classList.contains("hidden"), "Results and review render");
-    assert(doc.querySelectorAll(".rv").length === imported.questions.length, "Review includes the full attempt");
-    $("brand").click();
-    doc.querySelector('[data-id="dva-c02"]').click();
-    assert($("bankNotice").textContent.includes("written for study purposes"), "Original bank notice is preserved");
-    $("startBtn").click();
-    assert($("questionSource").classList.contains("hidden"), "Original questions have no imported source link");
+    assert(doc.querySelectorAll(".rv").length === bank.questions.length, "Review includes the full attempt");
     $("brand").click();
 
-    // Exercise multiple-response scoring with a synthetic fixture, not source material.
-    imported.questions = [{d:0, q:"Synthetic choose-two question", o:["First", "Second", "Third"],
+    bank.questions = [{d:0, q:"Synthetic choose-two question", o:["First", "Second", "Third"],
       ma:[0,2], e:"Synthetic explanation", images:[], optionImages:[[],[],[]]}];
-    doc.querySelector('[data-id="dva-c02-examtopics"]').click();
+    doc.querySelector('[data-id="dva-c02-pdf"]').click();
     $("startBtn").click();
     assert($("hint").textContent === "Choose 2 answers.", "Multiple-answer instructions are correct");
     doc.querySelectorAll(".opt").forEach(button => {
@@ -66,12 +56,12 @@ frame.onload = () => {
     assert($("scorePct").textContent === "100%", "Multiple-answer result is 100%");
     $("brand").click();
 
-    imported.questions = [{d:0, q:"Synthetic diagram question", o:["First", "Second"], ma:[0], e:"Diagram test",
-      images:[{path:"assets/examtopics-dva-c02/123456789012345678901234.png", alt:"Synthetic diagram"}],
+    bank.questions = [{d:0, q:"Synthetic diagram question", o:["First", "Second"], ma:[0], e:"Diagram test",
+      images:[{path:"assets/q29-s1.jpg", alt:"Synthetic diagram"}],
       optionImages:[[{url:"https://example.invalid/private.png", alt:"Missing option diagram"}],[]]}];
-    doc.querySelector('[data-id="dva-c02-examtopics"]').click();
+    doc.querySelector('[data-id="dva-c02-pdf"]').click();
     $("startBtn").click();
-    assert($("questionImages").querySelector("img").getAttribute("src").startsWith("assets/"), "Diagrams use local asset paths");
+    assert($("questionImages").querySelector("img").getAttribute("src").startsWith("certs/dva-c02-pdf/assets/"), "Diagrams load from the cert's own folder");
     assert(doc.querySelector(".image-warning").textContent.includes("Missing option diagram"), "Unavailable images have an explicit warning");
     assert(!doc.querySelector('img[src^="https:"]'), "Quiz images never load from remote URLs");
     const diagramAnswer = Array.from(doc.querySelectorAll(".opt")).find(button => button.lastChild.firstChild.textContent === "First");
@@ -80,10 +70,11 @@ frame.onload = () => {
     assert(doc.querySelector(".rv .question-image"), "Review retains question diagrams");
     assert(doc.querySelector(".rv .image-warning"), "Review retains option image warnings");
     $("brand").click();
-    doc.querySelector('[data-id="clf-c02"]').click();
+
+    doc.querySelector('[data-id="dva-c02-ditectrev"]').click();
     doc.querySelector('input[value="exam"]').checked = true;
     $("startBtn").click();
-    assert(!$("timer").classList.contains("hidden"), "Original timed exam still starts");
+    assert(!$("timer").classList.contains("hidden"), "Timed exam starts");
     $("brand").click();
     report.textContent = `PASS (${passed.length} checks)\n` + passed.join("\n");
     document.title = "PASS — Offline quiz smoke tests";

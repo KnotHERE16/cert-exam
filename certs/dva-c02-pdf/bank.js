@@ -653,7 +653,7 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (88%), BC (12%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q29-s1.jpg",
+          "path": "assets/q29-s1.jpg",
           "alt": "Question 29 diagram"
         }
       ],
@@ -1017,7 +1017,7 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (92%), D (8%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q45-s1.jpg",
+          "path": "assets/q45-s1.jpg",
           "alt": "Question 45 diagram"
         }
       ],
@@ -1113,7 +1113,7 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q49-s1.jpg",
+          "path": "assets/q49-s1.jpg",
           "alt": "Question 49 diagram"
         }
       ],
@@ -1698,25 +1698,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q75-A1.png",
+            "path": "assets/q75-A1.png",
             "alt": "Question 75 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q75-B1.png",
+            "path": "assets/q75-B1.png",
             "alt": "Question 75 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q75-C1.png",
+            "path": "assets/q75-C1.png",
             "alt": "Question 75 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q75-D1.png",
+            "path": "assets/q75-D1.png",
             "alt": "Question 75 option D"
           }
         ]
@@ -2692,10 +2692,10 @@ window.CERTS["dva-c02-pdf"] = {
         "Implement $connect and $disconnect routes in the backend service."
       ],
       "ma": [
-        3,
+        2,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: CE (57%), DE (33%).",
+      "e": "Answer corrected from the PDF's stated DE to CE after manual review; not independently verified. Community vote: CE (57%), DE (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -2895,9 +2895,9 @@ window.CERTS["dva-c02-pdf"] = {
         "Use a rolling deployment for the new application code. Apply the code to a subset of EC2 instances until the tests pass. Redeploy the previous code if the tests fail."
       ],
       "ma": [
-        2
+        0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (38%), C (38%), D (24%).",
+      "e": "Answer corrected from the PDF's stated C to A after manual review; not independently verified. Community vote: A (38%), C (38%), D (24%).",
       "images": [],
       "optionImages": [
         [],
@@ -3146,25 +3146,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q139-A1.png",
+            "path": "assets/q139-A1.png",
             "alt": "Question 139 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q139-B1.png",
+            "path": "assets/q139-B1.png",
             "alt": "Question 139 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q139-C1.png",
+            "path": "assets/q139-C1.png",
             "alt": "Question 139 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q139-D1.png",
+            "path": "assets/q139-D1.png",
             "alt": "Question 139 option D"
           }
         ]
@@ -3181,9 +3181,9 @@ window.CERTS["dva-c02-pdf"] = {
         "Stop the pull from the main branch to the feature branch. Rebase the feature branch from the main branch."
       ],
       "ma": [
-        3
+        2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (56%), D (44%).",
+      "e": "Answer corrected from the PDF's stated D to C after manual review; not independently verified. Community vote: C (56%), D (44%).",
       "images": [],
       "optionImages": [
         [],
@@ -3701,7 +3701,7 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (67%), A (17%), D (17%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q163-s1.png",
+          "path": "assets/q163-s1.png",
           "alt": "Question 163 diagram"
         }
       ],
@@ -3948,7 +3948,7 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q174-s1.png",
+          "path": "assets/q174-s1.png",
           "alt": "Question 174 diagram"
         }
       ],
@@ -5112,7 +5112,7 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q226-s1.png",
+          "path": "assets/q226-s1.png",
           "alt": "Question 226 diagram"
         }
       ],
@@ -5345,25 +5345,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q236-A1.png",
+            "path": "assets/q236-A1.png",
             "alt": "Question 236 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q236-B1.png",
+            "path": "assets/q236-B1.png",
             "alt": "Question 236 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q236-C1.png",
+            "path": "assets/q236-C1.png",
             "alt": "Question 236 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q236-D1.png",
+            "path": "assets/q236-D1.png",
             "alt": "Question 236 option D"
           }
         ]
@@ -6096,9 +6096,9 @@ window.CERTS["dva-c02-pdf"] = {
         "Define a function version for the currently deployed production Lambda function. Update the API Gateway endpoint to reference the new Lambda function version. Upload and publish the optimized Lambda function code. Update the API Gateway endpoint to use the $LATEST version of the Lambda function. Deploy the API to the production API Gateway stage."
       ],
       "ma": [
-        2
+        0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (60%), C (40%).",
+      "e": "Answer corrected from the PDF's stated C to A after manual review; not independently verified. Community vote: A (60%), C (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -6859,9 +6859,9 @@ window.CERTS["dva-c02-pdf"] = {
         "Set up AWS Glue to crawl through the logs in Amazon CloudWatch Logs for the Lambda functions. Configure an AWS Glue job to transform the logs into a structured format and to output the logs into Amazon S3. Use the Amazon CloudWatch dashboard to visualize the slowest functions based on the duration."
       ],
       "ma": [
-        2
+        0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (50%), C (50%).",
+      "e": "Answer corrected from the PDF's stated C to A after manual review; not independently verified. Community vote: A (50%), C (50%).",
       "images": [],
       "optionImages": [
         [],
@@ -8687,9 +8687,9 @@ window.CERTS["dva-c02-pdf"] = {
         "The EC2 instance will not be able to perform any S3 action on any S3 bucket."
       ],
       "ma": [
-        3
+        2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (60%), D (40%).",
+      "e": "Answer corrected from the PDF's stated D to C after manual review; not independently verified. Community vote: C (60%), D (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -9228,10 +9228,10 @@ window.CERTS["dva-c02-pdf"] = {
         "Use VPC endpoint policies for the WebSocket APIs."
       ],
       "ma": [
-        0,
+        1,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BC (60%), AC (40%).",
+      "e": "Answer corrected from the PDF's stated AC to BC after manual review; not independently verified. Community vote: BC (60%), AC (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -10000,25 +10000,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q443-A1.png",
+            "path": "assets/q443-A1.png",
             "alt": "Question 443 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q443-B1.png",
+            "path": "assets/q443-B1.png",
             "alt": "Question 443 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q443-C1.png",
+            "path": "assets/q443-C1.png",
             "alt": "Question 443 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q443-D1.png",
+            "path": "assets/q443-D1.png",
             "alt": "Question 443 option D"
           }
         ]
@@ -10268,25 +10268,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q454-A1.png",
+            "path": "assets/q454-A1.png",
             "alt": "Question 454 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q454-B1.png",
+            "path": "assets/q454-B1.png",
             "alt": "Question 454 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q454-C1.png",
+            "path": "assets/q454-C1.png",
             "alt": "Question 454 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q454-D1.png",
+            "path": "assets/q454-D1.png",
             "alt": "Question 454 option D"
           }
         ]
@@ -10506,11 +10506,11 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q464-s1.png",
+          "path": "assets/q464-s1.png",
           "alt": "Question 464 diagram"
         },
         {
-          "path": "assets/pdf-dva-c02/q464-s2.png",
+          "path": "assets/q464-s2.png",
           "alt": "Question 464 diagram"
         }
       ],
@@ -10583,7 +10583,7 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: AD (100%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q467-s1.png",
+          "path": "assets/q467-s1.png",
           "alt": "Question 467 diagram"
         }
       ],
@@ -10949,25 +10949,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q483-A1.png",
+            "path": "assets/q483-A1.png",
             "alt": "Question 483 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q483-B1.png",
+            "path": "assets/q483-B1.png",
             "alt": "Question 483 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q483-C1.png",
+            "path": "assets/q483-C1.png",
             "alt": "Question 483 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q483-D1.png",
+            "path": "assets/q483-D1.png",
             "alt": "Question 483 option D"
           }
         ]
@@ -11116,9 +11116,9 @@ window.CERTS["dva-c02-pdf"] = {
         "Install the Amazon CloudWatch agent on the on-premises servers. Give the agent the ability to push audit logs to CloudWatch. Use CloudWatch Insights to query the logs."
       ],
       "ma": [
-        2
+        1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (33%), C (33%), B (33%).",
+      "e": "Answer corrected from the PDF's stated C to B after manual review; not independently verified. Community vote: D (33%), C (33%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -11182,9 +11182,9 @@ window.CERTS["dva-c02-pdf"] = {
         "Add an input transformer to the pipe output that filters streams that have a status of ready."
       ],
       "ma": [
-        0
+        1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (50%), A (50%).",
+      "e": "Answer corrected from the PDF's stated A to B after manual review; not independently verified. Community vote: B (50%), A (50%).",
       "images": [],
       "optionImages": [
         [],
@@ -11412,25 +11412,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q503-A1.png",
+            "path": "assets/q503-A1.png",
             "alt": "Question 503 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q503-B1.png",
+            "path": "assets/q503-B1.png",
             "alt": "Question 503 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q503-C1.png",
+            "path": "assets/q503-C1.png",
             "alt": "Question 503 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q503-D1.png",
+            "path": "assets/q503-D1.png",
             "alt": "Question 503 option D"
           }
         ]
@@ -11518,7 +11518,7 @@ window.CERTS["dva-c02-pdf"] = {
       "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (75%), A (25%).",
       "images": [
         {
-          "path": "assets/pdf-dva-c02/q507-s1.png",
+          "path": "assets/q507-s1.png",
           "alt": "Question 507 diagram"
         }
       ],
@@ -12323,25 +12323,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q543-A1.png",
+            "path": "assets/q543-A1.png",
             "alt": "Question 543 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q543-B1.png",
+            "path": "assets/q543-B1.png",
             "alt": "Question 543 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q543-C1.png",
+            "path": "assets/q543-C1.png",
             "alt": "Question 543 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q543-D1.png",
+            "path": "assets/q543-D1.png",
             "alt": "Question 543 option D"
           }
         ]
@@ -12519,25 +12519,25 @@ window.CERTS["dva-c02-pdf"] = {
       "optionImages": [
         [
           {
-            "path": "assets/pdf-dva-c02/q551-A1.png",
+            "path": "assets/q551-A1.png",
             "alt": "Question 551 option A"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q551-B1.png",
+            "path": "assets/q551-B1.png",
             "alt": "Question 551 option B"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q551-C1.png",
+            "path": "assets/q551-C1.png",
             "alt": "Question 551 option C"
           }
         ],
         [
           {
-            "path": "assets/pdf-dva-c02/q551-D1.png",
+            "path": "assets/q551-D1.png",
             "alt": "Question 551 option D"
           }
         ]

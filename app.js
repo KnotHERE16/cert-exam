@@ -2,7 +2,7 @@
   const $ = id => document.getElementById(id);
   const LETTERS = "ABCDEFGH";
 
-  let cert = null, DOMAINS = [], QUESTIONS = [], PASS = 70, EXAM_SECONDS = 0, EXAM_COUNT = 65;
+  let certId = null, cert = null, DOMAINS = [], QUESTIONS = [], PASS = 70, EXAM_SECONDS = 0, EXAM_COUNT = 65;
   let session = null; // {mode, items, idx, startedAt, deadline, timerId, finished}
 
   const shuffle = arr => {
@@ -35,6 +35,7 @@
   }
 
   function selectCert(id) {
+    certId = id;
     cert = window.CERTS[id];
     DOMAINS = cert.domains;
     QUESTIONS = cert.questions;
@@ -134,7 +135,7 @@
 
   function appendImages(container, images = []) {
     images.forEach(image => {
-      if (!/^assets\/(?:examtopics-dva-c02\/[a-f0-9]{24}|ditectrev-dva-c02\/[\w-]+|pdf-dva-c02\/q\d+-[A-Fs]\d+)\.(png|jpe?g|gif|webp|svg|avif|bmp|ico)$/.test(image.path || "")) {
+      if (!/^assets\/[\w-]+\.(png|jpe?g|gif|webp|svg|avif|bmp|ico)$/.test(image.path || "")) {
         const note = document.createElement("span");
         note.className = "image-warning";
         note.textContent = `Image unavailable offline: ${image.alt || "diagram"}`;
@@ -142,7 +143,7 @@
         return;
       }
       const img = document.createElement("img");
-      img.src = image.path;
+      img.src = `certs/${certId}/${image.path}`;
       img.alt = image.alt || "Question diagram";
       img.className = "question-image";
       container.appendChild(img);

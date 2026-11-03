@@ -7,9 +7,10 @@ from pathlib import Path
 
 import pymupdf
 
-ROOT = Path(__file__).resolve().parent.parent
-ASSET_DIR = ROOT / "assets" / "pdf-dva-c02"
-OUT_JS = ROOT / "certs" / "dva-c02-pdf.js"
+HERE = Path(__file__).resolve().parent
+ASSET_DIR = HERE / "assets"
+OUT_JS = HERE / "bank.js"
+CERT_ID = HERE.name
 
 HEADER = re.compile(r"^Question #(\d+)$")
 OPTION = re.compile(r"^([A-F])\.\s*(.*)$")
@@ -18,6 +19,12 @@ TOPIC = re.compile(r"^Topic \d+$")
 OPTION_X = (66, 76)
 STEM_X = 62
 WRAP_RIGHT = 490
+
+
+OVERRIDES = {
+    119: "CE", 128: "A", 140: "C", 269: "A", 303: "A",
+    385: "C", 409: "BC", 490: "B", 493: "B",
+}
 
 
 def clean(text):
@@ -73,7 +80,7 @@ def save_image(doc, xref, stem):
         data = info["image"]
     name = f"{stem}.{ext}"
     (ASSET_DIR / name).write_bytes(data)
-    return f"assets/pdf-dva-c02/{name}"
+    return f"assets/{name}"
 
 
 def parse(doc):
@@ -154,13 +161,18 @@ def build(doc, parsed):
         option_images = [[{"path": save_image(doc, x, f"q{n}-{l}{k}"), "alt": f"Question {n} option {l}"}
                           for k, x in enumerate(p["option_images"].get(l, []), 1)] for l in letters]
         votes = ", ".join(p["votes"])
+        if n in OVERRIDES:
+            note = (f"Answer corrected from the PDF's stated {answer} to {OVERRIDES[n]} after manual review; "
+                    "not independently verified.")
+            answer = OVERRIDES[n]
+        else:
+            note = "Answer as stated in the source PDF; not independently verified."
         out.append({
             "d": 0,
             "q": join_stem(p["stem"]),
             "o": [p["options"][l] for l in letters],
             "ma": [letters.index(c) for c in answer],
-            "e": "Answer as stated in the source PDF; not independently verified."
-                 + (f" Community vote: {votes}." if votes else ""),
+            "e": note + (f" Community vote: {votes}." if votes else ""),
             "images": images,
             "optionImages": option_images,
             "sourceNumber": n,
@@ -170,7 +182,7 @@ def build(doc, parsed):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("pdf", type=Path)
+    ap.add_argument("pdf", type=Path, nargs="?", default=HERE / "source.pdf")
     args = ap.parse_args()
     doc = pymupdf.open(args.pdf)
     questions, problems = build(doc, parse(doc))
@@ -185,7 +197,7 @@ def main():
         "questions": questions,
     }
     OUT_JS.write_text(
-        'window.CERTS = window.CERTS || {};\nwindow.CERTS["dva-c02-pdf"] = '
+        'window.CERTS = window.CERTS || {};\nwindow.CERTS["' + CERT_ID + '"] = '
         + json.dumps(bank, indent=2, ensure_ascii=True) + ";\n",
         encoding="utf-8",
     )

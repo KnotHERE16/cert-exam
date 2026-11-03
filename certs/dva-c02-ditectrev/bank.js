@@ -691,25 +691,25 @@ window.CERTS["dva-c02-ditectrev"] = {
       "optionImages": [
         [
           {
-            "path": "assets/ditectrev-dva-c02/question30_A.jpg",
+            "path": "assets/question30_A.jpg",
             "alt": "Question 30 option A"
           }
         ],
         [
           {
-            "path": "assets/ditectrev-dva-c02/question30_B.jpg",
+            "path": "assets/question30_B.jpg",
             "alt": "Question 30 option B"
           }
         ],
         [
           {
-            "path": "assets/ditectrev-dva-c02/question30_C.jpg",
+            "path": "assets/question30_C.jpg",
             "alt": "Question 30 option C"
           }
         ],
         [
           {
-            "path": "assets/ditectrev-dva-c02/question30_D.jpg",
+            "path": "assets/question30_D.jpg",
             "alt": "Question 30 option D"
           }
         ]
@@ -1113,7 +1113,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "Initializing the database connection outside the handler lets warm invocations reuse it, saving connection time, and packaging only required modules shrinks the deployment package so cold starts are faster. Both cost nothing extra. Switching to DynamoDB is a redesign, and custom pooling or local caching is unreliable in Lambda. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question48.jpg",
+          "path": "assets/question48.jpg",
           "alt": "Question 48"
         }
       ],
@@ -1361,7 +1361,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "The template uses a local path to the function code, so aws cloudformation package uploads the code to S3 and outputs a new template with the S3 location, which aws cloudformation deploy can then deploy. There is no cloudformation compile, Lambda zip command with the template, or serverless create-package command. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question59.jpg",
+          "path": "assets/question59.jpg",
           "alt": "Question 59"
         }
       ],
@@ -1985,7 +1985,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "A partition key should have many distinct values spread evenly across requests. reviewID is a unique UUID per record, so it distributes items uniformly across partitions. starRating has only five values, and productID and comment can have uneven or hot access patterns. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question87.jpg",
+          "path": "assets/question87.jpg",
           "alt": "Question 87"
         }
       ],
@@ -2012,7 +2012,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "Note: the marked answer may be wrong. The generic approach is IAM policy variables: replace TeamMemberX in the resource ARN with ${aws:username}, which is substituted at request time so one policy serves all ten members. A condition element could not rewrite the resource path, and principal or resource alone are not the mechanism. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question88.jpg",
+          "path": "assets/question88.jpg",
           "alt": "Question 88"
         }
       ],
@@ -2262,7 +2262,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "The encoded authorization failure message returned by some EC2 errors is decoded with the AWS STS DecodeAuthorizationMessage API, which requires the sts:DecodeAuthorizationMessage permission. KMS and third-party libraries cannot decode it, and there is no such IAM API. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question99.jpg",
+          "path": "assets/question99.jpg",
           "alt": "Question 99"
         }
       ],
@@ -2936,7 +2936,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "RequestLimitExceeded means EC2 API calls are being throttled, so the client should retry with exponential backoff, which spreads out requests. An IAM role, more bandwidth or a newer CLI version does not change API rate limits, and permission errors would show a different message. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question129.jpg",
+          "path": "assets/question129.jpg",
           "alt": "Question 129"
         }
       ],
@@ -2963,7 +2963,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "To share the bucket name across stacks, add an Export to the Outputs section of the original template and reference it in other templates with Fn::ImportValue. Exported: true, ImportResource, custom resources or Fn::Include are not valid or are needlessly complicated for cross-stack references. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question130.jpg",
+          "path": "assets/question130.jpg",
           "alt": "Question 130"
         }
       ],
@@ -4798,7 +4798,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "The error is a ThrottlingException from AWS KMS: every SSE-KMS read makes a KMS call, and the cluster exceeds the KMS request quota. Request a KMS rate limit increase and add retries with exponential backoff. The throttling comes from KMS, not S3, and a larger imported key size does not change request rates. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question212.jpg",
+          "path": "assets/question212.jpg",
           "alt": "Question 212"
         }
       ],
@@ -5487,7 +5487,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "The logs show the load tester hit only two servers in us-west-2a because it resolves the ELB DNS once and uses a single source IP, so requests concentrate on one ELB node. Re-resolving DNS per request or using distributed test clients spreads traffic across all ELB nodes and servers. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question241.jpg",
+          "path": "assets/question241.jpg",
           "alt": "Question 241"
         }
       ],
@@ -6412,7 +6412,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "Least privilege means granting only the specific actions needed, which here are codecommit:CreateBranch and codecommit:DeleteBranch. The wildcard options (Put*, Update*, codecommit:*) grant many additional unneeded permissions, and Update* and Put* also do not include DeleteBranch. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question281.jpg",
+          "path": "assets/question281.jpg",
           "alt": "Question 281"
         }
       ],
@@ -6778,7 +6778,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "Elastic Beanstalk only processes configuration files in the .ebextensions folder whose names end in .config (YAML or JSON format). A file named healthcheckurl.yaml is ignored, so it must be renamed healthcheckurl.config. The format is already valid, option_settings is the right section, and the namespace is a standard Elastic Beanstalk one. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question297.jpeg",
+          "path": "assets/question297.jpeg",
           "alt": "Question 297"
         }
       ],
@@ -6829,7 +6829,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "Caching frequently accessed user data in ElastiCache for Memcached reduces repeated slow database reads during login, and calling the database asynchronously prevents the page from blocking while waiting on the query. A Lambda login function and an ALB do not reduce database wait time, and batching logins into one read is not practical and adds delay. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question299.jpeg",
+          "path": "assets/question299.jpeg",
           "alt": "Question 299"
         }
       ],
@@ -7686,7 +7686,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "A GSI with partition key sport_name and sort key score lets the Developer query all users for a sport sorted by score, to get the top performers efficiently. Querying or scanning the base table by user_id would scan everything, and a local secondary index must use the same partition key as the base table (user_id), so it cannot have sport_name as its partition key. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question337.jpg",
+          "path": "assets/question337.jpg",
           "alt": "Question 337"
         }
       ],
@@ -7848,7 +7848,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "With web identity federation, the AssumeRoleWithWebIdentity response contains temporary credentials, and calls signed with the returned AccessKeyId carry the permissions of the IAM principal that owns the key, which is the assumed role session. The role ID AROACLKWSDQRAOEXAMPLE is just an identifier in the response, and the other options are unrelated to the credentials. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question344.jpg",
+          "path": "assets/question344.jpg",
           "alt": "Question 344"
         }
       ],
@@ -8772,7 +8772,7 @@ window.CERTS["dva-c02-ditectrev"] = {
       "e": "In Lambda, code outside the handler runs once per execution environment and is reused between invocations. Creating the database connection in global scope means it is reused instead of opened and closed on every invocation, reducing execution time. More RAM, a bigger RDS instance or DynamoDB do not address connection setup overhead. (Answer as marked in the Ditectrev repository; not independently verified.)",
       "images": [
         {
-          "path": "assets/ditectrev-dva-c02/question385.jpg",
+          "path": "assets/question385.jpg",
           "alt": "Question 385"
         }
       ],
