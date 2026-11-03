@@ -18,7 +18,7 @@
     <h1>Choose a certification</h1>
     <p class="lead">Pick an exam to practice. Each one has its own question bank, domains, and exam simulation.</p>
     <div id="certGrid" class="cert-grid"></div>
-    <p class="note">Unofficial practice questions written for study purposes. Not affiliated with or endorsed by AWS.</p>
+    <p class="note">Unofficial study material. Imported answer keys may be inaccurate. Not affiliated with or endorsed by AWS.</p>
   </section>
 
   <!-- Start screen -->
@@ -44,7 +44,7 @@
     <button id="startBtn" class="btn primary">Start</button>
 
     <div class="weights" id="weights"></div>
-    <p class="note">Unofficial practice questions written for study purposes. Not affiliated with or endorsed by AWS.</p>
+    <p id="bankNotice" class="note">Unofficial practice questions written for study purposes. Not affiliated with or endorsed by AWS.</p>
   </section>
 
   <!-- Quiz screen -->
@@ -55,7 +55,9 @@
     </div>
     <div class="bar"><div id="barFill"></div></div>
     <h2 id="question"></h2>
+    <div id="questionImages" class="question-images"></div>
     <p id="hint" class="hint"></p>
+    <p id="questionSource" class="note hidden"></p>
     <div id="options" class="options" role="radiogroup"></div>
     <div id="feedback" class="feedback hidden"></div>
     <div class="nav">
@@ -96,6 +98,8 @@
 
 <script src="certs/clf-c02.js"></script>
 <script src="certs/dva-c02.js"></script>
+<script src="certs/dva-c02-examtopics.js"></script>
+<script src="certs/dva-c02-ditectrev.js"></script>
 <script src="app.js"></script>
 </body>
 </html>

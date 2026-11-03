@@ -1,6 +1,6 @@
 (() => {
   const $ = id => document.getElementById(id);
-  const LETTERS = "ABCDEF";
+  const LETTERS = "ABCDEFGH";
 
   let cert = null, DOMAINS = [], QUESTIONS = [], PASS = 70, EXAM_SECONDS = 0, EXAM_COUNT = 65;
   let session = null; // {mode, items, idx, startedAt, deadline, timerId, finished}
@@ -46,7 +46,9 @@
     $("certCode").textContent = cert.code;
     $("bankSize").textContent = QUESTIONS.length;
     $("domainCount").textContent = DOMAINS.length;
-    $("examDesc").textContent = `${EXAM_COUNT} questions, ${cert.exam.minutes} minutes, answers shown at the end. Pass mark ${PASS}%.`;
+    const available = Math.min(EXAM_COUNT, QUESTIONS.length);
+    $("examDesc").textContent = `${available} questions${available < EXAM_COUNT ? ` (${EXAM_COUNT} configured; limited by available bank)` : ""}, ${cert.exam.minutes} minutes, answers shown at the end. Practice target ${PASS}%.`;
+    $("bankNotice").textContent = cert.notice || "Unofficial practice questions written for study purposes. Not affiliated with or endorsed by AWS.";
     $("domainSel").innerHTML = '<option value="all">All domains (weighted)</option>' +
       DOMAINS.map((d, i) => `<option value="${i}">${d.name}</option>`).join("");
     $("weights").innerHTML = DOMAINS.map(d => `<span>${d.name}: ${d.weight}%</span>`).join("");
@@ -66,7 +68,7 @@
   // Multiple-response questions set q.ma = indices (into q.o) of ALL correct options.
   function prepare(src) {
     const correctOrig = src.ma || [0];
-    const opts = shuffle(src.o.map((t, i) => ({ t, ok: correctOrig.includes(i) })));
+    const opts = shuffle(src.o.map((t, i) => ({ t, ok: correctOrig.includes(i), images: (src.optionImages || [])[i] || [] })));
     return {
       src, q: src.q, d: src.d, e: src.e,
       multi: correctOrig.length > 1,
@@ -130,6 +132,33 @@
   const instant = () => session.mode !== "exam";
   const cur = () => session.items[session.idx];
 
+  function appendImages(container, images = []) {
+    images.forEach(image => {
+      if (!/^assets\/(?:examtopics-dva-c02\/[a-f0-9]{24}|ditectrev-dva-c02\/[\w-]+)\.(png|jpe?g|gif|webp|svg|avif|bmp|ico)$/.test(image.path || "")) {
+        const note = document.createElement("span");
+        note.className = "image-warning";
+        note.textContent = `Image unavailable offline: ${image.alt || "diagram"}`;
+        container.appendChild(note);
+        return;
+      }
+      const img = document.createElement("img");
+      img.src = image.path;
+      img.alt = image.alt || "Question diagram";
+      img.className = "question-image";
+      container.appendChild(img);
+    });
+  }
+
+  function appendSource(container, src) {
+    if (!src.sourceUrl || !/^https:\/\/www\.examtopics\.com\/exams\/amazon\/aws-certified-developer-associate-dva-c02\/view\/(?:\d+\/)?#qqq\d+$/.test(src.sourceUrl)) return;
+    const link = document.createElement("a");
+    link.href = src.sourceUrl;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.textContent = `Source: ExamTopics question #${src.sourceNumber} (opens online)`;
+    container.appendChild(link);
+  }
+
   // ---------- Render question ----------
   function render() {
     const it = cur();
@@ -138,6 +167,11 @@
     $("domainTag").textContent = DOMAINS[it.d].name;
     $("barFill").style.width = `${((session.idx + 1) / n) * 100}%`;
     $("question").textContent = it.q;
+    $("questionImages").replaceChildren();
+    appendImages($("questionImages"), it.src.images);
+    $("questionSource").replaceChildren();
+    appendSource($("questionSource"), it.src);
+    $("questionSource").classList.toggle("hidden", !$("questionSource").hasChildNodes());
     $("hint").textContent = it.multi ? `Choose ${it.correct.length} answers.` : "Choose one answer.";
     $("hint").classList.remove("hidden");
 
@@ -148,6 +182,7 @@
       b.type = "button";
       b.innerHTML = `<span class="k">${LETTERS[i]}</span><span></span>`;
       b.lastChild.textContent = o.t;
+      appendImages(b.lastChild, o.images);
       const isPicked = it.picked.includes(i);
       if (it.checked) {
         b.disabled = true;
@@ -229,8 +264,8 @@
   document.addEventListener("keydown", e => {
     if ($("quiz").classList.contains("hidden") || !session) return;
     const k = e.key.toLowerCase();
-    if (k.length === 1 && "abcdef".includes(k)) {
-      const i = "abcdef".indexOf(k);
+    if (k.length === 1 && LETTERS.toLowerCase().includes(k)) {
+      const i = LETTERS.toLowerCase().indexOf(k);
       if (i < cur().opts.length) choose(i);
     } else if (e.key === "Enter" && cur().multi && !cur().checked && cur().picked.length) {
       $("checkBtn").click();
@@ -293,6 +328,17 @@
       d.children[1].textContent = right ? "" : `Your answer: ${yours}`;
       d.children[2].textContent = `Correct: ${correctText}`;
       d.children[3].textContent = it.e;
+      appendImages(d, it.src.images);
+      it.opts.forEach((option, index) => {
+        if (!option.images.length) return;
+        const images = document.createElement("div");
+        images.textContent = `Option ${LETTERS[index]} diagrams:`;
+        appendImages(images, option.images);
+        d.appendChild(images);
+      });
+      const source = document.createElement("p");
+      appendSource(source, it.src);
+      if (source.hasChildNodes()) d.appendChild(source);
       if (right) d.children[1].remove();
       box.appendChild(d);
     });

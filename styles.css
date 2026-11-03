@@ -87,3 +87,9 @@ select{width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--line);
 .cert-card .meta{color:var(--muted);font-size:.82rem;margin-top:6px}
 .back{font:inherit;background:none;border:0;color:var(--muted);cursor:pointer;padding:0;margin-bottom:14px}
 .back:hover{color:var(--ink)}
+
+#question,.opt,.feedback,.rv{white-space:pre-wrap;overflow-wrap:anywhere}
+.question-images:empty{display:none}
+.question-image{display:block;max-width:100%;height:auto;margin:12px 0}
+.image-warning{display:block;color:var(--bad);font-size:.85rem;margin:8px 0}
+#questionSource a,.rv a{color:#245d96;font-size:.82rem}
