@@ -3,8 +3,8 @@ window.CERTS["dva-c02-pdf"] = {
   "code": "DVA-C02 \u00b7 PDF",
   "title": "Developer Associate \u2014 PDF export",
   "level": "Imported bank",
-  "blurb": "557 questions from the downloaded PDF. Unverified answers.",
-  "notice": "Imported 557 questions from a PDF export. Answers are as stated in the PDF and not independently verified; community votes may disagree. Topics are not classified into official exam domains. 72% is a local practice target, not a conversion to AWS scaled scoring.",
+  "blurb": "557 questions from the downloaded PDF, with explanations.",
+  "notice": "Imported 557 questions from a PDF export. Answers come from the PDF with a few manual corrections; explanations were written separately and are not AWS-verified. Topics are not classified into official exam domains. 72% is a local practice target, not a conversion to AWS scaled scoring.",
   "exam": {
     "count": 65,
     "minutes": 130,
@@ -29,7 +29,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (82%), Other (18%).",
+      "e": "AWS Secrets Manager encrypts secrets at rest with KMS, is accessed over TLS, and supports resource-based policies so other accounts can read the secret. Cross-account access also requires a customer managed KMS key, because the AWS managed key's policy cannot be edited to trust other accounts. Option A fails because an AWS managed key cannot be shared across accounts and Parameter Store resource policies are limited to advanced parameters. Options B and D require building and managing your own encryption and decryption logic around DynamoDB or S3, which is far more management overhead (and D also uses an AWS managed key). Community vote: C (82%), Other (18%).",
       "images": [],
       "optionImages": [
         [],
@@ -51,7 +51,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (75%), B (12%).",
+      "e": "EventBridge can route events across accounts: the main account's event bus is configured with a resource policy that permits the other accounts, each member account has a rule that forwards EC2 instance state-change events to the main bus, and a rule on the main bus targets the SQS queue. Option A is wrong because EC2 does not deliver events to another account's bus on its own; a rule in each source account is required. Option B fails because a rule in a member account can target an SQS queue in a different account only when the Region and permissions line up, and it does not centralize events on a shared bus as intended. Option C is polling every minute, which is inefficient, costly and misses state changes. Community vote: D (75%), B (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -73,7 +73,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (83%), Other (17%).",
+      "e": "With Cognito identity pools, the authenticated role's IAM policy can use the policy variable ${cognito-identity.amazonaws.com:sub} in the S3 resource ARN so each user can only read and write objects under their own prefix. This enforces isolation inside IAM/S3 itself and lets the client use the S3 SDK directly, including multipart upload for files up to 300 MB. S3 event notifications (A) fire after the fact and cannot authorize requests. A DynamoDB filter (B) only hides files in the UI and does not stop direct access. API Gateway with Lambda (C) moves custom validation into code and hits API Gateway's 10 MB payload limit and Lambda payload limits for large files. Community vote: D (83%), Other (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -95,7 +95,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (88%).",
+      "e": "AWS Step Functions orchestrates workflows as state machines, running steps in sequence, with built-in Retry and Catch for error handling and reprocessing, and it is serverless so there is little to maintain. AWS Batch runs batch compute jobs but is not a workflow orchestrator for business rules. AWS Glue is an ETL service and does not give general-purpose sequencing and error-handling orchestration across arbitrary services. A Lambda function alone would require you to write and maintain the orchestration, retry and state-tracking logic yourself. Community vote: B (88%).",
       "images": [],
       "optionImages": [
         [],
@@ -117,7 +117,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The function is invoked successfully by the S3 event, so the trigger and concurrency are fine; the failure happens only on the DynamoDB write, which points to the function's execution role lacking dynamodb:PutItem (or similar) permissions. Concurrency limits (A) would throttle invocation itself rather than fail a single call. DynamoDB does not need a GSI to accept writes (B). DynamoDB is a regional, Availability Zone-independent service, so the AZ placement of Lambda is irrelevant (D). Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -139,7 +139,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A CloudFormation parameter with the AllowedValues property restricts the user to selecting only from the approved list of instance types, and the same template can be reused in every account. Creating a template per instance type (A) or a resource per type (B) would deploy or duplicate instances rather than restrict a choice. A separate parameter for each type (C) does not constrain the value of the instance type used by the resource. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -163,7 +163,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BD (63%), BC (33%).",
+      "e": "UnprocessedKeys is returned when a BatchGetItem request exceeds the table's provisioned throughput or the response size limit, so the unprocessed keys should be retried using exponential backoff with jitter, and increasing the provisioned read capacity reduces the throttling that caused the keys to be left unprocessed. Retrying immediately (A) just adds load and will probably be throttled again. Using an SDK (C) is not required because it is the retry logic that matters, not the client library. Write capacity (E) has no effect on read operations such as BatchGetItem. Community vote: BD (63%), BC (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -186,7 +186,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The X-Ray daemon is a lightweight process that listens for trace segments from instrumented applications and relays them in batches to the X-Ray service, and it can run on on-premises Linux servers with minimal configuration (credentials and region). The X-Ray SDK alone (A) instruments the application code but still sends segments to the daemon over UDP, so the daemon is still needed. Building a Lambda function that pulls and relays data with PutTraceSegments (C) or PutTelemetryRecords (D) is custom work, and PutTelemetryRecords is used by the daemon for its own telemetry, not for traces. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -208,7 +208,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS Secrets Manager is purpose-built for storing API keys and credentials with encryption through KMS, fine-grained IAM access, auditing and optional rotation, and the secret can be retrieved at runtime with the SDK and cached to avoid affecting performance. Hardcoding the key in a code variable (B) exposes it in source control. Storing it in S3 (C) or DynamoDB (D) can work but relies on you to implement encryption, rotation and access control, so it is less secure than a managed secrets service. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -230,7 +230,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Parameter Store handles configuration values such as the API URL and authentication information, with hierarchical paths (for example /dev/app/url, /prod/app/url) to separate environments, while Secrets Manager stores the credentials securely; both are read with the SDK or injected into ECS task definitions, which requires minimal code changes. AWS KMS (B) is for managing encryption keys, not for storing application variables. An encrypted file shipped with the application (C) ties values to deployments and complicates rotation and sharing across versions. Hardcoding values in the task definition (D) does not provide secure, centrally shared storage across all versions. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -252,7 +252,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Contact details are small, structured items that fit well in DynamoDB, which supports fast lookups by employee key, while large high-resolution photos belong in S3 with only the object key stored in the DynamoDB item; both are accessible through AWS APIs. Base64-encoding photos into DynamoDB (A) bloats items and hits the 400 KB item size limit. Cognito user pools (C) are an authentication directory, not a store for photos and arbitrary contact data. RDS plus EFS (D) is heavier to operate, and EFS objects are not retrieved through a simple AWS API as S3 objects are. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -274,7 +274,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Cognito user pools provide managed sign-up and sign-in, and a Cognito user pool authorizer on API Gateway protects the API with no custom auth code. Photos of 300 KB to 5 MB belong in S3, with the object key stored in DynamoDB for lookup. DynamoDB items are limited to 400 KB, so option A cannot store the photos. Creating an IAM user per app user (C) does not scale to tens of thousands of users, and building a custom user table and Lambda authorizer (D) is much more operational work than the managed Cognito service. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -296,7 +296,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (77%), A (23%).",
+      "e": "Publishing to a single SNS topic with message attributes and giving each partner subscription a filter policy delivers each partner only their own orders, and onboarding a new partner only requires adding a subscription with a filter, with no Lambda code changes. A topic per partner (A) requires code changes for every new partner. A Lambda function per partner (B) multiplies code and deployment effort. Subscribing all partners to one topic without filters (D) would send every partner everyone's orders. Community vote: C (77%), A (23%).",
       "images": [],
       "optionImages": [
         [],
@@ -318,7 +318,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "S3 Object Lambda lets you attach a Lambda function (here removePii) to an Object Lambda access point so that GET requests through that access point return transformed data, while the single original object stays unchanged in the bucket. Authorized users use the regular access point to get the original and others use the Object Lambda access point. S3 event notifications (A, B) are not triggered by GET requests and cannot alter the response, and PUT events would create copies. GetObjectLegalHold (D) is about legal hold status and cannot invoke a Lambda function. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -340,7 +340,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (86%), A (14%).",
+      "e": "Lambda versions are immutable snapshots of function code and configuration, and an alias points to a specific version, so rolling back is just repointing the alias to an older version with no redeployment. OpsWorks (A) is not used for Lambda blue/green deployments. Keeping packages in S3 (C) requires re-uploading and redeploying to roll back. CodePipeline (D) can orchestrate deployments but is more setup than simply using versions and aliases. Community vote: B (86%), A (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -362,7 +362,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (93%).",
+      "e": "Lambda allocates CPU power in proportion to the configured memory, so increasing memory gives a CPU-bound function more vCPU and faster execution. Lambda does not offer a direct CPU core count setting (A). Reserved concurrency (C) controls how many instances can run in parallel, not how fast a single invocation runs. A longer timeout (D) only allows the function to run longer before being stopped and does not make it faster. Community vote: B (93%).",
       "images": [],
       "optionImages": [
         [],
@@ -384,7 +384,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (83%), A (17%).",
+      "e": "For an in-place deployment, CodeDeploy runs the lifecycle hooks in this order: ApplicationStop, (Download Bundle), BeforeInstall, (Install), AfterInstall, ApplicationStart, and ValidateService. So option B shows the correct sequence among the choices. The other options place BeforeInstall before ApplicationStop or put ValidateService before ApplicationStart, which does not match the CodeDeploy lifecycle. Community vote: B (83%), A (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -406,7 +406,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Publishing custom CloudWatch metrics for the failed and total payment API calls lets you create an alarm (using metric math for the error rate) that evaluates over an hour and notifies the existing SNS topic in near real time. The log-querying approaches in A and D rely on scheduled polling, so they are not near real time and need extra components. Option C sends every result to a new SNS topic and notifies the support team for each call, rather than only when the rate exceeds 5 percent, and it does not use the existing topic. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -428,7 +428,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The data is updated only daily and the access is unauthenticated read-only, so enabling API caching in API Gateway serves repeated requests from the cache with a TTL, reducing latency and Lambda invocations. An interface VPC endpoint (B) is for private APIs, not for public performance. CORS (C) controls browser cross-origin access and does not improve speed. Usage plans and API keys (D) manage throttling and quotas, not responsiveness. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -450,7 +450,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A DynamoDB table with title as the partition key and release year as the sort key supports a GetItem for title plus year and a Query on title alone for all movies with that title, and a global secondary index with genre as the partition key supports queries by genre. DynamoDB also handles inconsistent extra attributes naturally because it is schemaless. Option B uses genre as the partition key, so a title-and-year lookup would need the GSI and does not map cleanly to the primary key design. The RDS options (C, D) need a rigid schema or JSON-encoded columns, and with title alone as primary key they cannot store multiple movies with the same title. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -472,7 +472,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (81%), B (19%).",
+      "e": "An API Gateway stage is a named reference to a deployment of the API, so defining a development (beta) stage with its own invoke URL lets the developers test the new, backward-incompatible version without touching the production stage used by customers. A new API (B) or new endpoints in the same API (D) add unnecessary resources or risk affecting existing customers. A query parameter in application code (C) puts versioning logic in the code and adds maintenance. Community vote: A (81%), B (19%).",
       "images": [],
       "optionImages": [
         [],
@@ -494,7 +494,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "ElastiCache for Redis supports data structures such as sorted sets that allow sorting and ranking of cached data, and it supports encryption in transit and at rest, which meets the PHI requirement. Memcached (B) only stores simple key-value strings and has no sorting or ranking data structures. A read replica (C) is not a cache and does not provide ranking. DAX (D) caches DynamoDB, but the data is in RDS for MySQL. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -516,7 +516,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (77%), D (23%).",
+      "e": "Amazon S3 is highly available and durable, very inexpensive for small XML files, and can be accessed from every EC2 instance through the AWS SDK, so it replaces the network share most cost-effectively. A single EBS volume or instance store volume shared by one EC2 instance (A, B) remains a single point of failure and is not highly available. Mounting S3 as a local volume (D) requires third-party tooling, and S3 does not natively behave as a POSIX file system. Community vote: C (77%), D (23%).",
       "images": [],
       "optionImages": [
         [],
@@ -538,7 +538,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), B (12%), C (12%).",
+      "e": "AWS Amplify Hosting provides fully managed static site hosting with HTTPS, integrates with CodeCommit, GitHub and Bitbucket, and connects each Git branch to its own environment so merging into a branch triggers a deployment, with no servers to manage. Elastic Beanstalk (B) and EC2 (D) require running servers continuously. The S3 plus CodePipeline and CodeBuild approach (C) needs substantial pipeline setup per environment and does not provide HTTPS hosting by itself. Community vote: A (75%), B (12%), C (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -560,7 +560,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (95%).",
+      "e": "RDS read replicas offload read traffic from the primary and scale horizontally, and the application can use the replica endpoints for read queries with only a small code change. A Multi-AZ standby (A, B) is for failover and cannot serve read traffic in standard RDS MySQL Multi-AZ. Running your own replication to an EC2 instance (D) adds the heavy operational effort of managing replication and servers. Community vote: C (95%).",
       "images": [],
       "optionImages": [
         [],
@@ -582,7 +582,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (90%), C (10%).",
+      "e": "Storing each request's unique identifier in DynamoDB and having the Lambda function check it (ideally with a conditional write) makes the API idempotent, so retries after throttling are recognized as duplicates and return the original result without double processing; DynamoDB scales well with random traffic bursts. RDS (A) is less suited to unpredictable spikes and requires connection management from Lambda. Returning a client error for duplicates (C) makes a legitimate retry look like a failure. ElastiCache for Memcached (D) is not durable, so identifiers can be lost. Community vote: B (90%), C (10%).",
       "images": [],
       "optionImages": [
         [],
@@ -604,7 +604,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (70%), B (30%).",
+      "e": "An existing unencrypted AMI cannot be turned into an encrypted one in place, but when you copy an AMI you can specify encryption, and you can create new AMIs from instances with encrypted snapshots, so creating new encrypted AMIs, copying them and deleting the unencrypted ones meets the requirement. KMS (B) cannot enable encryption on an existing AMI directly. ACM (C) manages TLS certificates, not volume encryption. Enabling encryption by default (D) only applies to new volumes and snapshots, so copying the unencrypted AMI would leave it unencrypted. Community vote: A (70%), B (30%).",
       "images": [],
       "optionImages": [
         [],
@@ -626,7 +626,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The browser blocks the JavaScript files and fonts because they are requested cross-origin from the central bucket, which requires CORS headers. Adding a CORS configuration to the central S3 bucket that allows the web application origins resolves this. Access points (A) and bucket policies (B) control authorization, not browser cross-origin rules. Content-MD5 (D) is an integrity check and has nothing to do with CORS. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -650,7 +650,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (88%), BC (12%).",
+      "e": "The response shows ProvisionedThroughputExceededException for a shard, meaning writes exceeded the shard limit during spikes. Retrying the failed records with exponential backoff gives the shard time to recover, and reducing the frequency or size of requests lowers the per-shard rate. Switching to PutRecord (B) does not change the per-shard limits. SNS (D) is a different service and not a solution to Kinesis throttling. Reducing KCL consumers (E) affects read throughput, not the write limits exceeded here. Community vote: AC (88%), BC (12%).",
       "images": [
         {
           "path": "assets/q29-s1.jpg",
@@ -678,7 +678,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (88%), A (12%).",
+      "e": "Cognito user pools support Lambda triggers, and a post authentication trigger runs after a user is successfully authenticated, so it can call Amazon SES to send the login notification with no extra infrastructure. Calling an API from the client (A) can be skipped or tampered with. Cognito does not stream login events through a CloudWatch log subscription filter in a straightforward way (C), and streaming logs through Kinesis Data Firehose (D) is far more complex than using the built-in trigger. Community vote: B (88%), A (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -700,7 +700,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (86%), C (14%).",
+      "e": "To request SSE-S3 on an upload, the client sets the x-amz-server-side-encryption header to AES256 on the PutObject request, which tells S3 to encrypt the object with S3 managed keys. A KMS key (A) would be SSE-KMS rather than SSE-S3. Providing the encryption key in a header (C) is SSE-C, where the customer supplies the key. TLS (D) protects data in transit and does not encrypt the object at rest. Community vote: B (86%), C (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -722,7 +722,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (86%), C (14%).",
+      "e": "CloudFormation StackSets deploy a single template as stacks across multiple Regions (and accounts) in one operation, for example with the create-stack-set and create-stack-instances commands, so no application code is needed. Writing Lambda functions per Region (A) is custom code. A Systems Manager document (C) is for operational automation, not provisioning an infrastructure template across Regions. Using deploy in each Region separately (D) works but is manual and repeated, and is not the multi-Region mechanism designed for this. Community vote: B (86%), C (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -744,7 +744,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (71%), C (29%).",
+      "e": "A REST API with a CloudFront distribution is an edge-optimized endpoint, and for edge-optimized custom domains the certificate must be in AWS Certificate Manager in us-east-1, where an imported third-party certificate can be used. A DNS record (CNAME or alias) then points the custom domain to the API's CloudFront domain name. Importing into the API's own Region us-east-2 (A, C) will not work for a CloudFront-backed domain. CloudFront certificates cannot be imported directly into CloudFront for an API Gateway custom domain (B). Community vote: D (71%), C (29%).",
       "images": [],
       "optionImages": [
         [],
@@ -766,7 +766,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS SAM is an open source framework that extends CloudFormation with a shorthand syntax in YAML, such as AWS::Serverless::Function and AWS::Serverless::Api, to define Lambda, API Gateway and DynamoDB resources concisely. There is no feature called CloudFormation serverless intrinsic functions (A). Elastic Beanstalk (B) deploys web applications on managed servers. The CDK (D) defines infrastructure using programming languages and synthesizes templates rather than defining resources directly in YAML. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -788,7 +788,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "S3 event notifications can invoke a Lambda function directly on object creation events, and the function can then put an item into DynamoDB, which is event-driven and needs no polling. Option A is not a correct description since a simple EventBridge event alone cannot insert into DynamoDB without a target such as a function. Polling the bucket (C) or running a scheduled cron job (D) is wasteful and not triggered as soon as the file arrives. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -812,7 +812,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AB (100%).",
+      "e": "A DeletionPolicy of Retain on the database resource keeps the RDS instance when the resource is removed or replaced by a stack operation, and a stack policy that denies update actions on the database resource prevents CloudFormation from replacing or modifying it during updates. Multi-AZ (C) improves availability but does not prevent deletion by CloudFormation. StackSets (D) do not protect resources. DeletionPolicy is a resource attribute and cannot be set on the stack itself (E). Community vote: AB (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -835,7 +835,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (86%), D (14%).",
+      "e": "The aws:SecureTransport condition key is false for plain HTTP requests, so a bucket policy with a Deny statement for requests where aws:SecureTransport is false forces all access, including that from other accounts, to use HTTPS. An Allow on false (B) would permit insecure requests. A policy in the other accounts' roles (C) is controlled by those accounts, so it cannot be enforced by the bucket owner. A KMS key policy (D) governs key usage, not the transport used for S3 GetObject requests. Community vote: A (86%), D (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -857,7 +857,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (88%), A (12%).",
+      "e": "Listing the objects in a bucket requires the s3:ListBucket permission on the bucket, and granting it to the IAM role in the EC2 instance profile follows least privilege and uses temporary credentials. S3:* (A) gives far more permissions than needed. Granting it to the developer's user (C) does not affect the application running as the instance profile. A bucket policy naming the account number (D) would be broader than needed and is not the most secure way. Community vote: B (88%), A (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -879,7 +879,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Systems Manager Parameter Store SecureString parameters encrypt values with KMS, can be read by scripts on EC2 and referenced from CloudFormation templates through dynamic references, and standard parameters have no additional charge, so they are the cheapest option for fixed values. Secrets Manager (B) charges per secret and is not necessary since no rotation is needed (and SecretString is not a tag). S3 files (A) are a clumsy fit. NoEcho parameters (D) only mask values in CloudFormation output and do not provide storage. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -901,7 +901,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (45%), C (41%), B (14%).",
+      "e": "Attaching the Lambda function to VPC1 lets it reach the Aurora database in the private subnet, and using a security group that allows the database port (3306 for MySQL-compatible Aurora) provides secure connectivity within the VPC. Option B places the function in a different VPC with peering and a public subnet, which is unnecessary and less secure. Option C is wrong because the inbound rule must be on the database's security group, not on the function's SG1. Option D exports data to S3, which does not give access to live relational data. Community vote: A (45%), C (41%), B (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -925,7 +925,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BD (100%).",
+      "e": "IntegrationLatency measures the time between API Gateway sending the request to the backend and receiving the response, while Latency measures the total time from API Gateway receiving the request to returning the response, so comparing the two shows whether the delay is in the backend or in API Gateway. CacheHitCount and CacheMissCount (A, C) only describe cache behavior, and Count (E) is just the number of requests. Community vote: BD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -948,7 +948,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS CodeCommit is a managed Git repository service that stores source code and integrates as a source stage in CodePipeline. CodeDeploy (A) deploys applications, CodeArtifact (B) stores software packages and dependencies, and CodeGuru (D) provides code reviews and profiling, so none of these is a code repository. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -970,7 +970,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Each Lambda execution environment provides ephemeral storage in /tmp (512 MB by default, configurable up to 10 GB), which is fast, local and suitable for small temporary files that are modified during the invocation. EFS (B) is persistent shared storage that is unnecessary here. EBS (C) cannot be attached to Lambda functions. S3 (D) would add network latency and API calls for temporary data. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -992,7 +992,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A Lambda layer packages shared libraries once and can be attached to multiple functions, which removes the library from each deployment package and reduces their zipped size with little operational effort. Duplicating the library in each package (A) does not reduce size. Combining the functions (C) changes the architecture and loses separation of responsibilities. Referencing libraries via S3 URLs (D) requires custom download code and increases cold start time. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1014,7 +1014,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (92%), D (8%).",
+      "e": "The Lambda context object exposes the aws_request_id (awsRequestId), a unique identifier for each invocation, which can be included in log lines; the event object contains only the trigger payload. Writing to standard output sends logs to CloudWatch Logs automatically, whereas the Lambda file system is ephemeral so logs written to a file would be lost. Therefore the request ID from the context object with logging to standard output is correct, and the options using the event object or files are wrong. Community vote: A (92%), D (8%).",
       "images": [
         {
           "path": "assets/q45-s1.jpg",
@@ -1041,7 +1041,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "DynamoDB Streams captures item-level changes in a table, and a Lambda event source mapping can poll the stream and invoke the function with batches of change records. You cannot simply attach a Kinesis data stream or Firehose delivery stream to a table in this way (A, D), since Kinesis Data Streams for DynamoDB is a separate configuration and Firehose cannot invoke Lambda as a destination. Scheduled polling with EventBridge (B) is inefficient and can miss or duplicate changes. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1065,7 +1065,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (50%), BE (20%), AE (18%).",
+      "e": "Using EC2 Image Builder to bake the OS patches and agents into a validated AMI means instances launch with those already in place, which shortens startup, and Image Builder pipelines can test and validate images. Deploying the latest application version at runtime with CodeDeploy keeps the application current without creating a new AMI for each release, which minimizes the number of images. Option B bakes the application into the AMI, which would require a new image for every code change. CodePipeline (D) is an orchestrator and does not itself perform instance deployments, and removing patching commands from UserData (E) alone does not ensure security updates are applied. Community vote: AC (50%), BE (20%), AE (18%).",
       "images": [],
       "optionImages": [
         [],
@@ -1088,7 +1088,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS Secrets Manager natively stores RDS database credentials, encrypts them with KMS, and provides built-in automatic rotation for RDS using managed Lambda rotation functions, and the Lambda function retrieves the secret with the SDK, so the management overhead is lowest. Parameter Store (A) does not support automatic rotation. Options B and D require building and operating your own rotation function and schedule. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1110,7 +1110,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "The first statement allows s3:GetObject and s3:PutObject on all objects in DOC-EXAMPLE-BUCKET, and the second statement explicitly denies all S3 actions on objects whose keys start with secrets. An explicit Deny always overrides an Allow, so access is granted to all objects except those that begin with secrets. The policy is scoped to one bucket's objects (not all buckets, as in A or B), and it does not grant any extra actions on secrets (C). Community vote: D (100%).",
       "images": [
         {
           "path": "assets/q49-s1.jpg",
@@ -1137,7 +1137,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "API Gateway mock integration returns responses without calling any backend, and a request mapping template can set the statusCode so the mock integration returns the chosen response, which gives the simulated responses with almost no extra resources. Option A needs a Lambda function, B needs an EC2 instance, and C describes stage customization that does not exist for selecting response types. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1159,7 +1159,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The CloudWatch agent can be installed on on-premises servers and configured with IAM user credentials that have CloudWatch permissions, so it sends logs and metrics to CloudWatch where they can be monitored alongside the AWS applications. Installing the SDK (A) would require writing custom code to send logs. CloudWatch cannot read log files from S3 on its own (C), and forwarding via an EC2 instance (D) adds an unnecessary hop and management. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1181,7 +1181,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Kinesis Data Firehose can invoke a Lambda function to transform records in flight, so a function that strips the pattern-based identifiers can feed an S3 destination with no servers to manage. EC2 (B), OpenSearch (C) and Step Functions (D) are not supported or sensible Firehose transformation mechanisms for this purpose, and would add complexity. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1203,7 +1203,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (58%), B (32%), C (11%).",
+      "e": "Lambda destinations for asynchronous invocation (such as S3 events) can route failed events to another Lambda function, SQS queue, SNS topic or EventBridge, so setting the resize function as the on-failure destination needs only configuration and no extra code. Option B adds an SQS queue and polling, D adds an SNS topic, and C builds a whole Step Functions workflow, all of which is more development effort. Community vote: A (58%), B (32%), C (11%).",
       "images": [],
       "optionImages": [
         [],
@@ -1225,7 +1225,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (88%), A (12%).",
+      "e": "Moving session state out of web server memory into ElastiCache for Memcached allows any instance in the Auto Scaling group to access sessions and removes the memory pressure, and RDS for MySQL provides a managed database for the order data. Using a database on EC2 for sessions (A) does not improve performance. Storing application data in the cache (C) loses durable order records. Instance store (D) is local to a single instance and not shared, so sessions would be lost when scaling or on termination. Community vote: B (88%), A (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -1247,7 +1247,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Lambda automatically sends the function's output and log statements to Amazon CloudWatch Logs, in a log group named /aws/lambda/function-name, so that is where the developer examines errors. S3 (A) and DynamoDB (D) hold data rather than function logs, and CloudTrail (B) records API calls to AWS services, not application log output. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1271,7 +1271,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (100%).",
+      "e": "A rising iterator age with long run durations means the function cannot keep up with the stream. Adding shards increases parallelism because Lambda processes one batch per shard at a time (or more with a parallelization factor), and increasing memory gives the function more CPU so each batch runs faster. Decreasing the timeout (B) would cause more failures, decreasing shards (D) reduces parallelism, and increasing the timeout (E) only lets slow invocations run longer without speeding up processing. Community vote: AC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1294,7 +1294,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (70%), D (30%).",
+      "e": "Adding a CodePipeline stage right after the image build, with ECR image scanning on push and a Lambda action that checks the scan findings and fails the pipeline, analyzes the container image early and before deployment to EKS with little effort. Local docker scan with hooks (A) is not enforceable in the pipeline. Scanning source code (C) does not analyze the built image and its OS and package vulnerabilities. Option D places the check inside the deployment stage rather than as an earlier dedicated stage, which is less clean than a separate analysis stage. Community vote: B (70%), D (30%).",
       "images": [],
       "optionImages": [
         [],
@@ -1316,7 +1316,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "CloudFront cache behaviors are selected by path pattern, so adding a second behavior for the login page path with viewer access unrestricted (no signed cookies) lets unauthenticated users load it, while the default behavior remains restricted with signed cookies and protects all private content. Making the path pattern * restricted and moving the login page into the default behavior (B) is equivalent to the default and still breaks the structure. Origin failover (C) is for high availability, not access control. Opening S3 directly and using functions to redirect (D) breaks the OAI protection design. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1338,7 +1338,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (67%), B (33%).",
+      "e": "Amplify Hosting runs the build settings in amplify.yml, and adding a test phase to it, for example to run end-to-end tests with Cypress, executes the tests during each build and can stop deployment when they fail. There is no amplify add test command (A), amplify push (B) deploys backend resources and not tests, and aws-exports.js (D) holds backend configuration and has no test phase. Community vote: C (67%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -1360,7 +1360,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (67%), A (17%), Other (16%).",
+      "e": "API Gateway invoking Lambda asynchronously returns success to the caller as soon as the event is queued, and if Lambda later fails after its retries, the failure is not visible in the logs and the event is lost unless a dead-letter queue or on-failure destination is configured. Creating a DLQ lets the developer inspect failed events, troubleshoot and reprocess them. Inspecting frontend logs (A) or Lambda logs (C) will not reveal events that were never processed, and caching (D) does not apply to POST requests. Community vote: B (67%), A (17%), Other (16%).",
       "images": [],
       "optionImages": [
         [],
@@ -1382,7 +1382,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Storing the reports in S3 with server-side encryption, giving customers a presigned URL with an 8-hour expiration, and using an S3 Lifecycle rule to expire objects after 2 days meets every requirement with no custom cleanup code. DynamoDB items are limited to 400 KB (A) and reports can exceed 1 MB. Emailing reports via SNS (B) is not how reports are attached or delivered and does not meet the access window. RDS with an hourly cleanup Lambda (D) is more operational work. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1404,7 +1404,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (88%), D (12%).",
+      "e": "Rolling with an additional batch launches an extra batch of instances first, then deploys to the existing instances in batches, so full capacity of five instances is maintained throughout and the temporary extra instance costs little. All-at-once takes every instance out of service. Rolling with batch size 2 (D) reduces capacity to three, below the required four. Traffic splitting (B) launches a full duplicate fleet and is more expensive, and adding a permanent sixth instance (A) does not fix all-at-once, which still updates all instances at once. Community vote: C (88%), D (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -1426,7 +1426,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (69%), B (23%), D (8%).",
+      "e": "Manually instrumenting the application with the X-Ray SDK gives the developer control over what is recorded in segments and annotations, so PII can be left out before trace data is sent to the X-Ray daemon and out of the EC2 instance. Auto-instrumentation (B) and the Distro for OpenTelemetry (D) capture data automatically and can record more than intended. Macie (C) analyzes data stored in S3 and cannot hide PII in traces. Community vote: A (69%), B (23%), D (8%).",
       "images": [],
       "optionImages": [
         [],
@@ -1448,7 +1448,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (86%), C (14%).",
+      "e": "Configuring the Lambda functions to attach to the VPC and subnets with a security group lets them reach the Aurora cluster over private IP addresses without leaving the VPC or crossing the public internet. Making the DB publicly accessible (A) exposes it. RDS Proxy (B) manages connection pooling but still requires VPC configuration. A NAT gateway (C) is for outbound internet access, which is not needed to reach a database in the same VPC. Community vote: D (86%), C (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -1470,7 +1470,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A Lambda environment variable holds configuration outside the code, can be changed in the function configuration without modifying or redeploying the code, and is read with the language's standard method such as os.environ. A file in /tmp (B) is ephemeral and not persisted. A layer file (C) needs a new layer version for each change. A global variable (D) is still hardcoded in the source. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1492,7 +1492,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (80%), D (20%).",
+      "e": "Lambda functions can open many concurrent database connections during traffic peaks, which exhausts the MySQL max_connections limit. RDS Proxy pools and shares connections between the functions and the database, preventing too many connections errors and keeping the database available without downtime. Reducing vCPUs and raising max_connections (A) worsens the memory and CPU limits, and alarms that change the instance class (C) or max_connections (D) would cause downtime or are not supported automatically. Community vote: B (80%), D (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -1514,7 +1514,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (83%), D (17%).",
+      "e": "DynamoDB with a composite key of location ID as the partition key and timestamp as the sort key supports low-latency queries of a customer's current and historical readings, scales seamlessly without downtime, and is cost-effective with on-demand or auto scaling. RDS (A) would need scaling steps that can impact performance. ElastiCache for Redis (C) is in-memory and costly for historical data. S3 with Athena (D) does not provide low-latency on-demand access. Community vote: B (83%), D (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -1536,7 +1536,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (53%), A (40%).",
+      "e": "The Lambda console lets you create shareable test events, which are stored in the account and can be viewed and edited by IAM users who have the appropriate permissions, such as members of the developer group. Private test events (D) are visible only to their creator. Storing events in S3 (A) or DynamoDB (C) does not integrate with the Lambda console test event feature and adds custom overhead. Community vote: B (53%), A (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -1560,7 +1560,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BE (83%), BD (17%).",
+      "e": "An AWS CodeBuild project with the build and test commands in its buildspec runs the repository's unit tests, and a new pipeline stage after the source stage with a CodeBuild action using the source artifact as input runs that project on each change. CodeCommit (A) and CodeDeploy (C) are not build services, and the CodeBuild action should be in a new stage taking the source artifact, not added to the source stage with a build artifact as input (D). Community vote: BE (83%), BD (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -1583,7 +1583,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "CloudWatch Evidently overrides let you force specific user sessions to a given variation, so adding an override with the engineer's user ID mapped to Variation A means the engineer always sees Variation A while other users stay in the experiment. Overrides are keyed on the entity ID (the user), not on the variation name (B). Experiment-level settings with traffic percentages or account IDs (C, D) do not pin a specific user to a variation. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1605,7 +1605,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (86%), C (14%).",
+      "e": "A GSI can be added to an existing table at any time and can use different partition and sort keys, so a GSI on productFamily (partition) and productType (sort) lets the application run efficient Query calls on those attributes. An LSI must share the table's partition key and can only be created at table creation, so options B and C cannot use productFamily as the partition key. Scan reads the entire table and has no partition key concept, so option D would hurt rather than improve performance. Community vote: A (86%), C (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -1627,7 +1627,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (62%), C (38%).",
+      "e": "A Lambda function running in the default VPC is in a different network than VPC-A, so it has no route to the private RDS instance. Deploying the function into VPC-A (same VPC as the database, using its subnets) and allowing the function's security group in the RDS security group gives it private connectivity. Opening ports to the VPC CIDR (A) or attaching a security group (C) does not help while the function is outside VPC-A, and an IAM role (D) governs API permissions, not network access to the database. Community vote: B (62%), C (38%).",
       "images": [],
       "optionImages": [
         [],
@@ -1649,7 +1649,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A CloudWatch Logs metric filter with the pattern DECRYP_ERROR turns matching log events into a metric as they are ingested, and a CloudWatch alarm with a threshold of >=1 notifies an SNS topic in near real time with no custom code or servers. CloudTrail records API activity and has no alarms on application metrics (A), a polling Lambda every 5 minutes (B) is not real time and adds code to maintain, and the CloudWatch agent does not send SNS notifications itself (D). Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1671,7 +1671,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (52%), B (45%).",
+      "e": "Lambda scales out to many concurrent execution environments, each with its own memory, so a rolling average computed in-function is inaccurate when messages are processed in parallel. Setting reserved concurrency to 1 forces a single execution at a time, and storing the calculated average in ElastiCache keeps state that survives between invocations. Provisioned concurrency of 1 (C) only pre-warms one environment and does not cap concurrency, and layers (D) are read-only deployment packages that cannot hold changing values. Option B still lets concurrent invocations race on the cache. Community vote: A (52%), B (45%).",
       "images": [],
       "optionImages": [
         [],
@@ -1693,7 +1693,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (86%), D (14%).",
+      "e": "CodeCommit emits the pullRequestCreated event when a pull request is opened and pullRequestSourceBranchUpdated when new commits are pushed to the pull request's source branch, so matching both covers created or updated pull requests. pullRequestMergeStatusUpdated (A) fires when the pull request is merged or closed, pullRequestApprovalRuleCreated (B) fires when an approval rule is added, and option D's pullRequestSourceBranchCreated is not a pull request creation/update event for this purpose. Community vote: C (86%), D (14%).",
       "images": [],
       "optionImages": [
         [
@@ -1735,7 +1735,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The instance metadata service at http://169.254.169.254/latest/meta-data/ exposes instance attributes, including public-ipv4, which the application can read at runtime. User data (B) holds the launch script, the ami/ path (C) only returns AMI-related values such as ami-id, and the hosts file (D) does not contain the instance's public IPv4 address. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1757,7 +1757,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Envelope encryption fits this: call KMS GenerateDataKey for each video file to get a plaintext data key and an encrypted copy, encrypt the file locally with the plaintext key, then store the encrypted data key alongside the encrypted data. KMS Encrypt (A) is limited to 4 KB of data and cannot encrypt large video files, a single application-wide key (B) is not unique per file and is not managed by KMS, and S3 server-side encryption (D) happens in S3, not within the application before storage. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1779,7 +1779,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "An Application Load Balancer terminates HTTP/HTTPS connections and adds the X-Forwarded-For header containing the original client IP, which the application can read. Proxy protocol on an NLB (B) is a TCP-level mechanism that the target must parse and is not needed for an HTTP/HTTPS listener, registering targets by instance ID (C) does not expose client IPs, and an NLB does not insert HTTP headers such as X-Forwarded-For (D). Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1801,7 +1801,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A CloudWatch Logs metric filter only evaluates log events ingested after the filter is created and does not back-fill historical data, so a new filter returns no results for earlier exceptions. No VPC endpoint, OpenSearch Service streaming, or S3 export is required to apply a metric filter to a log group, which rules out A, C and D. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1823,7 +1823,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "CodeDeployDefault.ECSCanary10Percent15Minutes is the predefined ECS canary configuration that shifts 10 percent of traffic to the new task set first and the remaining 90 percent after 15 minutes. The two Lambda canary configurations apply to Lambda deployments, not ECS, and ECSLinear10PercentEvery1Minutes shifts 10 percent every minute rather than waiting 15 minutes before shifting the rest. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1845,7 +1845,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (71%), B (29%).",
+      "e": "Elastic Beanstalk's default CloudWatch metrics do not include memory utilization because memory is a guest OS metric the hypervisor cannot see. Installing and configuring the CloudWatch agent on the instances publishes memory usage as a custom metric. Pushing logs over port 443 (A) sends logs, not memory metrics, .ebextensions (B) is just a configuration mechanism that would still need the agent, and a dashboard (D) only displays metrics that already exist. Community vote: C (71%), B (29%).",
       "images": [],
       "optionImages": [
         [],
@@ -1867,7 +1867,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Data in Lambda /tmp is not encrypted by a setting you control, so the application must encrypt it itself. Giving the function a role and key policy to use a KMS key, calling GenerateDataKey, and encrypting data with the data key before writing to /tmp is standard envelope encryption. There is no EBS encryption option in Lambda configuration (A), a key generated at startup with OpenSSL (C) is not centrally managed or auditable, and an on-premises HSM (D) adds latency and complexity without being necessary. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1889,7 +1889,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (80%), A (20%).",
+      "e": "For S3 to invoke a Lambda function, the function's resource-based policy must grant lambda:InvokeFunction to the S3 service principal for that bucket. Because the function worked when tested through the CLI but not from the S3 event, the missing permission is the likely cause. S3 events fire regardless of object size (A), S3 can directly trigger Lambda (C), and the bucket does not need to be public (D). Community vote: B (80%), A (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -1911,7 +1911,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AWS Elastic Beanstalk lets you upload code for supported platforms such as Ruby and automatically handles provisioning, load balancing, auto scaling and health monitoring, so no knowledge of the underlying infrastructure is needed. CodeDeploy (A) only automates deployments to existing compute, CloudFormation (B) requires you to define the infrastructure in templates, and OpsWorks (C) is a Chef/Puppet configuration management service that requires more infrastructure knowledge. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1935,7 +1935,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BD (89%), BE (11%).",
+      "e": "Fixing and testing the function, publishing a new immutable version and pointing a hotfix alias at it (D) prevents others from changing the tested code, since $LATEST is mutable and can be overwritten. Updating the API integration to use the hotfix alias and deploying to a new stage named hotfix (B) creates a separate test environment without touching production. Pointing the alias at $LATEST (C) lets other developers overwrite the code, and adding resources to the current stage (A) or building a whole new API (E) changes production or requires more effort. Community vote: BD (89%), BE (11%).",
       "images": [],
       "optionImages": [
         [],
@@ -1958,7 +1958,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "cdk synth generates a CloudFormation template (in cdk.out) from the CDK app, and sam local invoke can then run a specific function locally in a container by passing the function's construct identifier and the path to that synthesized template. Deploying with sam or cdk deploy and testing in the console (A and B) is not local testing, and sam local start-lambda (D) starts a local Lambda endpoint for SDK/CLI calls rather than directly invoking a single function. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -1980,7 +1980,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "API Gateway has a built-in canary release deployment option: you enable canarySettings on a stage and set the percentage of traffic that goes to the new deployment, then promote it when satisfied. This is simpler than creating a second API and using Route 53 weighted routing (A), and neither deploying in a low-traffic window (B) nor a CloudWatch rollback alarm (C) limits the rollout to a subset of users. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2002,7 +2002,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "DynamoDB Time To Live automatically deletes expired items at no extra write cost when you store an expiration epoch timestamp in an attribute and enable TTL on that attribute. A cron job on EC2 (A) and daily table rotation (C) require extra infrastructure or management, and merely adding an attribute named ItemExpiration (D) does nothing unless TTL is enabled for it. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2024,7 +2024,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "An EventBridge rule can target an event bus in another account, so granting cross-account permission and adding the receiver accounts' event buses as targets of the existing rule fans the same webhook events out to every account without touching the SCM configuration. Deploying the API to every account (A and B) would require changing the SCM to call multiple endpoints or share one domain, and switching to an HTTP API (D) does not deliver events to additional accounts. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2046,7 +2046,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (64%), D (25%), A (11%).",
+      "e": "S3 presigned URLs give temporary, scoped access to specific objects in a private bucket without making it public, so an application can let signed-in employees share individual files with others for a limited time. A Cognito user pool (A) handles sign-in but does not itself grant access to S3 objects, a bucket policy (C) is not suited to per-user, per-file sharing, and an identity pool (D) issues AWS credentials but still needs a sharing mechanism. Community vote: B (64%), D (25%), A (11%).",
       "images": [],
       "optionImages": [
         [],
@@ -2068,7 +2068,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A Lambda function exposed through API Gateway is serverless, billed per request, and cost-effective for a proof of concept with minimal traffic, while API Gateway provides the REST endpoint and response caching. Deploying on EKS, ECS, or Elastic Beanstalk with a load balancer (A, C, D) incurs ongoing charges for clusters, instances, or load balancers even when idle. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2090,7 +2090,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "ElastiCache (Redis or Memcached) is an in-memory store commonly used for shared session state, giving low latency, horizontal scalability and, with Redis replication and Multi-AZ, fault tolerance so any application server can read the session. CloudFront (B) is a CDN and not a session store, S3 (C) has too high latency for session reads and writes, and sticky sessions (D) tie users to one instance, so an instance failure loses their session. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2112,7 +2112,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "BatchGetItem retrieves up to 100 specific items by primary key (across one or more tables) in a single API call, which minimizes round trips and load compared with repeated calls. GetItem (B) fetches only one item per call, Scan (C) reads the whole table, and Query (D) requires a single partition key value and cannot fetch arbitrary unrelated keys in one call. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2134,7 +2134,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "EC2 instances get AWS credentials from the IAM role attached through an instance profile, so granting s3:PutObject on the bucket in the role's identity-based policy is what allows the application to write objects. A session policy (B) only restricts permissions for a role session and is not what grants them, a KMS key policy (C) is attached to the key, not the role, and a VPC endpoint policy (D) is not the place to grant the instances write permission. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2156,7 +2156,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "VPC Flow Logs record accepted and rejected IP traffic at the ENI, subnet or VPC level, so enabling them on subnet B (or its instance's network interface) shows whether on-premises traffic arrives and whether security groups or network ACLs reject it. VPN logs and BGP logs (A and B) only show tunnel and route advertisement status, which is already working since subnet A is reachable, and CloudTrail (D) records API calls, not network traffic. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2178,7 +2178,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "S3 event notifications can send to an SNS topic, which then fans out to multiple subscribers: the Lambda function for thumbnail creation and an email subscription for notifications. SNS supports email subscriptions directly, while SQS queues cannot have email subscriptions (B, C, D), and S3 can only send a given event to one matching destination type per prefix/suffix configuration, so fan-out through SNS is the correct design. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2200,7 +2200,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (48%), B (34%), D (17%).",
+      "e": "Putting an SQS queue between the transform function and the loader function buffers traffic spikes, and the Lambda event source mapping with a limited batch size and maximum concurrency controls how fast writes reach DynamoDB, smoothing the load and avoiding throttling. DynamoDB auto scaling (B) reacts too slowly to sudden spikes, provisioned concurrency (C) only reduces cold starts and does not control write rate, and a DynamoDB stream (D) triggers after the write and does not prevent write throttling. Community vote: A (48%), B (34%), D (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -2222,7 +2222,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Lambda functions can mount an Amazon EFS file system, which provides a shared POSIX file system where multiple functions can read, write and append to the same file, and it is also accessible by other AWS services and on-premises resources through a VPC connection. EBS volumes cannot be attached to Lambda (B), /tmp (C) is local and private to each execution environment, and /opt (D) is a read-only layer directory. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2244,7 +2244,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (83%), Other (17%).",
+      "e": "Publishing a new Lambda version and creating a separate API Gateway stage whose integration points to that version lets developers test the new code without changing the alias used by the production stage, so customers are unaffected, and it needs very little work. A weighted alias (B) would send 10 percent of real customer traffic to the new code, a request-filtering Lambda (C) adds code and risk to the production path, and a whole new API (D) takes more effort than just adding a stage. Community vote: A (83%), Other (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -2266,7 +2266,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (50%), C (43%).",
+      "e": "In a single account, an S3 bucket can be configured to invoke any Lambda function whose resource-based policy trusts S3 broadly, which let the development buckets invoke production functions. Separating development and production into different accounts and adding a resource policy that only allows S3 buckets in the same account to invoke the function enforces isolation following security best practices. Execution role changes (A and D) only control what the function can read, not who can invoke it, and option C alone leaves both environments sharing an account without stronger account-level isolation. Community vote: B (50%), C (43%).",
       "images": [],
       "optionImages": [
         [],
@@ -2288,7 +2288,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (58%), B (42%).",
+      "e": "Amazon Cognito user pools provide a user directory with sign-up and sign-in and support federation with social identity providers such as Google, Facebook and Amazon, so new users can register with their social accounts. Identity pools (B) provide AWS credentials for identities but are not the user directory, an IAM role (A) is not a sign-up mechanism, and AWS Directory Service (D) is for Microsoft AD-style enterprise directories. Community vote: C (58%), B (42%).",
       "images": [],
       "optionImages": [
         [],
@@ -2310,7 +2310,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (90%), B (10%).",
+      "e": "A Lambda@Edge function runs with an IAM execution role, so granting that role permission to call AWS STS lets the function obtain credentials at runtime without any hardcoded secrets, and the frontend SDK calls move into the function. CloudFront Functions (B and D) are lightweight JavaScript functions that cannot make network calls or use an execution role to call STS, and moving the plaintext credentials into the function (C and D) is still hardcoding credentials. Community vote: A (90%), B (10%).",
       "images": [],
       "optionImages": [
         [],
@@ -2332,7 +2332,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (89%), C (11%).",
+      "e": "Too many connections occurs because each concurrent Lambda environment opens its own database connection, exhausting the database limit even though CPU and memory are fine. RDS Proxy pools and shares connections so many Lambda invocations multiplex over fewer database connections, and initializing the connection outside the handler allows reuse across warm invocations. Raising max_user_connections and restarting (A) only increases the ceiling and causes downtime, and routing orders through an SQS FIFO queue (C and D) delays processing and conflicts with the requirement to return confirmation immediately. Community vote: B (89%), C (11%).",
       "images": [],
       "optionImages": [
         [],
@@ -2354,7 +2354,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Amazon Macie discovers sensitive data in S3 by running sensitive data discovery jobs, and credit card numbers are reported under the SensitiveData:S3Object/Financial finding type, so filtering on that type identifies the exposures. Athena (A and D) is a query service and does not classify sensitive data, and the Personal finding type (C) covers personally identifiable information such as names and addresses, not financial information like credit cards. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2378,7 +2378,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BD (100%).",
+      "e": "A Cognito identity pool can issue temporary AWS credentials to unauthenticated guests as well as authenticated users, and the unique identity ID lets the company track a guest who later signs up and is linked to an authenticated identity (B). Creating separate IAM roles for authenticated users (all content) and unauthenticated users (sample content only) enforces the access difference (D). A user pool (A) does not support unauthenticated access to AWS credentials, CloudFront (C) is not an identity service, and option E gives no separate guest role. Community vote: BD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2401,7 +2401,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (78%), D (22%).",
+      "e": "To reach an RDS instance in a private subnet, the Lambda functions must be configured to run inside the VPC, which requires the execution role to have the AWSLambdaVPCAccessExecutionRole managed policy for creating and managing network interfaces. The RDS security group must then allow inbound traffic from the Lambda security group. AWSLambdaBasicExecutionRole (A) lacks the ENI permissions, and an interface VPC endpoint for Lambda (C and D) only helps invoke functions privately and does not connect functions to the database. Community vote: B (78%), D (22%).",
       "images": [],
       "optionImages": [
         [],
@@ -2423,7 +2423,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "AMIs are regional, so the us-east-1 AMI ID does not exist in us-west-1. Copying the custom AMI to us-west-1 and referencing its new AMI ID in the us-west-1 template preserves the existing image with minimal effort. Switching to a public AWS AMI (A) would lose the custom software, rebuilding the AMI (C) takes more work than copying, and manual deployment (D) abandons the CloudFormation automation. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2445,7 +2445,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A Lambda layer packages shared libraries in one versioned artifact that multiple functions can reference, and publishing a new layer version updates the library with little effort. CodeArtifact (A) stores packages but still requires bundling them into each function, container images (B) require rebuilding and managing images, and an EFS file system (D) adds a VPC, mounting and infrastructure overhead. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2467,7 +2467,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (80%), B (20%).",
+      "e": "All at once deploys the new version to every instance simultaneously, so it is the fastest Elastic Beanstalk deployment method, at the cost of brief downtime, which is acceptable in a test environment. Rolling and rolling with additional batch update in batches, and immutable launches a whole new set of instances, so all of them take longer. Community vote: D (80%), B (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -2489,7 +2489,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A bucket policy with a Deny statement for all S3 actions when the aws:SecureTransport condition is false rejects any request made over plain HTTP, enforcing encryption in transit with TLS. The s3:x-amz-acl conditions (B and D) relate to object ACLs, not transport encryption, and requiring the SDK (C) does not guarantee HTTPS. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2511,7 +2511,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (53%), B (32%), D (16%).",
+      "e": "An ALB listener rule can route requests to a different target group based on conditions such as an HTTP header or cookie, so creating a beta Auto Scaling group and target group and adding a rule that matches a cookie named version=beta, with the test system sending that cookie, requires the least work. Creating another ALB with Route 53 records (B), or adding CloudFront and Lambda@Edge (C and D), adds extra resources that are not necessary. Community vote: A (53%), B (32%), D (16%).",
       "images": [],
       "optionImages": [
         [],
@@ -2535,7 +2535,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AB (88%), AE (12%).",
+      "e": "Access from EC2 to S3 depends on both the identity-based policy of the IAM role attached to the instances (A) and the S3 bucket policy, which can deny or fail to allow the role (B). EC2 instances use IAM roles, not IAM users (C), S3 Lifecycle policies only manage object transitions and expiration and do not control permissions (D), and security groups do not need an S3-specific rule for outbound access since default egress allows it (E). Community vote: AB (88%), AE (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -2558,7 +2558,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Installing the unified CloudWatch agent on the instances and configuring it to ship application logs to CloudWatch Logs centralizes logs from all servers with no application code changes. Rewriting for Lambda (A) is a large change, an OpenSearch/Logstash stack (B) is heavy to set up and operate, and a single large instance (C) removes high availability. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2582,7 +2582,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (75%), AE (12%) AB (12%).",
+      "e": "S3 sends Object Created events to EventBridge, so an EventBridge rule with an event pattern matching S3 object created events (A), combined with adding the Lambda function as the rule's target through the trigger (C), invokes the function whenever a .csv file is uploaded. Scheduled scanning functions (B and D) are polling approaches that are not event-driven, and S3 Lifecycle rules (E) manage storage transitions and expirations and cannot invoke Lambda. Community vote: AC (75%), AE (12%) AB (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -2605,7 +2605,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS::Region is a CloudFormation pseudo parameter that resolves automatically to the Region where the stack is being created, so no input or lookup is needed. Requiring a parameter (B) needs manual input, parsing AWS::StackId with Fn::Split (C) is convoluted, and fetching from Parameter Store (D) adds an unnecessary dependency. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2627,7 +2627,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (67%), C (33%).",
+      "e": "A function URL with the AWS_IAM auth type requires SigV4-signed requests from principals with permission, and an identity-based IAM policy allowing lambda:InvokeFunctionUrl on the functions' ARNs attached once to the QA IAM group grants the QA team access with minimal effort. The NONE auth type (B and D) makes the URL public with no IAM check, and an identity-based policy cannot specify a group as its principal, which also makes option C wrong. Community vote: A (67%), C (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -2649,7 +2649,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Enabling DynamoDB Streams captures item-level changes (inserts and updates) in near real time, and a Lambda function with the stream as an event source can process each change without modifying the existing application code. A cron job (A) is hourly and not near real time, changing the app to call EventBridge (C) or process synchronously (D) requires code changes. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2671,7 +2671,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS Secrets Manager stores database credentials and supports automatic rotation on a schedule (including for RDS for SQL Server through a rotation Lambda function), so a secret with daily rotation satisfies the weekly requirement. Parameter Store has no built-in credential rotation and rotating the KMS key does not change the password (A), IAM database authentication is not supported for RDS for SQL Server (B), and putting credentials in user data or environment variables (D) is insecure and does not rotate. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2695,7 +2695,7 @@ window.CERTS["dva-c02-pdf"] = {
         2,
         4
       ],
-      "e": "Answer corrected from the PDF's stated DE to CE after manual review; not independently verified. Community vote: CE (57%), DE (33%).",
+      "e": "Implementing $connect and $disconnect routes in the backend lets the developer see each connection event and track how often a client connects and disconnects (E). The API Gateway Management API callback URL (using the connection ID with DELETE) lets the backend forcibly disconnect a misbehaving client (C). Switching to HTTP or REST APIs (A and B) does not apply to WebSocket APIs, and ElastiCache (D) is optional storage, not what is needed to detect events or remove the client. (The source PDF lists DE; corrected to CE after review.) Community vote: CE (57%), DE (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -2718,7 +2718,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS CodeCommit is a managed Git repository service that stores code long term with full version history, branching and tracking of changes in commits, and supports collaboration and feedback through pull requests. CodeBuild (A) builds and tests code, S3 (B) is object storage without Git-style change tracking, and Cloud9 (D) is a cloud IDE. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2740,7 +2740,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Secrets Manager supports built-in scheduled rotation, and the Lambda function retrieves the current secret at runtime, so every function version and alias, including previously deployed ones, always gets the most recent credentials. Hardcoding credentials in code (B) or environment variables (C) ties them to a specific version and requires redeployment, and Parameter Store (D) does not offer automatic rotation. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2764,7 +2764,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AD (100%).",
+      "e": "With Signature Version 4, the computed signature can be added to the request either in the HTTP Authorization header (A) or as the X-Amz-Signature query string parameter for presigned-style requests (D). Authentication (C), WWW-Authenticate (E), and session cookies (B) are not valid places for a SigV4 signature. Community vote: AD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2787,7 +2787,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (83%), B (17%).",
+      "e": "The AWS::SecretsManager::Secret resource can generate a random password through its GenerateSecretString property, and the DB instance resource can read it using a secretsmanager dynamic reference, so the whole flow is declarative in CloudFormation with no code. The Lambda-backed custom resources (A and C) require writing and maintaining code, and generating the password in CodeBuild and passing it as a parameter (B) adds a pipeline step and moves the secret through parameters. Community vote: D (83%), B (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -2809,7 +2809,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Amazon DynamoDB is a key-value and document database that delivers single-digit millisecond latency, making it a good index for S3 object metadata (with attributes such as the object key) that a web application queries before download. EC2 (B) and Lambda (C) are compute services, and RDS (D) can store metadata but does not provide the same single-digit millisecond latency at scale as DynamoDB. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2831,7 +2831,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (88%), C (12%).",
+      "e": "Lambda@Edge functions must be created in the us-east-1 Region and are then replicated to edge locations, so a SAM stack in eu-west-1 that defines a Lambda@Edge function fails. CloudFront is a global service that can be managed from any Region (A), a template can contain multiple functions (C), and CloudFront and S3 origins in the same Region are fine (D). Community vote: B (88%), C (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -2853,7 +2853,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (86%), C (14%).",
+      "e": "A write-through cache updates the cache every time the database is written, so cached data is always current, which is what real-time dashboards need. Lazy loading (C) and read-through (A) populate the cache on a miss and can serve stale data until the TTL expires, and write-behind (B) delays writes to the database and risks inconsistency. Community vote: D (86%), C (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -2875,7 +2875,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A Lambda layer holds shared libraries separately from the function code so the deployment package stays small, and a 100 MB library fits within the layer limit (250 MB unzipped total with the function). Lambda cannot directly mount S3 (B), loading files into /tmp at deployment is not possible because /tmp is empty at each new environment and would require download logic (C), and EFS (D) needs a VPC, mounts and more setup. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2897,7 +2897,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer corrected from the PDF's stated C to A after manual review; not independently verified. Community vote: A (38%), C (38%), D (24%).",
+      "e": "Cloning the production environment to a newer platform version creates a separate environment on the new Node.js platform that can be deployed to and tested without affecting users, and swapping the environment CNAMEs once verified switches traffic with zero downtime. Deploying in place (B, C, D) cannot change the platform version safely for production and all-at-once causes downtime, while the other in-place methods do not provide a separate test environment on the new platform. (The source PDF lists C; corrected to A after review.) Community vote: A (38%), C (38%), D (24%).",
       "images": [],
       "optionImages": [
         [],
@@ -2919,7 +2919,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (60%), C (30%), B (10%).",
+      "e": "A unit test for a Lambda function should invoke it with a representative SQS-shaped test event, so running the function using aws lambda invoke with a test event in the CI/CD process validates the handler logic without relying on a live queue's behavior. Creating CloudFormation stacks (A) or actual SQS queues (B and C) makes tests slow, costly and closer to integration tests than unit tests. Community vote: D (60%), C (30%), B (10%).",
       "images": [],
       "optionImages": [
         [],
@@ -2941,7 +2941,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), C (12%), B (12%).",
+      "e": "BatchGetItem can retrieve items from multiple tables in a single call by specifying the keys for each table (songName/artistName for songs, artistName for artists), minimizing network traffic. Two separate BatchGetItem calls (C) require more round trips, Query operations per artist (B) are many calls, and Scan (D) reads entire tables and is inefficient. Community vote: A (75%), C (12%), B (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -2963,7 +2963,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Using multiple API Gateway stages (such as test and prod) with stage variables that point to different Lambda function aliases or functions gives each environment its own dedicated, separately monitored endpoint with the same API definition. Single-stage designs with query parameters (A and D) mix environments and cannot be monitored separately, and putting environment-specific code blocks in one function (B) mixes test and production code paths. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -2985,7 +2985,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A Lambda function attached to a VPC subnet does not receive a public IP, so even with an internet gateway in the VPC, a private subnet needs its route table to send 0.0.0.0/0 traffic to a NAT gateway located in a public subnet to reach the internet. The default network ACL and security group already allow all outbound traffic (A and B), and a second internet gateway (D) cannot be attached and would not help a function without a public IP. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3007,7 +3007,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (67%), A (22%), B (11%).",
+      "e": "Parameter Store advanced parameters support parameter policies, including Expiration to delete a parameter at a specified time and ExpirationNotification to send an EventBridge notification before it expires, so no custom code is needed. Standard parameters (A) do not support parameter policies, and building a Lambda function (B) or EC2 cron job (D) adds operational overhead. Community vote: C (67%), A (22%), B (11%).",
       "images": [],
       "optionImages": [
         [],
@@ -3029,7 +3029,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (80%), A (20%).",
+      "e": "A predefined canary configuration such as LambdaCanary10Percent5Minutes sends 10 percent of traffic to the new version first, limiting exposure of errors, and then shifts the rest after 5 minutes, which is faster than linear 10 percent every minute (10 minutes total) while avoiding downtime. In-place and all-at-once deployments (A and C) expose all users immediately, and in-place deployments are not a Lambda option anyway. Community vote: D (80%), A (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -3051,7 +3051,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "AWS Secrets Manager stores credentials encrypted and supports automatic rotation on a configurable schedule (such as every 30 days) for RDS databases through a managed rotation Lambda function, while the Lambda functions retrieve the current secret at runtime. Environment variables (A) require redeployment, Parameter Store has no native rotation schedule (C), and S3 with SSE-C (D) is not a credentials-rotation solution and rotating the key does not change the database password. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3073,7 +3073,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "CodeBuild can map an environment variable to an AWS Secrets Manager secret (secrets-manager type in the buildspec), so the build retrieves the current credentials at runtime while Secrets Manager rotates them automatically. Hardcoded or plaintext values (A and D) are insecure, and Parameter Store SecureString parameters (B) have no automatic rotation feature. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3095,7 +3095,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "API Gateway mock integrations return a response directly from API Gateway without any backend, and the mapping template in the integration request can return a status code based on the request, with integration responses configured for each status code, so the frontend developer can test success and error paths with no Lambda code. Creating separate resources (B) or Lambda functions (C and D) is more work, and a mock integration cannot select a Lambda function (D). Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3116,9 +3116,10 @@ window.CERTS["dva-c02-pdf"] = {
         "Instrument the ECS task to send the stdout and stderr output to Amazon CloudWatch Logs. Update the task role policy to allow the cloudwatch:PullLogs action."
       ],
       "ma": [
-        0
+        0,
+        3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (40%), D (30%), C (20%).",
+      "e": "To trace errors across microservices on Fargate, run the X-Ray daemon as a sidecar container in each task and grant the task role permission to send segments to the X-Ray API (A); the application also needs to be instrumented with the X-Ray SDK so it sends trace data to the daemon (D). Daemonsets (B) are a Kubernetes concept and not applicable to ECS, there is no PutXrayTrace API (the API is PutTraceSegments) (C), and cloudwatch:PullLogs is not a real action (E). (The source PDF lists A; corrected to AD after review.) Community vote: A (40%), D (30%), C (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -3141,7 +3142,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Least privilege means allowing only s3:GetObject on only the single object arn:aws:s3:::DOC-EXAMPLE-BUCKET/doc.txt, which is the statement in option A. Option C's bucket-wide /* resource allows reading every object, and options B and D allow s3:* actions, with B on all resources. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [
@@ -3183,7 +3184,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer corrected from the PDF's stated D to C after manual review; not independently verified. Community vote: C (56%), D (44%).",
+      "e": "The CodeCommit console lets the developer open the pull request or compare the branches (Commit Visualizer), see where the commits diverged, and resolve the merge conflicts directly, which is much less effort than re-cloning or creating new branches. Cloning and creating new branches (A and B) duplicates work, and stopping the pull and rebasing (D) is more complex and rewrites history. (The source PDF lists D; corrected to C after review.) Community vote: C (56%), D (44%).",
       "images": [],
       "optionImages": [
         [],
@@ -3205,7 +3206,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "API Gateway lets you change the API definition and deploy it to a new stage, so the validation changes can be tested through that stage's invoke URL while the production stage keeps serving the old deployment. After testing, you deploy the same updated API to the production stage. Exporting, cloning or rebuilding the API (A, C, D) creates a second API and forces you to repeat the changes on the original, which adds operational work. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3227,7 +3228,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Enabling DynamoDB Streams on the table captures every insert and update regardless of which Lambda function wrote it, so partners' additional functions are covered with no code changes. A new Lambda function with the stream as an event source mapping then writes the records to S3. Options A, B and D require modifying every order-receiving function and adding new endpoints, streams or topics that each future function must also publish to. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3251,7 +3252,7 @@ window.CERTS["dva-c02-pdf"] = {
         3,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: DE (100%).",
+      "e": "Storing the static content in Amazon S3 removes it from the EC2 instances, and a CloudFront distribution in front of it caches that content at edge locations close to users worldwide, which fixes the global latency even in non-peak hours. Adding more servers, resizing instances or moving the code to Lambda does not reduce the network distance between users and the static content. Community vote: DE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3274,7 +3275,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (75%), C (25%).",
+      "e": "A pre-signed URL grants time-limited access to a specific private object using the permissions of the signer, so the application can generate one only after verifying that the requester is a paid subscriber. An anonymous-access bucket policy exposes the content to everyone, an MFA bucket policy applies to IAM principals and not website visitors, and server-side encryption protects data at rest but does not control who can download it. Community vote: B (75%), C (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -3296,7 +3297,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A global secondary index can be added to an existing table, so a GSI with customer_type as the partition key and email_address as the sort key lets you Query for a customer_type and use begins_with on email_address for partial matches. A GSI with email_address as partition key cannot do prefix matching because partition keys need equality. LSIs must be defined at table creation and must share the table's partition key, so C and D would require recreating the table. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3318,7 +3319,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AWS SAM Accelerate is exposed through sam sync, and the --watch option monitors the project and automatically syncs code changes, updating only the changed Lambda function code directly through service APIs instead of a full CloudFormation deployment. sam deploy variants and sam package still go through the full build, package and changeset flow. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3340,7 +3341,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (64%), D (21%), Other (15%).",
+      "e": "Calling ssm:PutParameter from the existing custom resource Lambda function and setting the parameter type to SecureString stores the credentials encrypted with KMS and needs no new infrastructure. NoEcho is a CloudFormation template parameter and resource-output attribute, not a Parameter Store feature, so C and D are invalid. Option A generates a random secret instead of storing the retrieved API credentials. Community vote: B (64%), D (21%), Other (15%).",
       "images": [],
       "optionImages": [
         [],
@@ -3362,7 +3363,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "The command syntax for get-item is valid and DynamoDB is fully accessible through the AWS CLI, so the errors point to an authorization failure. The IAM user whose credentials the CLI uses needs a policy that allows dynamodb:GetItem on the demoman-table. put-item is a write operation, and enabling access is done through IAM, not by opening an AWS Support ticket. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3386,7 +3387,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BD (100%).",
+      "e": "Encrypting the viewer-to-CloudFront leg requires the Viewer Protocol Policy to be HTTPS Only or Redirect HTTP to HTTPS, and encrypting the CloudFront-to-origin leg requires the Origin Protocol Policy to be HTTPS Only. KMS does not encrypt traffic in transit, changing the origin HTTP port to 443 does not make CloudFront use TLS, and Restrict Viewer Access controls who can view content through signed URLs or cookies, not encryption. Community vote: BD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3409,7 +3410,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (70%), A (30%).",
+      "e": "Symmetric customer managed KMS keys whose key material is generated by AWS support automatic annual rotation that you can enable. S3 managed keys are not KMS keys, asymmetric KMS keys do not support automatic rotation, and keys with imported key material do not support automatic rotation, so you would have to rotate them manually. Community vote: B (70%), A (30%).",
       "images": [],
       "optionImages": [
         [],
@@ -3431,7 +3432,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (80%), B (20%).",
+      "e": "Adding a CodeBuild stage whose buildspec runs the unit tests and fails on any test failure, with the CodeBuild test reports feature publishing the results, is fully managed and needs little effort. Placing the stage before the deploy-to-test stage ensures that code that fails the tests is never deployed. A local pre-commit hook relies on every developer, a stage after deployment tests too late, and Jenkins requires running and maintaining a Jenkins server. Community vote: C (80%), B (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -3453,7 +3454,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (80%), B (10%) C (10%).",
+      "e": "A single bucket policy with a Deny statement that uses a StringNotEquals condition on aws:SourceVpce, listing every approved VPC endpoint ID, blocks all access that does not come through one of those endpoints. A bucket has one policy, so multiple policies cannot be created. aws:SourceVpc with a VPC ID would allow any endpoint in the VPC, and StringNotEquals does not support wildcards like vpce*. Community vote: D (80%), B (10%) C (10%).",
       "images": [],
       "optionImages": [
         [],
@@ -3477,7 +3478,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AE (37%), CE (26%), BE (21%), Other (16%).",
+      "e": "Storing the Root CA Cert as a secret in Secrets Manager, shareable across accounts through a resource-based policy, gives one central place to update the certificate without rebuilding any function. Loading the certificate and modifying the trust store outside the handler means it runs once per execution environment initialization instead of on every invocation, which is more efficient and cheaper. Doing it inside the handler repeats the retrieval on every call, and the Parameter Store and S3 options do not fit as well, since standard parameters cannot hold a 10 KB value and parameters do not take resource-based policies. Community vote: AE (37%), CE (26%), BE (21%), Other (16%).",
       "images": [],
       "optionImages": [
         [],
@@ -3500,7 +3501,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (60%), A (40%).",
+      "e": "The AWS Config managed rule secretsmanager-secret-unused flags secrets that have not been accessed within a set number of days, and an EventBridge rule can notify the developer, all without touching the applications. Deactivating secrets risks downtime, X-Ray sampling rules do not filter on Secrets Manager API calls in this way, and CloudWatch alarms on CloudTrail GetSecretValue requests do not identify which secrets are unused. Community vote: B (60%), A (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -3522,7 +3523,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "An Amazon EventBridge scheduled rule with a rate(10 minutes) expression invokes the Lambda function on a schedule with no servers to manage. An EC2 cron job is not serverless, a Lambda environment variable is just a value and triggers nothing, and SNS subscriptions have no timer feature. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3544,7 +3545,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Creating the secret in Secrets Manager and referencing it with a CloudFormation dynamic reference means the password is never exposed in the template, parameters or console. The Lambda function then gets secretsmanager:GetSecretValue through its role and resolves the secret at runtime using only the secret name from its environment variable. The other options place the plaintext credentials in CloudFormation parameters or Lambda environment variables. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3566,7 +3567,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Session data must be stored outside the individual instances so that any instance behind the load balancer can serve a user's next request, and ElastiCache provides a fast shared in-memory store for that. EBS volumes attach to a single instance, and instance store and the root filesystem are local and lost when the instance stops or is replaced by Auto Scaling. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3588,7 +3589,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "An Application Load Balancer terminates the client connection, so the target sees the load balancer's IP, and the ALB adds the original client IP address to the X-Forwarded-For header. X-Forwarded-Proto carries the protocol, X-Forwarded-Port the port, and X-Forwarded-Host the host the client requested, none of which identify the client. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3610,7 +3611,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (53%), B (40%).",
+      "e": "A Step Functions state machine can orchestrate the long-running monthly process, handle the API throttling errors, and use Wait states to pause for the time indicated in the rate-limit response headers before continuing, with state kept across days. SQS polling by Lambda cannot be tuned to a per-minute and per-day quota that easily, a CloudWatch alarm that stops Lambda loses work, and Firehose batching to S3 does not control the API call rate. Community vote: A (53%), B (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -3632,7 +3633,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS X-Ray traces requests as they flow through Lambda functions and the downstream services they call, producing a service map with segments and subsegments that show latency and errors per component, so it pinpoints the root cause of performance problems in distributed applications. CloudWatch logs lack end-to-end correlation, CloudTrail records API activity for auditing, and Inspector assesses security vulnerabilities. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3654,7 +3655,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (40%), D (40%), C (20%).",
+      "e": "Rolling with additional batch launches an extra batch of instances first and then updates the existing ones in batches, so full capacity is kept throughout and only one extra batch is paid for. All at once causes downtime, while immutable and blue/green keep full capacity but launch an entire second set of instances, which costs more. Community vote: B (40%), D (40%), C (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -3676,7 +3677,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The AWS SAM CLI runs Lambda functions locally in a container that emulates the Lambda environment: sam local generate-event produces sample events and sam local invoke runs the function against them, so developers can run the tests locally and the same scripts can run in the CI/CD pipeline before the CDK deployment. There is no cdk local invoke command, and a generic unit test framework or custom Node.js Docker container does not reproduce the Lambda environment as closely. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3698,7 +3699,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (67%), A (17%), D (17%).",
+      "e": "The permissions policy already allows read actions on the Cars table in us-west-2, so the Access Denied error means the EC2 instance cannot assume the role. The role needs a trust policy naming the EC2 service principal (ec2.amazonaws.com) so that the instance profile can supply the role credentials. Widening the resource or adding dynamodb:* does not fix an assume-role problem, and the trust relationship should be with EC2, not dynamodb.amazonaws.com. Community vote: C (67%), A (17%), D (17%).",
       "images": [
         {
           "path": "assets/q163-s1.png",
@@ -3725,7 +3726,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The AWS Encryption SDK uses envelope encryption and stores the encrypted data key in the encryption message it returns together with the ciphertext, so it can later decrypt the data key through the master key provider, such as KMS, without the developer tracking anything. It does not store the keys in S3 or EC2 user data, and manual tracking is unnecessary. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3747,7 +3748,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (80%), B (20%).",
+      "e": "A Lambda execution role is assumed by the function and supplies temporary credentials that rotate automatically, and a policy scoped to the specific S3 objects satisfies least privilege. Hardcoded keys, keys in Secrets Manager and keys in environment variables are all long-term credentials that must be managed and can leak. Community vote: C (80%), B (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -3769,7 +3770,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (80%), B (20%).",
+      "e": "Granting the CloudFormation service role in each account s3:GetObject and s3:ListBucket, and adding a bucket policy that trusts only the specific account numbers as principals, gives cross-account access limited to the intended accounts. A principal of \"*\" opens the bucket to everyone, and Lambda service-linked roles are not how CloudFormation retrieves the code during stack creation. Community vote: A (80%), B (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -3791,7 +3792,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "An Amazon EventBridge scheduled rule that invokes a Lambda function once a day requires no servers, no cluster and no infrastructure management, so it is the most operationally efficient for a small daily task in a new AWS environment. EKS, EC2 with crontab and AWS Batch all require provisioning and maintaining compute infrastructure. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3813,7 +3814,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Code outside the handler runs during the execution environment's init phase and is retained when the environment is reused for later invocations, so SDK clients and connections are created once instead of on every invocation, reducing duration and cost. It is a performance benefit, not a style or error handling feature, and initializing outside the handler does the opposite of creating a new SDK instance per invocation. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3835,7 +3836,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "ElastiCache for Redis in cluster mode supports encryption at rest and in transit, and replicas with Multi-AZ automatic failover for high availability, so it works as a cache in front of RDS. Memcached has no replication, so it is not highly available and lacks the same encryption support, CloudFront caches HTTP content and not database queries, and DAX only works with DynamoDB. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3857,7 +3858,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (70%), D (30%).",
+      "e": "Adding the X-Amz-Invocation-Type header with the static value Event to the API Gateway integration request makes API Gateway invoke the Lambda function asynchronously, so it returns an immediate 202 response and the function continues processing and can send the email when done. Maximum event age is an async invocation setting that does not change how the API invokes the function, raising the API Gateway timeout still makes the client wait, and X-Amz-Target with Async is not a valid mechanism. Community vote: A (70%), D (30%).",
       "images": [],
       "optionImages": [
         [],
@@ -3879,7 +3880,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A Lambda layer packages shared libraries once so that all the functions can reference the same layer version, and updating the dependencies means publishing a new layer version instead of repackaging each function. Maintenance windows, runtime upgrades and hosting the dependencies in CodeCommit do not share dependencies among functions. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3901,7 +3902,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "DynamoDB Time to Live deletes expired items automatically and at no cost for the deletes when a Number attribute holds the expiry time as an epoch timestamp, so setting it to 48 hours after creation handles removal with no code or infrastructure. A String or Date attribute is not valid for TTL, and the script and scan-based options consume read and write capacity and compute resources. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3923,7 +3924,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A Secrets Manager RDS database secret stores the credentials encrypted and has built-in managed rotation for RDS, including SQL Server, with no custom code. Non-secret settings such as the table, bucket and topic names go into Parameter Store SecureString parameters, which can be reused by other applications and updated without code changes. Lambda environment variables are tied to one function, and building custom rotation Lambda functions adds operational overhead. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -3945,7 +3946,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The existing policy only allows read operations, so adding only codecommit:CreateBranch and codecommit:DeleteBranch gives the developer exactly the permissions needed to create and delete branches. Put*, Update* and codecommit:* grant far more than required and violate least privilege. Community vote: A (100%).",
       "images": [
         {
           "path": "assets/q174-s1.png",
@@ -3974,7 +3975,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AB (71%), BC (14%), AC (14%).",
+      "e": "ProvisionedThroughputExceededException is a throttling error, so the application should retry with exponential backoff, and using the AWS SDKs gives that retry-with-backoff behavior built in, unlike hand-built REST API calls. Both are free fixes. Raising throughput, adding DAX, or splitting data across two tables costs more and does not address transient throttling, and DAX helps with reads, not writes. Community vote: AB (71%), BC (14%), AC (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -3997,7 +3998,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "CodeBuild limits the combined size of environment variables, and the recommended fix is to store the values in Systems Manager Parameter Store (or Secrets Manager) and reference them through the parameter-store section of the buildspec, which fetches them at build time. Cognito, S3 settings for environment variables and the LC_ALL locale export are not features that solve this. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4019,7 +4020,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A Lambda@Edge function can read the dimension and resolution query parameters, resize the original photo on demand, and store the result in S3 so later requests for the same variant are served without reprocessing, and CloudFront caches the responses. Pregenerating variants for hundreds of device sizes with S3 Batch Operations is costly and wasteful, and option C reprocesses images each time they fall out of cache without storing the results. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4041,7 +4042,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "DynamoDB Accelerator (DAX) is a fully managed in-memory cache for DynamoDB that reduces read latency from milliseconds to microseconds with only a small change of the endpoint in the application. LSIs do not speed up reads of the same data, S3 Transfer Acceleration is for uploads over distance, and retries with backoff handle throttling instead of lowering latency. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4065,7 +4066,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BE (100%).",
+      "e": "To trace requests from an EC2-hosted application, install and configure the AWS X-Ray SDK for Python so the application generates trace segments, and run the X-Ray daemon on the instances to batch and forward those segments to the X-Ray service. The CloudWatch agent and writing logs to arbitrary directories do not produce X-Ray traces. Community vote: BE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4088,7 +4089,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (50%), A (38%), D (12%).",
+      "e": "Storing the connection credentials once as a SecureString parameter in Systems Manager Parameter Store, encrypted with KMS, gives all the Lambda functions a single central encrypted source that they read at runtime. IAM database authentication generates per-connection tokens instead of one shared connection string, an RDS instance is not a credentials store, and per-function environment variables do not give a single shared source. Community vote: C (50%), A (38%), D (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -4110,7 +4111,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (62%), B (25%), C (12%).",
+      "e": "Turning on execution logging and access logging for the API stage and pointing it at a CloudWatch Logs log group records request details and the reason API Gateway returned the 400 response, such as validation or mapping failures. CloudTrail records management API calls and not client requests, X-Ray traces latency, and Firehose is not how API Gateway delivers logs. Community vote: D (62%), B (25%), C (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -4132,7 +4133,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (88%), A (12%).",
+      "e": "API Gateway stage-level caching can be overridden per method, so you can enable caching for the POST method in the selected stage, and identical requests are then served from the cache using the configured cache keys. The default CloudFront behavior does not cache POST responses, and storing results in the Lambda /tmp directory or Parameter Store is not a proper shared cache. Community vote: B (88%), A (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -4156,7 +4157,7 @@ window.CERTS["dva-c02-pdf"] = {
         2,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: CD (60%), AD (20%).",
+      "e": "Enabling gradual deployments in the SAM template uses AWS CodeDeploy to shift traffic to the new Lambda version through an alias. Choosing a Canary10Percent30Minutes deployment preference sends only 10 percent of traffic to the new version for 30 minutes before shifting the rest, and pre-traffic and post-traffic hooks run automated tests. A linear preference shifts all traffic in increments rather than testing a small percentage first, and EventInvokeConfig only configures asynchronous destinations. Community vote: CD (60%), AD (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -4179,7 +4180,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A Secrets Manager secret defined in the CloudFormation template can generate a random password with GenerateSecretString, and a rotation schedule attached to the secret provides automatic rotation, with the application fetching the current value from Secrets Manager. Parameter Store does not generate or rotate passwords, and a custom Lambda resource or cron daemon would need custom code. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4201,7 +4202,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A Lambda function is not triggered by a DynamoDB stream until an event source mapping connects the stream to the function, which makes Lambda poll the stream and invoke the function with batches of records. Changing the stream view type, mapping SNS to the stream or raising the function timeout do not create that connection. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4223,7 +4224,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "For ECS on Fargate, container environment variables are defined in the environment array of the container definition inside the task definition. The service definition does not contain container settings, and entryPoint specifies the executable to run, not environment variables. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4247,7 +4248,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AB (100%).",
+      "e": "A DeletionPolicy of Retain on the database resource keeps the database when the resource is removed from the stack or the stack is deleted, and a stack policy that denies updates to the database prevents CloudFormation from replacing it during stack updates. Multi-AZ provides availability and not protection from deletion, StackSets are for multi-account deployment, and DeletionPolicy is a resource attribute that cannot be applied to a stack. Community vote: AB (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4270,7 +4271,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "SSE-KMS encrypts S3 objects with a KMS key, and every use of the key is logged in AWS CloudTrail showing which principal used the key and when, which gives the required audit trail. SSE-S3 uses S3-managed keys with no key-use auditing, and SSE-C and self-managed keys do not use KMS at all. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4292,7 +4293,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A GSI with Product ID as the partition key and Product Rating as the sort key lets you Query for one product with ScanIndexForward set to false and a limit of 10, returning the top-rated reviews directly. An LSI must share the table's partition key (Review ID) and can only be created at table creation, so C and D are invalid, and sorting by Review ID in B does not order by rating. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4314,7 +4315,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "CloudFront serving firmware from S3 gives low-cost global distribution with edge caching, and signed URLs restrict downloads to authorized customers for a limited time. A separate distribution per customer, Lambda@Edge, or API Gateway and Lambda in front of S3 each add complexity and cost. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4336,7 +4337,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "For asynchronous Lambda invocations, events that still fail after the configured retries can be sent to a dead-letter queue (SQS or SNS) or an on-failure destination, which preserves the failed event and error context for investigation. CloudTrail does not capture function failure payloads, and SWF and AWS Config are not used to handle unprocessed Lambda events. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4358,7 +4359,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Aurora PostgreSQL is a PostgreSQL-compatible database, and Secrets Manager has built-in managed rotation for Aurora credentials, so rotation is turned on without writing code. Parameter Store does not offer rotation, and DynamoDB is not PostgreSQL and uses IAM rather than database credentials. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4380,7 +4381,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Amazon Cognito identity pools can issue temporary AWS credentials to unauthenticated guest users mapped to an IAM role with limited permissions, so no login or user management is needed. Creating IAM users per visitor or distributing KMS-created credentials is insecure and operationally heavy, and an identity provider requires users to authenticate. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4402,7 +4403,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Before sam deploy, the application must be packaged, in which the code is bundled and uploaded to S3 and the template is transformed to reference it (sam package, or the packaging that sam deploy performs). Manually zipping and uploading to Lambda, testing with X-Ray and using eb create (an Elastic Beanstalk command) are not SAM deployment steps. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4424,7 +4425,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "In the CDK app, the cleanup handler code can be wrapped in a CDK custom resource, which provisions the Lambda function and invokes it as part of stack deployment, so it fits into the existing deployment process with the least configuration. Writing raw CloudFormation JSON, using Amplify APIs, or writing the function in the console and importing it break the integrated CDK flow. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4446,7 +4447,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (83%), A (17%).",
+      "e": "Storing the sensitive data as a SecureString parameter in Systems Manager Parameter Store and referencing it with CloudFormation dynamic references keeps the plaintext out of the template, and the value is encrypted with KMS and resolved at deployment. A template parameter would expose the data, and encrypting the template with KMS does not protect parameter values. S3 and EFS storage are not integrated with CloudFormation for this purpose. Community vote: C (83%), A (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -4468,7 +4469,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Secrets Manager stores credentials encrypted with KMS and supports automatic rotation on a schedule for RDS, Aurora and DocumentDB, using rotation Lambda functions based on the AWS rotation templates. Parameter Store has no native automatic rotation, IAM database authentication does not cover DocumentDB the same way and does not provide credential rotation, and S3 server-side encryption key rotation does not rotate database passwords. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4490,7 +4491,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Lambda scaling opens many database connections and exhausts the Aurora connection limit, and Amazon RDS Proxy pools and shares connections so many Lambda invocations use far fewer database connections. A read replica or Multi-AZ does not solve connection exhaustion on the instance being used, and migrating to DynamoDB is a big redesign. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4512,7 +4513,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "sam local start-api runs a local HTTP server that emulates API Gateway and invokes the Lambda functions locally, so the REST API can be tested locally. sam local invoke runs a single function once, start-lambda emulates the Lambda service endpoint, and generate-event only produces sample event payloads. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4534,7 +4535,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), B (25%).",
+      "e": "A Lambda alias can use weighted routing configuration to send a fixed percentage of traffic to a second function version, so the new version is initially available only to that percentage of production users. Canary and linear deployment types are CodeDeploy deployment configurations and not part of the in-house deployment solution, and environment variables cannot route traffic between versions. Community vote: A (75%), B (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -4556,7 +4557,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "ElastiCache for Memcached is a multi-threaded, horizontally scalable caching engine that can offload read traffic from RDS and fits the stated multi-threaded requirement. Redis is single-threaded for command execution, DAX only works with DynamoDB, and the standby instance of a Multi-AZ RDS deployment cannot serve read traffic. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4578,7 +4579,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Lambda environment variables are encrypted at rest, and using a KMS customer managed key keeps the API key encrypted at rest with controlled access to the key. Prompting a user fails for a scheduled function, hardcoding the key in code leaves it in plaintext, and Lambda@Edge with HTTPS does not address encryption at rest. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4600,7 +4601,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (53%), B (27%), C (20%).",
+      "e": "S3 Standard-IA stores data across multiple Availability Zones for resiliency at a lower cost than Standard, and Glacier Deep Archive standard retrieval completes within 12 hours, which meets the 24-hour requirement. Bulk retrieval from Deep Archive takes up to 48 hours, which is too slow, and One Zone-IA stores in a single AZ, which lowers resiliency. Intelligent-Tiering has monitoring fees that are not worthwhile for rarely accessed data. Community vote: A (53%), B (27%), C (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -4622,7 +4623,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (50%), A (43%).",
+      "e": "The SAM CLI configuration file (samconfig.toml) can contain a separate table for each environment, and sam deploy --config-env selects the environment's parameters, so one template deploys to dev, test and staging with minimal effort. Maintaining multiple templates or custom scripts is more work, and parameter overrides alone do not capture the full per-environment configuration. Community vote: C (50%), A (43%).",
       "images": [],
       "optionImages": [
         [],
@@ -4644,7 +4645,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (60%), B (40%).",
+      "e": "Adding an S3 trigger to the Lambda function configures an S3 event notification for object-created events on the bucket, which invokes the function immediately after each upload. Asynchronous invocation is an invocation type and not a source, EventBridge is not how the trigger is added here, and a layer only packages libraries and code. Community vote: C (60%), B (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -4666,7 +4667,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "By default CloudFormation rolls back and deletes resources created so far when a create fails. The --disable-rollback option on create-stack and update-stack keeps the successfully provisioned resources for troubleshooting. Termination protection prevents stack deletion, and parameters or tags named PreserveResources have no effect on rollback behavior. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4688,7 +4689,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Amazon RDS Proxy maintains a pool of database connections and multiplexes the connections from many Lambda invocations onto it, reducing database load without limiting Lambda scaling. Provisioned and reserved concurrency control Lambda concurrency and either keep functions warm or cap scaling, and Aurora cluster cache management is a failover cache feature and is not a connection endpoint. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4710,7 +4711,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Branching from main into one branch for production bug fixes and another for the new version's development lets both lines of work proceed independently and be merged later, which is the standard Git workflow in CodeCommit. Tags are fixed pointers and not places to commit ongoing work, a separate repository fragments the history, and an IAM policy that blocks pushes to the production branch would prevent the fixes the developer needs to deploy. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4732,7 +4733,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "When a template creates IAM resources with custom names, CloudFormation requires acknowledgment through the CAPABILITY_NAMED_IAM capability. CAPABILITY_IAM only covers IAM resources without custom names, and CAPABILITY_AUTO_EXPAND is for templates with macros or nested stacks. Using an administrator role does not remove the capability acknowledgment requirement. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4754,7 +4755,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A client can invalidate an API Gateway cache entry by sending a request with the Cache-Control: max-age=0 header, provided the caller's IAM policy grants execute-api:InvalidateCache on the API. The InvalidateCache permission is attached to the identity that calls the API, which lets customers invalidate the cache during testing without the account's management credentials. InvalidateCache is not a management API operation customers call, and INVALIDATE_CACHE is not a valid query string parameter. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4776,7 +4777,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Every Lambda function gets ephemeral storage in the /tmp directory (512 MB by default, configurable up to 10,240 MB), which is more than enough for 100 MB and is scoped to the execution environment, so it needs no extra service or cost. EBS volumes cannot be attached to Lambda functions, EFS adds a VPC, mount target and cost for data that is not needed after the run, and S3 with a lifecycle policy adds network calls and a delay before deletion. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4798,7 +4799,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), D (25%).",
+      "e": "The Lambda function already processes the stream records, so once its execution role can write to CloudWatch Logs (AWSLambdaBasicExecutionRole) the logged orders can be analyzed with a CloudWatch Logs Insights query that filters quantity = 0, uses count_distinct(customerId) and bins by 1d. Logs Insights queries can be added as a widget to a CloudWatch dashboard. CloudTrail does not record application data such as order quantity, Lambda cannot send EventBridge events by configuration alone and a rule cannot target a dashboard, and DynamoDB streams have no custom metrics or per-customer unique counts that an alarm could use. Community vote: A (75%), D (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -4822,7 +4823,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AE (70%), AD (20%).",
+      "e": "Security groups are stateful and the connection is initiated by the function, so the function's security group needs outbound access on port 1433 to the database and the DB instance's security group needs inbound access on 1433 from the function's security group. A VPC-attached Lambda function also needs the ec2:CreateNetworkInterface, ec2:DescribeNetworkInterfaces and ec2:DeleteNetworkInterface permissions (included in AWSLambdaVPCAccessExecutionRole) to create the ENIs it uses to reach the private subnet. Option B reverses the traffic direction, option C is unnecessary because the database sits in a private subnet reachable inside the VPC, and option D lists RDS management permissions that are not needed to open a database connection. Community vote: AE (70%), AD (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -4845,7 +4846,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "aws ec2 run-instances launches new EC2 instances from an AMI with the specified instance type, key pair and networking. start-instances only restarts an existing stopped instance, bundle-instance is a legacy command for creating an instance-store AMI from a Windows instance, and confirm-product-instance checks whether a product code is attached to an instance. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4867,7 +4868,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AWS CloudFormation lets you define infrastructure as templates, deploy the same template repeatedly to create identical stacks, preview changes with change sets, and roll back to a previous state. Storing those templates in AWS CodeCommit gives version control so earlier versions can be restored. OpsWorks with cost reports, CloudWatch metrics with tagging, and Elastic Beanstalk do not provide repeatable, versioned, stageable infrastructure definitions across arbitrary AWS resources. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4889,7 +4890,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (80%), B (20%).",
+      "e": "UpdateItem is an upsert in DynamoDB: it modifies the specified attributes of an existing item and creates the item if the key does not exist, GetItem retrieves the item, and PutItem allows creating or replacing it. UpdateItem, GetItem and PutItem together cover the retrieve, update and create behavior. The other sets include DeleteItem, DescribeTable, UpdateTable (which changes table settings) or GetRecords (a stream/Kinesis API), and none of them supply UpdateItem for partial attribute changes. Community vote: D (80%), B (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -4911,7 +4912,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "With a cache placed in front of DynamoDB, a lazy-loading (cache-aside) pattern keeps serving the cached price until the entry expires or is explicitly invalidated, so updates written to DynamoDB are not visible. Invalidating or updating the cache entry when the price changes, or using a short TTL, fixes this. A write-through cache would actually keep the cache current, and insufficient read or write capacity would cause throttling errors rather than stale-but-successful reads. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4933,7 +4934,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The AWS SDK default credential provider chain checks environment variables before the instance profile credentials from the instance metadata service. The application still has the old access key variables set, belonging to the deleted IAM user, so the SDK uses them and DynamoDB rejects the calls. Removing the environment variables lets the SDK fall through to the role credentials. The SDK fully supports instance roles, a security group does not filter calls to the link-local metadata address, and IAM changes propagate within seconds, not a long time. The CLI works because the developer uses personal credentials. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -4955,7 +4956,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (67%), B (33%).",
+      "e": "AWS Secrets Manager supports multi-Region secret replication, which keeps a read-only replica of the secret (encrypted with a KMS key in the target Region) in the secondary Region so the application can fetch it by Region-specific ARN during failover, and it removes hardcoded credentials securely. Parameter Store has no built-in cross-Region replication, and plaintext config files in S3 with CRR or on EFS keep credentials in files that are less secure and not designed for secret management. Community vote: A (67%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -4977,7 +4978,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (75%), A (25%).",
+      "e": "A ThrottlingException from the CloudWatch API means the request rate exceeded the API limits for the account, and the standard best practice is to retry with exponential backoff (with jitter), which the AWS SDKs support natively. Calls are intermittent so backing off will let later retries succeed. Asking for a limit increase is not the first step, the CLI is subject to the same API throttling, and removing the call would lose the data the application needs. Community vote: D (75%), A (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -4999,7 +5000,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "An Application Load Balancer terminates the client connection and opens a new one to the target, so the application sees the ALB's address as the source. The ALB adds an X-Forwarded-For header containing the original client IP (and any proxy IPs appended in a comma-separated list), so changing the application to parse that header keeps horizontal scaling at the lowest cost. Removing the load balancer gives up scaling, a Classic Load Balancer is not needed because the header solves the problem, and requiring clients to send a custom header is unreliable and spoofable. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5021,7 +5022,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (67%), B (17%), D (17%).",
+      "e": "An SNS FIFO topic fanning out to SQS FIFO queues preserves ordering and deduplicates by message group, so both the inventory and payment consumers see orders in the order they were received, which lets the first order claim the seat and a rejected payment pass the seat to the next order. Standard SNS topics and standard SQS queues give only best-effort ordering and at-least-once delivery. Chaining the Lambda functions sequentially removes the parallel processing and does not provide ordering across concurrent requests. Community vote: A (67%), B (17%), D (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -5043,7 +5044,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (89%), B (11%).",
+      "e": "In AWS X-Ray, annotations are key-value pairs that are indexed, so they can be used in filter expressions and groups to search traces by custom attributes. Metadata is not indexed and cannot be used in filter expressions, arbitrary new segment fields are not allowed by the segment document schema, and sampling rules control how many requests are traced by service, URL, or method, not how results are filtered afterwards. Community vote: A (89%), B (11%).",
       "images": [],
       "optionImages": [
         [],
@@ -5065,7 +5066,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Kinesis Data Streams supports server-side encryption using AWS KMS, which encrypts data before it is stored in the stream's storage layer and decrypts it when consumers read, so records are protected at rest for the retention period. SSL/TLS only protects data in transit, the Kinesis Client Library does not encrypt stored data, and a Lambda function could only encrypt after the data is already stored unencrypted. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5087,7 +5088,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Kinesis Data Streams is built for real-time ingestion of very high volumes of events and lets multiple consumers read the same shards concurrently (shared throughput or enhanced fan-out), and it is the cheapest way to handle millions of events per day with several consumers. SNS with SQS queues per application (standard or FIFO) multiplies per-message charges and FIFO throughput is limited, and Kinesis Data Firehose is a delivery service to destinations such as S3 and is not intended for multiple custom consumers processing the data in real time. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5109,7 +5110,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The template defines a bucket and an output with a !Ref to it. To share the bucket name with other stacks, add an Export name to the output in the Outputs section and reference it from other templates with the Fn::ImportValue intrinsic function, which is the native cross-stack reference mechanism. There is no Exported property on resources or an ImportResource function, Fn::Include is not a way to reuse resources from another stack, and a custom resource would add needless complexity. Community vote: A (100%).",
       "images": [
         {
           "path": "assets/q226-s1.png",
@@ -5138,7 +5139,7 @@ window.CERTS["dva-c02-pdf"] = {
         2,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: CE (60%), BC (40%).",
+      "e": "ProvisionedThroughputExceededException on writes means the table's write capacity is too low for the burst of requests, so switching the table to on-demand capacity mode removes the need to size throughput in advance and absorbs the traffic. The application should also retry with exponential backoff, which reduces the request rate during throttling and is the recommended practice that the SDK follows. Increasing RCUs does not help writes, a larger instance would only send more requests faster, and shortening the retry delay makes throttling worse. Community vote: CE (60%), BC (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -5161,7 +5162,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), B (25%).",
+      "e": "An S3 presigned URL grants time-limited access to a specific object without sharing credentials or making the bucket public, and a URL signed with IAM user credentials can be valid for up to 7 days (604,800 seconds), which matches the workshop window. WorkDocs would require moving the files and managing external accounts, sharing access keys for temporary IAM users exposes long-lived secrets, and a role ARN cannot be used by external people to access the bucket without them having an AWS principal to assume it. Community vote: A (75%), B (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -5183,7 +5184,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A single API Gateway REST API supports multiple stages (dev, test, prod) with stage variables, and each stage can point to a different Lambda alias of one Lambda function (for example dev, test, prod aliases mapped to versions). This keeps only one API and one function to manage. Separate APIs and functions per environment or per Region multiply the resources, and passing the environment in a REST parameter is insecure and does not isolate the environments. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5205,7 +5206,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "When a Lambda function is registered as an ALB target, the ALB needs a resource-based policy on the function that lets elasticloadbalancing.amazonaws.com invoke it. The console adds this permission automatically, but with the CLI the developer must run aws lambda add-permission, so a missing invoke permission is why the function is never called. Lambda can be an ALB target through both the console and CLI, and cross-zone load balancing is irrelevant to Lambda targets. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5227,7 +5228,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "AWS Secrets Manager stores secrets encrypted with AWS KMS and has built-in managed rotation for Amazon RDS credentials, using a rotation Lambda function that updates both the secret and the database password on a schedule. Lambda environment variables cannot rotate automatically, Parameter Store SecureString parameters do not offer managed rotation, and X-Amz-Security-Token is the header for STS session tokens, not a place to keep database credentials. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5249,7 +5250,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A Lambda alias can point to two function versions and split invocation traffic between them by weight (for example 90 percent to the current version and 10 percent to the new one), which gives a controlled canary-style test of the new version. Route 53 weighted routing works on DNS records and not Lambda versions, an ALB target group pointing at a function cannot split between versions, and a layer is a package of libraries and not a deployable version of the function. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5273,7 +5274,7 @@ window.CERTS["dva-c02-pdf"] = {
         2,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: CE (67%), AD (17%), AE (17%).",
+      "e": "Lambda limits the unzipped deployment package to 250 MB including layers, and this is a hard limit that cannot be raised with a quota request. The developer can move shared libraries, dependencies and custom runtimes into Lambda layers (while keeping the combined unzipped size within 250 MB), and can split the function into several smaller functions that each have a smaller package. Zipping repeatedly or using a different compression algorithm does not change the unzipped size, and the limit is not adjustable through Support. Community vote: CE (67%), AD (17%), AE (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -5296,7 +5297,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (45%), B (36%), C (18%).",
+      "e": "Setting maximum concurrency on the SQS event source mapping limits how many concurrent Lambda invocations are made from the queue, so the rate of calls to the third-party API can be kept under its documented limit and messages are not rejected with 429 errors. Increasing the batch size increases the work per invocation without reducing request rate, provisioned concurrency only pre-warms environments and does not limit concurrency, and asynchronous invocation retry settings do not apply to SQS event source mappings. Community vote: D (45%), B (36%), C (18%).",
       "images": [],
       "optionImages": [
         [],
@@ -5318,7 +5319,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The workload is read heavy and the RDS instance's read latency is rising at peak, so caching frequently read query results in Amazon ElastiCache (Redis or Memcached) offloads reads from the database and reduces latency. Adding ECS instances or task memory scales the application tier but the bottleneck is the database, and RCUs are a DynamoDB concept that does not exist for RDS instances. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5340,7 +5341,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The application needs only to list the bucket and download objects, so the policy should allow s3:ListBucket on the bucket ARN (arn:aws:s3:::DOC-EXAMPLE-BUCKET) and s3:GetObject on the object ARN (DOC-EXAMPLE-BUCKET/*), which is exactly option A. Option B grants s3:* on objects, option C also allows PutObject and DeleteObject, and option D denies GetObject, which would block the downloads. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [
@@ -5382,7 +5383,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Creating a data key in AWS KMS gives a plaintext key for local symmetric encryption and an encrypted copy to store with the file, and the AWS Encryption SDK implements envelope encryption on the client side with these keys, so encryption happens inside the application before upload. An HMAC key is used to generate and verify message authentication codes and not to encrypt, a data key pair is asymmetric, and the AWS CLI cannot perform client-side encryption of files inside the application with a KMS data key. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5404,7 +5405,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "An IAM role with a least-privilege policy for the specific S3 actions, attached to the EC2 instance through an instance profile, gives the application temporary credentials that are rotated automatically and never stored on disk. IAM user access keys in environment variables are long-lived secrets, roles do not have access keys, and an S3 bucket policy cannot grant access based on an EC2 instance ID. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5426,7 +5427,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (70%), C (30%).",
+      "e": "An Application Load Balancer HTTPS listener supports a built-in authenticate-cognito action in listener rules, which redirects unauthenticated users to the Cognito user pool, and setting OnUnauthenticatedRequest to deny rejects requests that are not authenticated with an HTTP 401. This enforces authentication with no code. Checking only for a missing Authorization header does not validate it, adding API Gateway in front of the ALB is extra infrastructure, and a Lambda target group would not sit in front of the existing targets to validate tokens. Community vote: B (70%), C (30%).",
       "images": [],
       "optionImages": [
         [],
@@ -5450,7 +5451,7 @@ window.CERTS["dva-c02-pdf"] = {
         2,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: CE (100%).",
+      "e": "Throttling happens when a function reaches its concurrency limit, so raising the function's reserved concurrency (provided unreserved account concurrency is available) guarantees more concurrent executions for that function, and requesting an account-level concurrency quota increase raises the total pool available. Migrating to EKS is a major change, increasing the maximum event age only affects how long asynchronous events are retried, and the lambda:GetFunctionConcurrency permission only lets someone read the setting. Community vote: CE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5473,7 +5474,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "API Gateway stages are designed for multiple deployments of the same API, each stage with its own invoke URL, and stage variables can pass the version or Lambda alias context to the backend. This provides clean separation of the versions for testing. Passing a custom header means the same endpoint serves every version and needs custom routing logic, Lambda authorizers are for authentication and authorization, and a resource policy controls who can call the API and not which version they hit. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5497,7 +5498,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AB (67%), BC (17%), BD (17%).",
+      "e": "The pipeline ran successfully for months, so the likely causes are about this change: the pipeline source is the main branch of the CodeCommit repository, so a commit to another branch never triggers it, and if an earlier stage such as the CodeBuild test or build action failed, the pipeline stops and never reaches the CodeDeploy stage. The pipeline had no modifications, so a misconfigured deploy action or a lost CodeCommit permission is unlikely, and CodePipeline does not run on a cluster of EC2 instances you manage. Community vote: AB (67%), BC (17%), BD (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -5520,7 +5521,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (83%), C (17%).",
+      "e": "In AWS SAM, the DeploymentPreference property with Type Canary10Percent10Minutes shifts 10 percent of traffic to the new version for 10 minutes and then moves the remaining 90 percent, matching the requirement, and AutoPublishAlias is required so SAM publishes a new version and creates the alias that CodeDeploy shifts traffic on. The Linear10PercentEvery10Minutes type shifts 10 percent every 10 minutes gradually and does not switch all at once, and PreTraffic and PostTraffic are hook functions for validation and not alias settings. Community vote: A (83%), C (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -5542,7 +5543,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (67%), C (17%), A (17%).",
+      "e": "For cross-account access, the role that holds the ec2:DescribeInstances permission must be created in each development account with a trust policy that trusts the shared account, and the Lambda function's execution role in the shared account is given sts:AssumeRole permission for those roles. This follows least privilege because the function receives temporary credentials only for the needed action in the target accounts. Creating the role in the shared account cannot grant access to resources in the development accounts, and adding ec2:DescribeInstances only to the Lambda role in the shared account would let it describe instances in the shared account. Community vote: B (67%), C (17%), A (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -5566,7 +5567,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BE (100%).",
+      "e": "The CDK assertions module (aws-cdk-lib/assertions) provides fine-grained and snapshot assertions against synthesized CloudFormation templates and plugs into standard test frameworks, so unit tests can be written with little effort and run in a CI/CD pipeline. CDK Aspects visit every construct in the app during synthesis, which makes them the right way to apply rules that enforce security settings and fail synthesis when a construct violates them. Testing the cdk.out file by hand, using runtime context, or writing search scripts requires more custom work and does not evaluate constructs. Community vote: BE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5589,7 +5590,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "An Amazon EventBridge rule with a schedule (rate(15 minutes)) that targets the Lambda function invokes it on a schedule with no servers or code to maintain, and it takes only a few minutes to configure. Systems Manager Run Command, an EC2 cron job, and a Step Functions Wait loop all require building and maintaining extra infrastructure or logic, and a Step Functions state machine invokes the function itself and not its execution role. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5611,7 +5612,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), C (25%).",
+      "e": "Publishing the processing time as a CloudWatch custom metric (for example with PutMetricData or the embedded metric format) and creating a CloudWatch alarm with a static threshold of 5 seconds that notifies an SNS topic needs no extra infrastructure to run. The alarm in option C uses the average, which could hide individual slow photos, and CloudWatch alarms notify through SNS and not SES. Using SQS or Kinesis requires building and operating a consumer application, and CloudWatch alarms cannot read directly from a Kinesis stream. Community vote: A (75%), C (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -5635,7 +5636,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BD (71%), BE (29%).",
+      "e": "Immutable deployments launch a full new set of instances in a separate Auto Scaling group with the new configuration and then replace the old ones, and blue/green deployments create a completely new environment and swap the CNAMEs, so both apply changes only to new instances. All at once and rolling deployments update the existing instances in place, and rolling with additional batch also updates existing instances in batches after launching an extra batch. Community vote: BD (71%), BE (29%).",
       "images": [],
       "optionImages": [
         [],
@@ -5658,7 +5659,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "DynamoDB encrypts all tables at rest, and to use a key the company generates, the key can be stored or imported in AWS KMS as a customer managed key and selected when the table is created by providing its ARN, so DynamoDB uses it for server-side encryption. Encrypting in the application with encryption set to None adds code and the table would not be encrypted by DynamoDB, the default encryption uses an AWS owned key, and an AWS managed key is generated and controlled by AWS and not by the company. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5680,7 +5681,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "API Gateway canary release settings on the production stage let you direct a configurable percentage of traffic (here 20 percent) to a canary deployment while the remaining traffic stays on the existing stage deployment, and API Gateway keeps each client on a consistent path in each request. This gives a gradual rollout with the same stage URL and lets the canary be promoted or rolled back. Updating pieces of the changes repeatedly, using Route 53 weighted records to a testing stage, or putting an ALB in front of API Gateway stages do not provide a controlled production canary of the new release. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5702,7 +5703,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), D (25%).",
+      "e": "An API Gateway WebSocket API provides a persistent two-way connection with the browser, so when the validation Lambda function finishes it can post the result to the stored connection ID through the connections API and the UI updates immediately without reloading, and everything is fully managed. Running a WebSocket server on EC2 requires managing the instance, email via SNS does not update the dashboard, and SNS cannot push updates directly to a browser UI the way DynamoDB Streams would imply. Community vote: A (75%), D (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -5724,7 +5725,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (80%), D (10%) B (10%).",
+      "e": "A custom Lambda authorizer in API Gateway can cache the authorizer result (policy) for the configured TTL, keyed by the identity source such as the token, so after the department changed in the IdP the cached result with the old Department value continues to be returned until the cache expires. Cognito user pools do not have an authorization caching setting, and IAM role tags are not where the Department claim comes from. Community vote: A (80%), D (10%) B (10%).",
       "images": [],
       "optionImages": [
         [],
@@ -5746,7 +5747,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "An SQS FIFO queue guarantees first-in-first-out ordering and exactly-once processing within a message group, with deduplication using a deduplication ID, which addresses the duplicates, losses and out-of-order delivery. Processing takes 5 to 10 minutes, though, and Lambda has a 15-minute maximum, so the function fits within its timeout when the queue is the event source. A standard SQS queue and an SNS topic can deliver duplicates and out of order, and Kinesis Data Firehose is a delivery stream to storage destinations and not a worker queue. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5768,7 +5769,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AWS Step Functions Local is a downloadable version of the service for testing state machines on your own machine, and it supports mocked service integrations, so the state machine can be tested with predefined responses and without calling SQS or S3. The Docker image alone still makes real integration calls, SAM CLI tests individual Lambda functions and not the state machine flow, and CodeGuru Profiler analyzes runtime performance and not functional behavior. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5790,7 +5791,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "API Gateway stage variables act like environment variables for a stage, so the integration endpoint URL can be written as a reference such as https://${stageVariables.endpoint} with a different value in the development, user acceptance testing and production stages. Lambda layers hold code and libraries and are not tied to stages, query parameters in the request URL would expose and depend on the client, and AppConfig is for application configuration retrieved by code and is not how API Gateway selects an integration endpoint. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5812,7 +5813,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS SAM Accelerate, the sam sync command, deploys code and resource changes directly to the cloud (for example updating Lambda code through the service APIs) without a full CloudFormation deployment each time, and with --watch it syncs automatically on local changes. sam init only creates a new project from a template, cdk synth only generates the CloudFormation template, and cdk bootstrap prepares the environment with resources the CDK needs and does not deploy application changes. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5834,7 +5835,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A MOCK integration makes API Gateway return a response itself without a backend: in the integration request a mapping template returns a statusCode, and in the integration response a body mapping template defines the JSON that is associated with each HTTP status code. This gives the frontend team immediate predefined responses with no Lambda functions or servers to build. AWS_PROXY and HTTP_PROXY require a real backend, and in option D the method request does not define the response status codes and the integration request does not define the JSON response body. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5856,7 +5857,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Kubernetes pulls the image referenced by the pod specification, and if the same tag (such as latest) is reused, an already-running or cached deployment may keep running the old image, so the new application configuration is not picked up. The developer needs to push the build with a new unique image tag and update the deployment to use it. Creating a new tag is the recommended practice and would not cause this problem, and creating a new AWS account is not the reason the image content would not change. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5878,7 +5879,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "An IAM role associated with the EC2 instance through an instance profile provides temporary credentials that the SDK obtains automatically from the instance metadata, so there are no credentials to manage, and scoping the policy to s3:ListBucket and object actions on the specific buckets applies least privilege. An IAM user with access keys needs stored credentials and s3:* is too broad, AmazonS3FullAccess grants access to every bucket, and a bucket policy alone does not give the application credentials and applies to only one bucket. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5900,7 +5901,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (50%), C (40%), D (10%).",
+      "e": "GenerateDataKey returns a plaintext data key and a copy of the same key encrypted under the KMS key. The application uses the plaintext key with a local symmetric algorithm such as AES-GCM to encrypt the large file (KMS Encrypt only handles up to 4 KB), discards the plaintext key, and stores the encrypted key on disk next to the file so that Decrypt can recover the data key later. Storing the plaintext key defeats the purpose of encryption, and the encrypted key cannot be used directly to encrypt data. Community vote: A (50%), C (40%), D (10%).",
       "images": [],
       "optionImages": [
         [],
@@ -5922,7 +5923,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "AWS Secrets Manager stores the database credentials encrypted with KMS, provides managed automatic rotation for RDS databases including SQL Server using a rotation Lambda function that updates the secret and the database password, and the application retrieves the current secret at runtime with IAM permissions. An IAM role cannot authenticate to RDS for SQL Server, and keeping credentials in S3 or DynamoDB and writing custom rotation Lambda functions is less secure and requires more effort. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5944,7 +5945,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (70%), A (30%).",
+      "e": "CloudFormation stack options include notification ARNs, which send stack events (such as CREATE_COMPLETE or UPDATE_COMPLETE) to an SNS topic, so creating an SNS topic, subscribing the QA team and setting the notification ARN only on the pre-production stack gives notifications for new deployments with no code. Because all environments use the same template, the configuration is done on the stack and not in the template. CloudFormation does not publish stack metrics for alarms, and Lambda event source mappings cannot receive events from CloudFormation. The EventBridge option works but needs a custom Lambda function. Community vote: B (70%), A (30%).",
       "images": [],
       "optionImages": [
         [],
@@ -5966,7 +5967,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Database users are not CloudFormation resources, so a CloudFormation custom resource backed by a Lambda function (running in the VPC to reach the private subnet) can run the SQL to create or update the users, and deploying the same template in each account keeps them consistent and repeatable on updates. A template cannot declare database users directly, and scripts on EC2 instances or a single Lambda function holding details of all three accounts are manual and less maintainable. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -5988,7 +5989,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "An API Gateway MOCK integration returns a response without any backend, and by configuring the method's integration request and integration response to map a static body to a status code, then deploying the API to a stage, dependent teams can start development immediately. Lambda, EC2 and HTTP_PROXY options all require building a backend, and Lambda layers cannot be associated with an API deployment to return status codes. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6010,7 +6011,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A FIFO queue preserves message order within a message group, so the legacy consumer does not receive out-of-order updates. Because the legacy system can take up to 5 minutes, the visibility timeout must be set long enough that a message in progress is not made visible and delivered again, which could break ordering. Standard queues do not guarantee order, and DelaySeconds only postpones when messages first become visible and does not cover processing time. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6032,7 +6033,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Encrypted EBS volumes encrypt data at rest, data in transit between the instance and the volume, and snapshots using AWS KMS, with the encryption handled by the Nitro/EC2 hardware, so there is minimal impact on the performance of the application. Writing everything to S3 changes the architecture, a custom encryption algorithm would consume CPU and is risky, and instance store ephemeral disks lose data and are not what the application uses for EBS storage. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6054,7 +6055,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A Lambda function alias can be configured with weighted routing between two published versions, so after publishing a new version a developer can point the alias at the production version with 90 percent and the new version with 10 percent, and callers keep using the alias ARN. Lambda has no traffic-weighted triggers or proxy integration for version splitting, and a separate function is not a version of the production function, so an alias cannot split between them. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6076,7 +6077,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (60%), C (40%).",
+      "e": "Standard SQS queues provide at-least-once delivery, which means a message can be delivered more than once, so a FIFO queue with a message deduplication ID prevents duplicates within the 5-minute deduplication interval and gives exactly-once processing. A dead-letter queue only collects messages that repeatedly fail, limiting Lambda concurrency to 1 does not prevent redelivery after a visibility timeout, and moving to Kinesis Data Streams is a bigger and more expensive change. Community vote: A (60%), C (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -6098,7 +6099,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer corrected from the PDF's stated C to A after manual review; not independently verified. Community vote: A (60%), C (40%).",
+      "e": "API Gateway canary release on the production stage routes a configured percentage of traffic to the canary deployment while the stage URL stays the same, so the developer can point the canary at the new Lambda version or $LATEST and test with a small share of production traffic. Option A publishes the optimized code, sets the canary percentage and deploys to the canary, keeping the existing endpoint. The other options deploy a new stage with a new URL or push the change to the whole production stage. (The source PDF lists C; corrected to A after review.) Community vote: A (60%), C (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -6120,7 +6121,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS Secrets Manager stores secrets encrypted with KMS and supports automatic rotation on a schedule, such as every 90 days with a rotation Lambda function that can be customized for a third-party SaaS vendor, and the application is given IAM permission to retrieve the secret. KMS key rotation does not rotate the credentials in a file, STS temporary credentials cannot be used for an external SaaS API, and Parameter Store does not provide automatic rotation. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6144,7 +6145,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (67%), CE (17%), BC (17%).",
+      "e": "With Block Public Access on, the bucket cannot be read anonymously, so the EC2 instances need an IAM role through an instance profile to access S3 with temporary credentials instead of stored access keys, and the application should generate presigned URLs with the GeneratePresignedUrl call for signed-in users so they can download objects directly for a limited time. An IAM user with stored keys is less secure, and returning a GetObject handle or delegating requests to the bucket does not provide secure, authenticated download links to the users. Community vote: AC (67%), CE (17%), BC (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -6167,7 +6168,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (80%), B (20%).",
+      "e": "Lambda allocates CPU power proportionally to the configured memory, so increasing the memory also increases CPU and speeds up the video conversion with no code changes, which can bring the processing under the 15-minute maximum timeout. Raising the SQS visibility timeout does not make the function run faster, you cannot choose the instance size of the host running Lambda, and multi-threading requires code changes. Community vote: A (80%), B (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -6189,7 +6190,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "API Gateway mock integrations return a response straight from API Gateway with configured status codes and bodies, without any backend, so the frontend developers can code against the API immediately and the mock can later be replaced with a real integration. A Lambda function needs to be written and deployed, simply adding endpoints with a mocked response describes the same idea without the mechanism, and a proxy resource passes requests to a backend that does not exist yet. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6213,7 +6214,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BE (100%).",
+      "e": "For a containerized proof of concept with little operational work, the developer builds a container image with the Docker CLI and pushes it to Amazon ECR, then runs it on Amazon ECS with AWS Fargate, which removes the need to provision and manage servers or clusters of instances and is simpler to start than Kubernetes. A .zip package is not a container image, CodeDeploy to EC2 means managing instances, and EKS on Fargate requires more setup than ECS. Community vote: BE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6236,7 +6237,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "DynamoDB Time to Live (TTL) on the expirationDate attribute deletes expired items automatically at no write cost, and the deletions appear in the DynamoDB stream as REMOVE records marked as TTL deletions, so a Lambda function triggered by the stream can archive the items with very little code. Writing separate Lambda functions for deleting and processing, scheduled with EventBridge, requires more code, and TTL has no option to specify an SQS dead-letter queue as a target. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6258,7 +6259,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (78%), A (22%).",
+      "e": "Amazon EFS can be mounted into Lambda functions and holds data up to petabyte scale, so a 15 GB and growing library can be shared by all the functions. Lambda layers are limited to 250 MB unzipped including the function, container images are limited to 10 GB, and downloading a 15 GB library from S3 into /tmp (maximum 10 GB) on each invocation is impossible and slow. Community vote: D (78%), A (22%).",
       "images": [],
       "optionImages": [
         [],
@@ -6280,7 +6281,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Amazon Cognito user pools provide a managed sign-up and sign-in service, including hosted UI and federation with social identity providers, and identity pools can then exchange tokens for IAM roles, so user identities do not have to be managed. API Gateway HTTP APIs can use the user pool tokens through a JWT authorizer. Creating IAM groups per user, storing users in RDS, or storing passwords in DynamoDB means building and operating your own identity system, which is insecure and high effort. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6302,7 +6303,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A CloudWatch Logs metric filter turns matching log events (the application error pattern) into a custom metric, and a CloudWatch alarm on that metric with a 5-minute period and a threshold can publish to an SNS topic when the count is exceeded. Subscription filters send log data to Kinesis, Lambda or Firehose and cannot send SNS notifications on thresholds, SNS does not evaluate error counts over a period, and Amazon Inspector is a vulnerability scanning service that does not monitor application logs. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6324,7 +6325,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (53%), B (40%).",
+      "e": "Audit results arrive between 1 and 24 hours after upload, so a Step Functions standard workflow, which can run for up to a year, is started by the S3 ObjectCreated event Lambda function, waits with a Wait state, and then calls a second Lambda function to read the DynamoDB or REST API results and tag the object. This is event driven and serverless. SQS has a maximum visibility timeout of 12 hours, so 24 hours cannot be set, a scheduled function that scans for untagged objects is inefficient, and an EC2 instance with cron requires server maintenance. Community vote: C (53%), B (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -6346,7 +6347,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Putting dependencies such as the new module in Lambda layers means the layer is published and cached separately, so deployments of the function code package only upload the small function code and not the large dependency bundle, which makes deployments faster. CodeDeploy controls traffic shifting and does not speed up package upload, memory size affects runtime performance, and hosting dependencies in S3 would still require them to be downloaded and loaded by the function. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6368,7 +6369,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (57%), B (29%), A (14%).",
+      "e": "A viewer-request CloudFront Function can inspect the URI and append index.html when the path ends in / or has no file extension, so /products/ is rewritten to /products/index.html before CloudFront fetches it from S3 through OAC, and the bucket stays private. The default root object only applies to the distribution root, not to subdirectories. Using the S3 website endpoint requires a publicly readable bucket and cannot use OAC. A custom 404 error response returning /index.html serves the wrong page for every missing path and does not map directories to their own index files. Community vote: C (57%), B (29%), A (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -6390,7 +6391,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "HTTP 401 Unauthorized is the correct status for a request that fails authentication, such as invalid login credentials, so the application (the Lambda function behind API Gateway) should return it. The 405 error means the HTTP method is not allowed for the resource, which is a different problem. A 404 means the resource was not found, 503 means the service is unavailable, and 505 means the HTTP version is not supported, and none of those describe a credential failure. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6412,7 +6413,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AssumeRole accepts the SerialNumber and TokenCode parameters, so a user can supply MFA information when assuming a cross-account role that the role's trust policy protects with an aws:MultiFactorAuthPresent condition. AssumeRoleWithWebIdentity and AssumeRoleWithSAML are for federated identities authenticated by a web identity provider or SAML IdP and do not take MFA parameters. GetFederationToken is called with IAM user credentials to create a federated user session and cannot assume a role in another account. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6436,7 +6437,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BC (100%).",
+      "e": "The most secure way for code on EC2 to call S3 is to create an IAM role with the required S3 permissions (B) and place it in an instance profile attached to the instance (C), so the SDK gets automatically rotated temporary credentials from the instance metadata service. IAM users and groups (A) involve long-term access keys, and storing those keys in environment variables (E) exposes them. Roles cannot be assigned to IAM groups (D), because groups only contain users. Community vote: BC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6459,7 +6460,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Lambda functions get permissions through an execution role, so the secure approach is to create an IAM role that Lambda can assume, attach the existing policy to it, and set it as the function's execution role. Policies cannot be attached directly to a Lambda function for this purpose. Embedding IAM user access keys or root user keys in environment variables relies on long-term credentials that can leak and violates least privilege. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6481,7 +6482,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A Retry field (retrier) on the GetResource task is the built-in Step Functions way to handle this: configure ErrorEquals TooManyRequestsException, IntervalSeconds 10 and MaxAttempts 1, and leave IllegalArgumentException unmatched so the state machine fails immediately. If the retry also fails, the error propagates and the execution stops. Catchers do not have interval or attempt settings, and building the retry with Delay states or duplicate tasks adds unnecessary complexity. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6503,7 +6504,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Within the template, the Lambda function's Environment Variables property can reference the log group resource (for example with Ref for the name or GetAtt for the ARN), and CloudFormation fills in the value at deploy time so the function can read it at runtime. AWS::Include only pulls in template snippets from S3, Mappings are static lookup tables that cannot hold a generated resource name, and user data applies to EC2 instances rather than Lambda functions. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6525,7 +6526,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "DynamoDB always encrypts tables at rest, and the default is an AWS owned key that you do not create, see, or manage. Creating the table with default encryption options (no SSESpecification) therefore satisfies the requirement. Specifying KMSMasterKeyId implies SSE with a KMS key, either AWS managed or customer managed, and an AWS owned key has no ARN you can supply. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6547,7 +6548,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "X-Ray automatically records the Region for AWS service calls made through an instrumented SDK, but for user-defined services (your own application components) you must add the Region annotation yourself so traces can be filtered and correlated across Regions. The X-Ray console and the daemon do not add annotations; annotations are added in code through the SDK. X-Ray does not add Region annotations automatically for user-defined services. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6569,7 +6570,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The SQS event source mapping setting for maximum concurrency caps how many concurrent invocations each mapping can drive, so setting 10 on the high-priority queue mapping and 90 on the low-priority one keeps the function within 100 total concurrent invocations while reserving capacity for the high-priority queue. Batch size controls messages per invocation and batch window controls how long to buffer messages, neither of which limits concurrency. Delivery delay only postpones message visibility and does not prioritize one queue over another. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6591,7 +6592,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Secrets Manager encrypts secrets with KMS and supports built-in automatic rotation, so it satisfies the encryption and rotation requirements with the least operational work. Creating a separate secret per environment (dev, staging, pre-production, production) keeps each environment's credentials isolated and independently rotated. Secret versions are for staging labels of a single secret's history, not for separate environments. Parameter Store versions cannot be rotated automatically, and putting credentials in environment variables in code is neither encrypted nor rotated. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6615,7 +6616,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AD (100%).",
+      "e": "Standard SQS queues guarantee at-least-once delivery, so the same message can occasionally be delivered more than once (A). During high traffic, if the queue's visibility timeout is less than or equal to the Lambda function's timeout, a message can become visible again before the function finishes, and another invocation processes it and sends a second email (D). Standard queues do not provide exactly-once processing, and DKIM configuration or SES bounce rate affect deliverability and sending reputation, not duplication. Community vote: AD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6638,7 +6639,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "S3 Glacier Instant Retrieval is built for rarely accessed data that needs millisecond retrieval and costs much less than S3 Standard for storage, which covers the first-year requirement of access within minutes. A lifecycle rule then moves the files to S3 Glacier Deep Archive after one year for the cheapest long-term retention through year 7. S3 Standard for the first year costs more, EBS snapshots and EFS are far more expensive for gigabytes per day of rarely used data, and EFS Standard-IA would be applied too late and costs more than Glacier classes. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6660,7 +6661,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (47%), A (47%).",
+      "e": "A CloudFormation stack policy that denies Update actions on the Parameter Store parameter resources prevents stack updates from modifying or replacing them, so values changed by the application are not reset to the template defaults. This is a small change to the stack with no migration. A Retain deletion policy only affects what happens when a resource is deleted, not updates. Moving the settings to DynamoDB or RDS requires rewriting the application and adds a lot of development effort. Community vote: D (47%), A (47%).",
       "images": [],
       "optionImages": [
         [],
@@ -6682,7 +6683,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "ElastiCache for Redis supports complex data structures and sub-millisecond reads, and a write-through strategy updates the cache whenever the RDS data is written so reads always see fresh data even when it changes frequently. DAX only caches DynamoDB and cannot sit in front of RDS. S3 Transfer Acceleration is an S3 upload feature that does not apply to RDS. CloudFront caches HTTP content at the edge and cannot front an RDS database, and it would serve stale data for rapidly changing content. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6704,7 +6705,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Enabling X-Ray active tracing is a configuration change on the Lambda function that needs no code change, and it generates trace segments and a service map showing the time spent in the function and in downstream calls to other AWS services, which pinpoints where the duration is going. CloudTrail records API calls for auditing and not latency, AWS Config tracks resource configuration changes, and CloudWatch Logs only show what the function writes and do not break out the time spent per service call. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6728,7 +6729,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BE (100%).",
+      "e": "Amazon EFS provides a shared NFS file system that many pods can mount at once, so it is the direct replacement for the on-premises NFS share, and the container images go to Amazon ECR (B). An Amazon EKS cluster runs the existing Kubernetes workloads across multiple Availability Zones for high availability and can mount the EFS volume at the required path (E). EBS volumes attach to one instance in one AZ at a time and cannot serve as a shared NFS-style store, and ECS is not Kubernetes, so options A, C and D fail. Community vote: BE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6751,7 +6752,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "For asynchronous invocations, a Lambda destination configured with an On failure condition can send the invocation record to another Lambda function, SQS queue, SNS topic or EventBridge bus, so choosing the error-handling Lambda function's ARN as the failure destination invokes it with details about the failed event. Triggers are event sources and have no failure condition or destination type, X-Ray tracing does not invoke functions, and a CloudWatch status check alarm is not a Lambda feature and does not carry the event payload. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6773,7 +6774,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS AppConfig is designed for feature flags and dynamic configuration: it supports validators to check configuration before deployment, gradual deployment strategies with automatic rollback, and turning a flag on or off without redeploying code, including targeting for particular user segments. Secrets Manager and Parameter Store hold secrets and parameters and have no feature flag or lifecycle-based toggling. AWS Config evaluates resource compliance and does not manage application feature configuration. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6795,7 +6796,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (50%), C (38%), B (12%).",
+      "e": "Adding a separate stage before production with a manual approval action pauses the pipeline until the product owner approves, and a notification rule in the pipeline settings that targets the SNS topic for the manual approval event sends the request to the product owner. This uses native CodePipeline features with no custom code. A Step Functions approval workflow is unnecessary complexity, and a notification rule alone (without an approval action) does not stop the deployment or capture an approval. Community vote: A (50%), C (38%), B (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -6817,7 +6818,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Step Functions task states support a Retry field in the state machine definition where you set ErrorEquals (for example States.Timeout or Lambda.Timeout-related errors), IntervalSeconds, BackoffRate and MaxAttempts, so a failed Lambda invocation is retried automatically. The Timeout field only sets how long a state may run and does not retry, a Fail state simply ends the execution, and routing through SNS to another Lambda function adds needless complexity and does not retry the original task. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6839,7 +6840,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (69%), D (31%).",
+      "e": "Secrets Manager's automatic rotation for RDS with the alternating users strategy keeps two database users and rotates the password of the inactive one, then switches the secret to it, so the credentials the application is currently using remain valid throughout the rotation and there is no downtime. The single user strategy changes the password of the one user in place, which can briefly break active connections. Managed rotation applies to secrets owned by other AWS services rather than to a user the developer created. Community vote: B (69%), D (31%).",
       "images": [],
       "optionImages": [
         [],
@@ -6861,7 +6862,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer corrected from the PDF's stated C to A after manual review; not independently verified. Community vote: A (50%), C (50%).",
+      "e": "Lambda writes a REPORT line for every invocation containing the duration, so a CloudWatch Logs Insights query across all the functions' log groups that filters on @type = REPORT and sorts by @duration descending lists the slowest executions across all functions with no extra setup. CloudTrail Insights detects unusual API call volume and not slow execution. X-Ray insights need instrumentation and are a heavier approach, and Glue crawlers and jobs for log analysis are far more work than a single Insights query. (The source PDF lists C; corrected to A after review.) Community vote: A (50%), C (50%).",
       "images": [],
       "optionImages": [
         [],
@@ -6883,7 +6884,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "API Gateway stages represent environments, and stage variables can hold the Lambda alias name (for example dev, test, prod) used in the integration URI, with Lambda aliases pointing to the matching function versions. One API and one codebase then serve all three environments with minimal effort. ECS and Elastic Beanstalk would require moving off the serverless architecture, and duplicating code per environment is hard to maintain. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6905,7 +6906,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (86%), B (14%).",
+      "e": "The AWS::StepFunctions::StateMachine resource has a DefinitionSubstitutions property that replaces placeholders in the state machine definition with values from the template, such as the API Gateway endpoint obtained via Ref or GetAtt/Fn::Sub, so the state machine references the endpoint at no extra cost. State machines have no environment variables, and storing the endpoint in Secrets Manager or AppConfig adds cost and extra service calls and permissions for something that is not a secret. Community vote: A (86%), B (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -6927,7 +6928,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A dead-letter queue captures messages that fail processing after the configured number of receive attempts, which keeps the failed messages available for inspection so the developer can see why they fail, with only configuration to set up. Increasing the timeout or visibility timeout and reading CloudTrail event history does not show the failed message content, since CloudTrail records API calls and not function errors. Writing failed messages to a DynamoDB table requires extra code and a new table. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6949,7 +6950,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (86%), D (14%).",
+      "e": "ACM certificates are Regional resources and cannot be used in another Region, so a certificate must be requested in ACM in each of the three Regions and associated with the ALB listener there. There is no global ACM certificate for ALBs, a certificate from one Region cannot be imported or attached to an ALB in another, and us-east-1 is special only for CloudFront, not for ALBs. Community vote: C (86%), D (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -6971,7 +6972,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "CloudTrail records IAM CreateRole calls as events that EventBridge receives in near real time, so an EventBridge rule with an event pattern for CreateRole where the caller is not CloudFormation (for example, based on the invoked-by or user agent field) can target the SNS topic directly and notify the security team immediately. Scheduled Lambda, Fargate or EC2 polling every 15 minutes is not immediate and requires more infrastructure and operational work. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -6993,7 +6994,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS SAM is an extension of CloudFormation. Adding the Transform: AWS::Serverless-2016-10-31 section to the template lets CloudFormation expand SAM syntax such as AWS::Serverless::Function and AWS::Serverless::Api into standard resources at deploy time. Plain AWS::Lambda::Function resources are not SAM, Mappings is for static lookup tables and not for declaring resources, and Parameters does not define SAM Globals, which belong in their own Globals section. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7015,7 +7016,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "For asynchronous invocations, Lambda can send events that fail all retry attempts to a dead-letter queue, which must be an SQS standard queue or an SNS topic, and the function's execution role needs sqs:SendMessage permission on it. This captures the failed events for investigation. Kinesis is not a supported DLQ target, SQS FIFO queues are not supported as Lambda DLQs, and an EventBridge rule cannot react to Lambda function failures in this way to store the events. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7037,7 +7038,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Putting an SQS queue between API Gateway and Lambda buffers the traffic spikes, and setting the Lambda function's reserved concurrency to the third-party API's threshold limits how many invocations run in parallel, so the stock application is not overwhelmed while no requests are lost. SNS pushes messages straight to subscribers with no buffering, and provisioned concurrency only pre-warms instances and does not cap concurrency. API Gateway cannot write to Athena, and DynamoDB streams do not throttle calls to an external API. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7059,7 +7060,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AWS Secrets Manager stores the Aurora credentials encrypted with KMS, has built-in managed rotation for RDS and Aurora with Lambda rotation functions, and the ECS task role grants the Fargate tasks permission to read the secret. That removes the encryption and rotation code from the application with the least operational effort. Parameter Store does not rotate secrets natively, RDS parameter groups are for database engine settings and not for credentials, and environment variables expose plaintext secrets and do not rotate. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7081,7 +7082,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (56%), B (38%).",
+      "e": "Publishing a new Lambda version and pointing a weighted alias at both the old and new versions lets a configured percentage of traffic go to the new version, and the API Gateway integration simply references the alias ARN, so only a subset of users hit the new code with minimal setup. Creating a new REST API with canary settings or building a CodeDeploy pipeline involves more configuration and in the API Gateway canary case does not change which Lambda version is invoked. Community vote: A (56%), B (38%).",
       "images": [],
       "optionImages": [
         [],
@@ -7103,7 +7104,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (80%), B (20%).",
+      "e": "Deploying the SAM application with the SAM CLI (sam package and sam deploy) into a separate AWS account for development creates an independent CloudFormation stack, so the one-time test cannot affect the shared pre-production stack that the release pipeline is using. The debug flag only adds logging and still updates the pre-production stack. A change set is created in and executed against the stack's own account, so it cannot be executed in another account, and adding a pipeline stage is unnecessary for a one-time test. Community vote: C (80%), B (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -7125,7 +7126,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "DynamoDB Time to Live (TTL) deletes expired items in the background based on a timestamp attribute, and the deletions do not consume provisioned write capacity, so the throttling from the scheduled delete job goes away. Streams, Step Functions or a higher write capacity during the job all still perform deletes that consume write capacity units and add cost or complexity. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7147,7 +7148,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (75%), A (12%), B (12%).",
+      "e": "The SQS event source mapping has a maximum concurrency setting (minimum value 2) that limits how many concurrent invocations the mapping will drive, so setting it to 2 ensures that no more than two function instances, and therefore two concurrent calls, hit the third-party API. Provisioned concurrency pre-initializes execution environments and does not cap invocations. Batch size controls how many messages each invocation receives, and event filtering selects which messages are processed and has no concurrency role. Community vote: D (75%), A (12%), B (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -7169,7 +7170,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A mock integration in API Gateway returns responses directly from the gateway without any backend, and you configure the method's integration request and integration response to return a given status code and body. Other teams can therefore test the API immediately before the backend exists. Request validators only check incoming requests, gateway responses customize error responses, and a Lambda authorizer controls access and does not generate API responses. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7191,7 +7192,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (86%), B (14%).",
+      "e": "Username is unique per user and has high cardinality, which spreads items evenly across partitions even during a surge of submissions, and it also fits the rule of one request per user. Submission date, validation status (three values) and rating (five values) have few distinct values or cluster around the same values, which creates hot partitions and uneven distribution. Community vote: A (86%), B (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -7213,7 +7214,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (71%), B (14%), C (14%).",
+      "e": "Origin access control (OAC) lets CloudFront sign requests to the S3 bucket using SigV4, and a bucket policy that allows only the CloudFront service principal for the distribution, with read access for objects, blocks direct access to the bucket while the content is still served through CloudFront. The S3 website endpoint requires public access and does not support OAC. The write access in option B is unnecessary, and a custom-header check using aws:RequestTag is wrong because request tags are not HTTP headers. Community vote: A (71%), B (14%), C (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -7235,7 +7236,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Defining a task definition with the Fargate launch type runs the container serverlessly on the existing ECS cluster, with no instances to provision, patch or scale, and an hourly schedule can launch it. A capacity provider, an EC2 instance, or managed node groups (an EKS concept) all require managing EC2 capacity, which is more overhead for a small job that runs briefly each hour. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7257,7 +7258,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "DynamoDB Time to Live can be enabled on the table with expiration_date as the TTL attribute (a Unix epoch timestamp in seconds), and DynamoDB then deletes expired items automatically in the background at no extra write cost. That needs no code. A scheduled Lambda function, Fargate task or Glue job all require writing and operating deletion logic and consume write capacity. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7279,7 +7280,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "The AWS::Lambda::Function Code property accepts S3Bucket and S3Key (and optionally S3ObjectVersion) pointing at the existing deployment package, so adding the bucket name and key is all that is needed. ZipFile is only for inline source code, which is limited to small Node.js or Python snippets and cannot take an S3 key or reference dependencies stored in S3. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7301,7 +7302,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A service appears in the X-Ray service map only if it sends trace segments to X-Ray, so each service must be instrumented with the X-Ray SDK for Python (with the daemon or an AWS-managed integration receiving the data). Sampling rate changes only how many requests are traced and do not add uninstrumented services. X-Ray has no CloudWatch Logs data aggregation setting for this and no service map timeout value. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7325,7 +7326,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AE (100%).",
+      "e": "A SecureString parameter in Systems Manager Parameter Store is encrypted with KMS and can be retrieved by the application, or injected into the container definition, when it is granted permission (A). A secret in AWS Secrets Manager is also encrypted at rest and can be retrieved at runtime or injected through the ECS secrets field (E). Base64 encoding is not encryption, passing the key as a plain CloudFormation parameter or environment variable exposes it in the console and templates, and embedding keys in the container image makes them extractable. Community vote: AE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7348,7 +7349,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Queries on an attribute that is not the table's partition or sort key would otherwise need a scan, so creating a global secondary index with that attribute as its partition key turns them into efficient queries that keep working as the table grows. Raising Limit, parallel scans and increasing read capacity still read the whole table and become more expensive and slower as data volume increases. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7370,7 +7371,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AWS Secrets Manager provides encryption at rest with a KMS key and native automatic rotation on a schedule such as every 30 days, and the instance user data script can fetch the secret at startup with the AWS CLI or SDK and export it as environment variables, so very little custom code is needed. Parameter Store does not rotate automatically, so a rotation Lambda function would need to be built. Storing secrets in S3 or in base64 environment variables requires custom rotation scripts and gives weak protection. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7392,7 +7393,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "API Gateway stage variables act like per-stage environment variables, so the Lambda integration can reference the alias through a stage variable (for example function:${stageVariables.alias}). Creating a second stage for development and setting the variable to the PROD alias in one stage and the DEV alias in the other makes both versions available at the same time under different stage URLs. Gateway responses only customize error responses, Lambda authorizers handle access control, and API Gateway has no concept of environment variables. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7414,7 +7415,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (80%), A (20%).",
+      "e": "A mock integration in an API Gateway REST API returns configured integration responses without calling any backend, so creating a REST API per third-party API that returns sample responses captured from the real service lets the developer test integration code without invoking the actual payment APIs. A gateway response only customizes API Gateway error responses, AppSync does not have a Mock integration type for data sources like this, and Route 53 Resolver inbound endpoints cannot route requests to Lambda ARNs. Community vote: D (80%), A (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -7436,7 +7437,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "S3 request rate limits (at least 3,500 PUT/COPY/POST/DELETE and 5,500 GET/HEAD requests per second) apply per prefix, so spreading object keys across multiple prefixes scales the aggregate request rate in the bucket. Storage class such as Intelligent-Tiering affects cost and not request rates, keeping everything at the bucket root uses a single prefix, and an object tag is not part of the key and does not partition the request load. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7458,7 +7459,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A CloudWatch Logs metric filter on the log group with the term ERROR turns matching log lines into a metric, and a CloudWatch alarm on that metric (threshold 1 or higher) can notify the SNS topic, which emails the team. Logs Insights queries cannot be turned directly into alarms this way, there is no SNS subscription filter for log groups (subscription filters deliver to Kinesis, Firehose or Lambda), and alarms do not take filter patterns directly. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7480,7 +7481,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Enabling server-side encryption on the queue with SSE-SQS (or SSE-KMS) encrypts the message bodies at rest as soon as they are sent to SQS, with no changes to application code. The aws:SecureTransport condition only enforces encryption in transit, and ACM certificates are not used to encrypt SQS messages. An ENCRYPT message attribute is just ordinary metadata and does not trigger any encryption. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7502,7 +7503,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (83%), D (17%).",
+      "e": "Instrumenting the Lambda function with the AWS X-Ray SDK, adding HTTP/HTTPS interceptors and SDK client handlers, and enabling tracing records subsegments for every downstream API and AWS service call, and the X-Ray service map then shows average latency per dependency to pinpoint the slow one. Adding manual timing logs is more work and less structured, CloudWatch metric anomaly detection on Duration shows only that the function is slow and not which dependency, and Synthetics canaries show the user-facing symptom and not the internal cause. Community vote: B (83%), D (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -7524,7 +7525,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (80%), D (20%).",
+      "e": "The Lambda function calls PutEvents with credentials from its execution role, which is what the SDK uses when no credentials are specified in code, so an AccessDeniedException means the role lacks the events:PutEvents permission. Adding that permission to the execution role resolves it. VPC peering with EventBridge is not a thing, there are no separate developer credentials in play, and a resource-based policy on the function controls who can invoke the function and not what the function can call. Community vote: C (80%), D (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -7546,7 +7547,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (86%), A (14%).",
+      "e": "Publishing custom CloudWatch metrics from the application code at the points where a message is received and processed measures exactly the messages handled, excluding initialization and post-processing time, and CloudWatch makes them available in near real time for throughput calculations. ConcurrentExecutions, Invocations and Duration metrics include the whole invocation and do not count the messages, and writing logs processed by a scheduled Lambda function is not near real time. Community vote: C (86%), A (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -7568,7 +7569,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AWS CodeArtifact is an artifact repository that supports Maven and other package formats for Java .jar dependencies, and it emits events when a new package version is published, which an Amazon EventBridge rule can use to start the CodePipeline pipeline. ECR stores container images and not .jar files, and CodePipeline's S3 source plus SNS option does not match because SNS is not how a pipeline is triggered by a new S3 object. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7590,7 +7591,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (83%), A (17%).",
+      "e": "An Amazon EventBridge scheduled rule (cron expression) invokes the Lambda function once per day at the specified time, and you pay only for that single invocation, which is the cheapest way to run the analysis at a set time. An S3 event notification would trigger the function for each branch upload instead of once after all reports arrive, a Step Functions state machine still needs a trigger, and a continuously running Lambda function is not possible and would be wasteful. Community vote: D (83%), A (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -7612,7 +7613,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "For asynchronous invocations, configuring an SQS dead-letter queue on the Lambda function sends events that fail after the retry attempts into the queue with no custom code, and the application can later reprocess them from the queue, for example by using it as an event source. The other options need extra log processing, EventBridge routing or SNS plumbing that adds components and operational overhead. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7634,7 +7635,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "CloudFormation change sets let you preview the changes a stack update will make, including which resources will be added, modified, replaced or deleted, before you execute the update. Stack policies only prevent updates to specified resources, and the Metadata and Resources sections describe the template contents and do not show the impact of a proposed change on running resources. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7658,7 +7659,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AD (80%), BD (20%).",
+      "e": "For cross-account access, the EC2 instance's IAM role in Account B needs an identity policy allowing sts:AssumeRole on the AccessPII role in Account A (A), and the application code must call the AssumeRole API to get temporary credentials for that role, and then use them to access the PII table (D). The EC2 role does not itself have direct permission to the table in Account A (B), instance role credentials only apply to Account B, and GetSessionToken returns credentials for the same identity and cannot assume a role. Community vote: AD (80%), BD (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -7683,7 +7684,7 @@ window.CERTS["dva-c02-pdf"] = {
         2,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: CD (100%).",
+      "e": "DynamoDB TransactWriteItems and TransactGetItems (Transact* operations) provide all-or-nothing ACID transactions across multiple items, so both users' records are updated together or not at all (C). Amazon Aurora MySQL is a relational database that supports standard transactions with commit and rollback (D). Consistent reads do not provide transactions, ElastiCache for Memcached has no transaction blocks, and Athena is a query service that does not support transactional updates in this way. Community vote: CD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7706,7 +7707,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (83%), D (17%).",
+      "e": "CloudFormation dynamic references use the {{resolve:ssm:parameter-name}} syntax to retrieve a plaintext String parameter from Systems Manager Parameter Store when the stack is created or updated. The ssm-secure reference is for SecureString parameters, Ref returns the logical resource or parameter value from within the template and cannot read Parameter Store directly, and Fn::ImportValue imports exports from other stacks. Community vote: A (83%), D (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -7728,7 +7729,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), D (25%).",
+      "e": "Setting the function's reserved concurrency to the number of concurrent requests the third-party service allows caps how many instances of the function can run at the same time, which limits the call rate to the service. Provisioned concurrency only keeps environments warm and does not cap invocations beyond that number. Changing memory or the timeout does not limit how many requests are sent. Community vote: A (75%), D (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -7750,7 +7751,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (75%), A (25%).",
+      "e": "AWS Copilot has built-in pipeline commands (copilot pipeline init and copilot pipeline deploy) that generate and deploy an AWS CodePipeline with CodeCommit as the source and CodeBuild stages to build and deploy the application for each environment, so this is the most operationally efficient approach. Writing a custom buildspec and pipeline, using SAM CLI (for serverless applications), or hand-writing a CloudFormation add-on all involve more manual work. Community vote: C (75%), A (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -7772,7 +7773,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (75%), C (25%).",
+      "e": "A randomly generated UUID has very high cardinality and is evenly distributed, so items spread uniformly across partitions and no single partition becomes hot, even before any access pattern analysis. A customer's full name, a signup date, and a pet's name can repeat or cluster, which risks uneven distribution and hot partitions. Community vote: A (75%), C (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -7794,7 +7795,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "IAM Identity Center issues temporary credentials for the CLI and SDKs, and the SSO session and role credentials expire (the CLI session lasts a limited time, commonly up to 8 hours), after which calls fail with access errors until the developer runs aws sso login again. Nothing was changed in configuration, which rules out changes to permission sets, the target account, or file permissions on the CLI binary, and the same setup worked at the start. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7816,7 +7817,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Lambda environment variables are encrypted at rest by default, and you can configure a KMS customer managed key to encrypt them, which gives the company full control over the key policy so that only authorized entities can use the key and see the value. The default Parameter Store key and AWS managed keys do not give that level of control, and storing the key in a code repository or DynamoDB item does not satisfy the requirement of keeping it in the Lambda configuration. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7838,7 +7839,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "An ALB terminates the client connection and opens a new one to the instance, so the instance sees the ALB's IP address. The ALB adds the client's IP address in the X-Forwarded-For request header, so the HTTP server's log format must be configured to log that header to capture client public IPs. A Host header carries the requested domain name, and the CloudWatch Logs agent and X-Ray daemon only ship logs and traces, and do not change what the HTTP server writes into its log. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7860,7 +7861,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "To reach a database in private subnets, the Lambda function must be configured with VPC access (subnets and security groups) so its network interfaces are in the VPC, and the DB instance's security group must allow inbound traffic from the function's security group on the database port. A public IP address on the DB would expose it, and Direct Connect and CloudFront are not used to connect Lambda to an RDS instance. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7882,7 +7883,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Creating an IAM role in the second account with a trust policy for the developer's account and calling sts:AssumeRole returns temporary, automatically expiring credentials, and no long-term keys are shared, which is the standard secure approach for cross-account access. Emailing access keys or adding SSH keys involves long-term credentials, and Cognito user pools authenticate application users and do not issue credentials for another AWS account's resources. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7904,7 +7905,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "An IAM role with only the S3 permissions that the application needs, attached to the EC2 instance through an instance profile, gives the application temporary credentials that are rotated automatically and follow the principle of least privilege. IAM users with access keys embedded in code risk leaking long-term credentials, and an administrator role or AdministratorAccess policy grants far more permissions than the application needs. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7928,7 +7929,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BC (100%).",
+      "e": "An Application Load Balancer supports built-in authentication actions on HTTPS listeners, so a public ALB listening on port 443 with a default authenticate-oidc action authenticates users against the OIDC IdP before forwarding to the unchanged website. A Network Load Balancer operates at layer 4 and has no authentication actions. An authenticate action requires HTTPS, so the HTTP port 80 listener fails, and a Lambda action would require writing and maintaining custom authentication code. Community vote: BC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7951,7 +7952,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS AppConfig supports feature flag configuration profiles that let you store flag values and turn features on or off, with controlled deployment strategies, without redeploying the application. AWS AppSync is a GraphQL service with no feature flag profiles. A DynamoDB table with Streams or Amplify DataStore synchronization is a data store or sync mechanism, not a purpose-built feature toggle system. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7975,7 +7976,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BD (100%).",
+      "e": "To share subnets across stacks, the network team's template must export the subnet IDs in its Outputs section with an Export name, and the developer's template must consume them with the Fn::ImportValue intrinsic function. Missing either side makes the stack launch fail. Ref only references resources in the same template, and the Mappings section is a static lookup table that has no role in cross-stack exports. Community vote: BD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -7998,7 +7999,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "IAM policy changes on a role are applied to the role directly, and the temporary credentials the instance profile supplies pick up the new permissions without any restart, so adding the permission to the role is enough. Terminating, hibernating, or restarting the instance causes needless disruption. The failure is a missing identity-based permission on the role, so editing the bucket policy and restarting does not address it. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8022,7 +8023,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BE (100%).",
+      "e": "Setting the Origin Protocol Policy to Match Viewer makes CloudFront connect to the ALB over HTTPS when the viewer used HTTPS, and setting the Viewer Protocol Policy to Redirect HTTP to HTTPS forces viewers onto HTTPS, so traffic is encrypted both from the client to CloudFront and from CloudFront to the origin. Signed URLs restrict access but do not encrypt. Field-level encryption protects specific POST fields rather than the whole connection, and compression only affects performance. Community vote: BE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8045,7 +8046,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (80%), D (20%).",
+      "e": "The AWS SAM CLI is built for local testing: sam local generate-event s3 put produces a realistic S3 put event JSON, and sam local invoke runs the function locally with that event, giving the least setup. Uploading to S3 does not trigger a local function, and aws lambda invoke calls the deployed function in AWS rather than a local copy. The console test event also targets the cloud function, not a local one. Community vote: C (80%), D (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -8067,7 +8068,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "An existing CloudWatch Logs log group can be encrypted by running aws logs associate-kms-key with the KMS key ARN, and the key then encrypts newly ingested data. Creating the log group with the key (create-log-group) only works at creation time, and this log group already exists. Client-side encryption with the Encryption SDK requires code changes, and associating a key is not done from the KMS console for log groups. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8089,7 +8090,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (50%), D (50%).",
+      "e": "The table key is OrderID only, so finding items by OrderSource needs an index with OrderSource as the partition key. A GSI can be added to an existing table and then queried by MobileApp, which avoids scanning 100,000+ records. A LSI must be created at table creation time and must share the table's partition key, a GSI with OrderSource as sort key still needs a partition key to query, and Scan reads the whole table and applies the filter afterward (QueryFilter is also not a Scan parameter). Community vote: C (50%), D (50%).",
       "images": [],
       "optionImages": [
         [],
@@ -8111,7 +8112,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (50%), D (38%), A (12%).",
+      "e": "Lambda environment variables can be encrypted with a customer managed KMS key, and enabling encryption helpers makes the console encrypt the values client-side before they are stored so they are also protected in transit, with the execution role granted kms:Decrypt on the key. Parameter Store String type parameters are not encrypted at all, and S3 objects or a Secrets Manager layer add unnecessary components and do not provide the encryption helper behavior the question targets. Community vote: B (50%), D (38%), A (12%).",
       "images": [],
       "optionImages": [
         [],
@@ -8133,7 +8134,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Publishing to an SNS topic with all three Lambda functions subscribed fans the event out so each function is invoked independently, and one function failing does not affect the others. With SQS, the three functions would compete for the same messages so each message would be processed by only one function. An ALB sends each request to a single target, and moving the logic into Step Functions couples the three tasks into one workflow rather than isolating them. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8155,7 +8156,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (67%), B (33%).",
+      "e": "A local secondary index shares the table's partition key and offers an alternate sort key, and it is the only index type that supports strongly consistent reads, so the query returns all recent writes. LSIs must be defined at table creation, which the option does. GSIs support only eventually consistent reads, so the GSI options cannot guarantee the latest data, and an eventually consistent LSI query would not either. Community vote: D (67%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -8177,7 +8178,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Adding a global secondary index with order_date as the partition key and order_id as the sort key lets the Lambda function Query by those attributes, and a GSI can be added to an existing table. A LSI cannot be added after table creation and must keep the table's partition key (customer_id), so it cannot use order_date as partition key. A Scan is inefficient and costly, and DynamoDB Streams is a change log that cannot be queried. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8199,7 +8200,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A GSI with subject_name as the partition key and top_score as the sort key groups items by subject and sorts them by score, so a Query with ScanIndexForward false and Limit 1 returns the top scorer's student_id, which is projected from the table key. A LSI must use the table's partition key student_id, so options A and B are invalid designs, and a GSI sorted by student_id gives no ordering by score. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8221,7 +8222,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Storing the generated video in Amazon S3 and creating a pre-signed URL with an expiration of at least 3 hours gives customers durable, time-limited access. Lambda /tmp is ephemeral and local to one execution environment, and a Lambda function URL does not serve files from it. EFS objects cannot be shared with S3 pre-signed URLs, and you do not store objects directly in a CloudFront distribution, which needs an origin such as S3. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8243,7 +8244,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "An SNS subscription filter policy applied to the Lambda subscription delivers only matching messages to that subscriber, while other subscribers still receive the rest of the messages, and it requires only configuration with no code. Lambda event filtering does not apply to SNS-triggered invocations, adding an SQS queue adds extra components, and having the function republish messages to the topic would cause loops and extra development. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8265,7 +8266,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Storing session data in a durable external store such as Amazon DynamoDB keeps sessions available independently of any single EC2 instance, so a failed instance loses nothing. Sticky sessions pin users to an instance and lose the session if that instance fails. SQS is a message queue, not a session store, and connection draining only finishes in-flight requests when instances deregister without preserving session state. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8287,7 +8288,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "For ECS blue/green deployments managed through CloudFormation and CodeDeploy, the template uses a Transform section with the AWS::CodeDeploy::BlueGreen hook, which lets CodeDeploy shift traffic gradually using canary or linear configurations before cutting over fully. Deploying a separate stack and flipping DNS or doing plain stack updates gives no percentage-based traffic shifting. A nested stack for the new version does not by itself define the blue/green hook behavior on the application stack. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8311,7 +8312,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AD (100%).",
+      "e": "Tracing a request across microservices is done with AWS X-Ray: the X-Ray SDK in each microservice records segments and propagates the trace header, and the X-Ray daemon running on the EC2 instance listens on UDP port 2000 and relays the segments to the X-Ray service. X-Ray does not ingest CloudWatch Logs, the daemon uses UDP rather than a TCP interface endpoint on port 2000, and CloudWatch metric streams deliver metrics, not request traces. Community vote: AD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8334,7 +8335,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "AWS SAM provides shorthand resource types for Lambda functions and related infrastructure, and the SAM CLI (sam build and sam deploy, which uses CloudFormation) can be run in a CI/CD pipeline for repeatable, reliable deployments with minimal code. Scripting zip files by hand, with manual console uploads or custom CLI deployments, requires far more effort and is error prone. CodeArtifact stores software packages, not container images (that is ECR). Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8356,7 +8357,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "An event-driven architecture reacts to each change as it occurs, for example by using DynamoDB Streams to trigger processing as items are written, which delivers near-real-time results instead of a nightly batch. Schedule-driven is the batch pattern the analysts want to leave behind. Client-server describes request and response communication, and fan-out distributes one message to many consumers but does not by itself process data as it arrives. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8378,7 +8379,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Secrets Manager has built-in multi-Region secret replication: on the source secret you add us-east-1 as a replica Region and choose a KMS key in that Region to encrypt the replica, and the replica is kept in sync automatically. Replication is configured on the source secret, not by creating a new secret in the destination, and there is no replication rule tied to rotation. Lifecycle rules to S3 do not exist for Secrets Manager. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8400,7 +8401,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A write-through strategy updates the cache at the same time the database is written, so cached items always reflect the latest value. TTL and lazy loading can serve stale data until the item expires or is reloaded. Read-through populates the cache on a miss but does not update existing cached entries when the data changes, so it can also return stale values. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8422,7 +8423,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "For a mock integration, the integration request mapping template must return a JSON status code such as {statusCode: 200} so API Gateway can choose the response, and the integration response mapping template with Content-Type text/html then contains the HTML for the landing page. The HTML belongs in the integration response, not the request, and the response content type must be text/html rather than application/json for browsers to render the page. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8444,7 +8445,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS X-Ray provides tracing for Lambda functions, including Java functions via the X-Ray SDK or active tracing, showing segments, subsegments, and downstream calls to help find where behavior goes wrong. CloudWatch offers logs and metrics but not request tracing, CloudTrail records API calls for auditing, and Trusted Advisor gives account best-practice checks. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8466,7 +8467,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A Cognito user pool authenticates registered users and issues ID and access tokens that expire and can be renewed with a refresh token, and API Gateway's Cognito user pool authorizer validates those tokens. An identity pool issues AWS credentials and is not used with the Cognito authorizer, a custom Lambda authorizer with database-stored tokens requires building token expiry and refresh yourself, and creating an IAM user per API user does not scale or provide expiring tokens. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8488,7 +8489,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS X-Ray traces requests end to end across API Gateway, Lambda, and DynamoDB, and its service map shows latency, errors, and throttling per component, which makes it the quickest way to locate bottlenecks in the architecture with little code (enable tracing and add the SDK). Logs Insights, a metric filter on one error, or DynamoDB metrics each look at a single component and require more effort to correlate. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8512,7 +8513,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AE (100%).",
+      "e": "Lambda function URLs give a function a dedicated HTTPS endpoint with almost no configuration, and Amazon API Gateway integrates directly with Lambda and is supported by AWS SAM through the Api or HttpApi event types, so both expose the function over HTTP with minimal setup. Gateway Load Balancer is for network appliances, Network Load Balancer operates at layer 4 and cannot target Lambda, and Global Accelerator does not front Lambda functions directly. Community vote: AE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8535,7 +8536,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Because the newsletter is the same daily content, the Lambda function can cache the database result and the translated output in the /tmp directory, which persists across invocations within a warm execution environment, so repeat requests avoid the database call and another Amazon Translate call. Amazon Translate has no TranslateText API caching feature. Asynchronous invocation does not reduce the work per request, and parallel processing does not fix the overloaded database. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8557,7 +8558,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "High-resolution custom metrics (1-second granularity) can be monitored by a high-resolution alarm, which evaluates at periods of 10 or 30 seconds and can send an SNS notification within the required window. Standard alarms evaluate at 1-minute minimum periods. Dashboards and Logs Insights only display or query data, and default metrics have coarser granularity so they cannot meet the 30-second need. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8579,7 +8580,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "API Gateway changes to resources and methods only take effect once the API is deployed to a stage, and a CloudFormation AWS::ApiGateway::Deployment resource is not recreated when the template changes unless something forces it, so the new methods are not live and return 404. Running aws apigateway create-deployment from a CodeBuild stage redeploys the API to the stage. Rollback settings concern stack failures, and CloudFront invalidation is irrelevant to an API Gateway stage endpoint. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8601,7 +8602,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Creating a separate test stage and using stage variables to point the integration at a Lambda alias for the updated function lets the developer test through the test stage URL without touching the production stage or users. A canary release on the existing stage sends part of production traffic to the new code, so users are affected. Changing the endpoint to private would break production access, and duplicating the whole stack is far more work. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8623,7 +8624,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (71%), A (29%).",
+      "e": "Using a Lambda alias that the application invokes and shifting a weighted portion (for example 10 percent) of traffic to the new version limits the blast radius, and if errors appear the alias can be pointed fully back to the previous version immediately. Moving the whole alias at once exposes all users to a bad version, invoking by version number requires changing the application, and the three-alias design is not possible because an alias can only split between function versions, not other aliases. Community vote: B (71%), A (29%).",
       "images": [],
       "optionImages": [
         [],
@@ -8645,7 +8646,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "In API Gateway, an API key only grants access when it is associated with a usage plan that is linked to the API stage, and CreateApiKey alone does not do that, so calls return 403 Forbidden. Calling CreateUsagePlanKey associates the new key with the correct usage plan. Redeploying the API, updating an authorizer, or importing keys does not make an existing key part of a usage plan. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8667,7 +8668,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "CloudFormation drift detection compares the actual configuration of stack resources with the template and reports which resources and properties were changed outside CloudFormation, which is exactly what is needed for the modified security groups. A Conditions statement and change set only affect how templates are deployed, and change sets preview template changes rather than detecting manual changes. Amazon Detective investigates security findings and does not show CloudFormation configuration drift. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8689,7 +8690,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer corrected from the PDF's stated D to C after manual review; not independently verified. Community vote: C (60%), D (40%).",
+      "e": "The AWS SDK and CLI credential provider chain checks the shared credentials file before the instance profile, so the application uses the admin access key from the credentials file and never uses the role that denies S3. The explicit deny applies only to the role identity, not to the IAM user whose keys are in use, so the instance can perform all actions on any S3 bucket. The other options assume the role's deny takes effect or invent partial access. (The source PDF lists D; corrected to C after review.) Community vote: C (60%), D (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -8711,7 +8712,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (83%), D (17%).",
+      "e": "AWS Systems Manager Parameter Store can hold the credentials as SecureString parameters encrypted with KMS, and the Lambda function retrieves them at runtime with ssm:GetParameter, removing plaintext secrets from the environment. IAM database authentication applies to databases, not SFTP. KMS stores keys rather than arbitrary secrets, and an encrypted file in S3 requires extra custom code to manage and decrypt. Community vote: B (83%), D (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -8733,7 +8734,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The security best practice for applications on EC2 is to put the S3 read permissions in an IAM policy, attach it to an IAM role, and associate the role with the instance through an instance profile, so the application receives short-lived temporary credentials. Groups and users cannot be attached to an instance profile, and web identity federation is for external identity providers such as mobile or web sign-in, not for EC2 workloads. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8757,7 +8758,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (100%).",
+      "e": "Having the existing Lambda function publish a custom CloudWatch metric with the number of orders per batch, and creating a CloudWatch alarm that notifies the SNS topic when the metric is 0, alerts promptly with little extra code. Adding Kinesis streams and an extra consumer Lambda function takes much more implementation effort, and a scheduled function that checks metrics every 24 hours does not notify as soon as possible. Community vote: AC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8780,7 +8781,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A table with a local secondary index stores all items that share a partition key value, including their index entries, in one item collection, and writes to the table and LSI consume the same provisioned capacity, so an uneven distribution of partition key values creates a hot partition that throttles even when total capacity is not exceeded. An LSI shares the table's capacity rather than having its own, backoff logic would not remove the throttling cause, and missing IAM permission would produce an access denied error, not a throughput exception. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8802,7 +8803,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "CloudFront caches objects at edge locations until their TTL expires, so updated S3 objects keep being served from cache until the cache is refreshed. Creating a CloudFront invalidation after deployment removes the cached copies so the new artifacts are fetched from S3. S3 Object Lock only prevents deletion, clearing the bucket does not clear edge caches, and changing the origin does not invalidate cached objects. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8824,7 +8825,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "AWS IAM Identity Center with permission sets provides centralized single sign-on across multiple AWS accounts and issues temporary credentials, which scales to distributed developers and is the most operationally efficient. Managing IAM roles per developer individually is high effort, sharing access keys is insecure long-term credential use, and SSH keys per user are harder to govern across multiple accounts. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8846,7 +8847,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A DELETE_FAILED on a resource such as an IAM role usually means the resource cannot be deleted, for example because it is still in use or has attached items. The reliable fix is to update the template so the resource has a DeletionPolicy of Retain, so the stack deletion can finish, and then manually delete the role afterward. DependsOn only changes ordering, there is no force option with a role-arn parameter in CloudFormation, and this is not a service fault requiring Support. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8868,7 +8869,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The PutClusterCapacityProviders API associates the existing cluster with the FARGATE and FARGATE_SPOT capacity providers, which are built in and do not need to be created. Using FARGATE as the primary provider with a base value ensures a reliable baseline of tasks, which minimizes downtime, with FARGATE_SPOT as a secondary option. CreateCapacityProvider is for Auto Scaling group capacity providers, and putting FARGATE_SPOT first risks interruptions for a critical application. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8892,7 +8893,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BC (100%).",
+      "e": "CloudFront real-time logs can be enabled and delivered with very low latency to a Kinesis data stream, and a Lambda function can then forward the records to Amazon OpenSearch Service where OpenSearch Dashboards visualizes error rates and anomalies close to real time. Standard logs delivered to S3 and queried by Athena are delayed, Firehose by itself does not provide the dashboard, and CloudTrail does not ingest CloudFront access logs. Community vote: BC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8915,7 +8916,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The DynamoDB Query operation returns items sorted by the sort key in ascending order by default, and setting the ScanIndexForward parameter to false reverses this to descending order. Creating a LSI on the same sort key, renaming the key, or setting KeyConditionExpression to false do nothing for ordering, and the key schema of an existing table cannot be changed. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8937,7 +8938,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS CloudFormation templates describe the infrastructure as code so the same stack can be created repeatedly for identical environments, and stack updates can roll back automatically on failure. The cfn-init and other helper scripts called from the template install software and start the application on EC2. Amplify and AppSync are not EC2 deployment tools, and CodeBuild does not run AppSpec-based deployments, which are a CodeDeploy feature. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -8959,7 +8960,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (75%), B (25%).",
+      "e": "CodeBuild local caching keeps files on the build host between builds, so specifying a local cache and listing the dependency folder path in the buildspec cache paths avoids re-downloading dependencies from CodeArtifact on each build. Adding the repository name in the buildspec does not configure a cache. An S3 cache would still need to download the files from S3 each time, and buildspec files are not retrieved from CodeArtifact. Community vote: C (75%), B (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -8981,7 +8982,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (80%), C (20%).",
+      "e": "Lambda event source mappings for DynamoDB Streams support event filtering, so a filter pattern on TransactionStatus equal to failed and Price above the threshold invokes the function only for matching records, and the function simply publishes to SNS. This requires the least code. Doing the check in handler code takes more development, DynamoDB Streams cannot map directly to SNS, and CloudWatch alarms cannot evaluate item attributes in a stream. Community vote: A (80%), C (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -9003,7 +9004,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "For asynchronous Lambda invocations, a dead-letter queue configured on the function receives events that fail after retries, so adding an SQS standard queue as the DLQ captures the failed events for analysis with just configuration. SNS FIFO topics are not supported as Lambda dead-letter targets (only SQS standard queues and SNS standard topics). Logging and CloudTrail do not capture event payloads, and Step Functions adds unnecessary workflow development. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9027,7 +9028,7 @@ window.CERTS["dva-c02-pdf"] = {
         2,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: CD (100%).",
+      "e": "A bucket policy that denies requests when aws:SecureTransport is false enforces in-transit encryption over HTTPS, and encrypting the personal data with a customer managed KMS key in the application before uploading satisfies encryption with KMS keys that can be rotated on demand. Permissions boundaries apply to IAM principals, not bucket policies, a bucket policy cannot enable client-side encryption, and Block Public Access has no setting that enforces HTTPS. Community vote: CD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9050,7 +9051,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Lambda allocates CPU power in proportion to configured memory, so increasing the memory setting also increases vCPU and network performance and typically shortens a compute-heavy image processing task. You cannot choose an instance type for Lambda. A newer runtime does not meaningfully change processing time, and reserved concurrency controls scaling limits rather than speed. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9072,7 +9073,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "UPDATE_ROLLBACK_FAILED occurs when CloudFormation tries to roll back a failed update but cannot return a resource to its previous state, commonly because the resource, here the RDS DB instance, was deleted or changed manually outside the stack. An invalid instance type, a template syntax error, or insufficient permissions would cause the original update to fail and normally roll back cleanly, rather than leaving the stack in a failed rollback state. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9094,7 +9095,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "With versioning enabled, a lifecycle rule must handle both the current and noncurrent versions: expiring current versions 1 year after creation adds a delete marker, and the noncurrent version expiration permanently removes the older versions. A rule that only deletes expired delete markers and noncurrent versions would never expire the current version. Custom Lambda functions driven by event notifications are unnecessary operational overhead compared with native lifecycle rules. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9116,7 +9117,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (50%), C (50%).",
+      "e": "X-Ray sampling rules can match on service name, URL path, HTTP method, and other attributes, so a rule that sets the reservoir and fixed rate to trace 100 percent of user interactions and transactions, together with a low-rate rule for high-volume read-only background requests, captures what matters without wasting effort. The other options either sample important traffic at lower rates or sample noisy background traffic at higher rates or disable it entirely, which gets the priorities backwards. Community vote: D (50%), C (50%).",
       "images": [],
       "optionImages": [
         [],
@@ -9140,7 +9141,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AD (100%).",
+      "e": "Publishing a version of the original function and a new version after the code change produces immutable versions that can be targeted, and creating an alias that points to the original version with a weighted routing configuration to the new version splits traffic between them. CodeBuild does not shift Lambda traffic, and function URLs cannot be given weights because aliases route between function versions, not URLs. Community vote: AD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9163,7 +9164,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS CloudTrail records RDS management API calls, including DeleteDBInstance, along with the IAM identity that made the call, and event history keeps 90 days of management events. Filtering the events for the mysql-db resource and inspecting them shows who deleted it. RDS CloudWatch logs hold database engine logs, X-Ray traces application requests, and Systems Manager has no deletions inventory. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9185,7 +9186,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (83%), B (17%).",
+      "e": "IAM database authentication lets the application use its IAM role to generate short-lived authentication tokens for RDS for MySQL, so no long-term database password is stored anywhere. Secrets Manager, Parameter Store, and environment variables all still rely on a stored database password, which is a long-term credential, even if retrieved through a role. Community vote: A (83%), B (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -9207,7 +9208,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (80%), A (20%).",
+      "e": "When DynamoDB TTL deletes an item, the deletion is recorded in DynamoDB Streams as a REMOVE record performed by the DynamoDB service principal, so an event source mapping invokes a Lambda function that processes the expired item and writes it to S3, with no servers to manage. The 5-minute run fits within Lambda's 15-minute limit. DAX is a cache and cannot query for expired items, EventBridge rules do not react to TTL deletions, and an ECS cluster adds operational overhead. Community vote: B (80%), A (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -9231,7 +9232,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         2
       ],
-      "e": "Answer corrected from the PDF's stated AC to BC after manual review; not independently verified. Community vote: BC (60%), AC (40%).",
+      "e": "WebSocket APIs in API Gateway support only request parameter-based Lambda authorizers, which can use header, query string, or stage variable values as the identity source and cache the authorization result based on them. The authorizer's returned context map can then be referenced in an integration request mapping template so downstream integrations do not need to repeat secrets or tokens. Token-based authorizers are not supported for WebSocket APIs, and VPC endpoint policies do not relate to authorizer caching. (The source PDF lists AC; corrected to BC after review.) Community vote: BC (60%), AC (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -9254,7 +9255,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Turning on CloudWatch Logs for the API Gateway stages (JSON format) and using Lambda's built-in CloudWatch logging lets the developer search all application logs with CloudWatch Logs Insights with little setup, and Route 53 health checks monitor availability. CloudTrail records API activity rather than application logs, PutMetricData publishes metrics rather than logs, and the Firehose, S3, and OpenSearch pipeline requires much more operational effort. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9276,7 +9277,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Creating a release branch from the latest commit to be released freezes the release content so QA and bug fixes happen in isolation, while new feature work continues on main. After the release, merging the release branch into main brings all fixes back. Tags are fixed pointers to commits and cannot take new commits or be used for isolated fix work, and rebasing main onto the release branch rewrites history and would risk losing the new feature work. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9298,7 +9299,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS CodeBuild supports test reports natively: in the buildspec file the developer defines a reports section that points to the test result files, and CodeBuild generates report groups for each build run in the pipeline. CodeDeploy AppSpec files define deployment lifecycle hooks, not test reports, SSM Agent does not produce test reports, and CodeArtifact is a package repository with no test report templates. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9320,7 +9321,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The AWS AppConfig Agent Lambda extension runs alongside the function, retrieves and caches the configuration, and serves it through a local HTTP endpoint on localhost, so the function reads dynamic configuration with minimal code and gets updates without redeployment. Environment variables and deployment packages require redeploying to change values, and building AppConfig API calls with the X-Ray SDK is both the wrong tool and more effort. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9342,7 +9343,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Amazon EFS file systems can be mounted by VPC-connected Lambda functions through an access point and mount targets, and separate teams can independently update the libraries and data on the shared file system. EBS volumes cannot be attached to Lambda functions, /tmp is ephemeral and per execution environment, and Lambda does not support mounting Amazon FSx for Windows File Server. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9364,7 +9365,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "SQS supports dead-letter queue redrive, and the StartMessageMoveTask API moves messages from the dead-letter queue back to the source queue (or another destination) after the bug is fixed, with no custom code. SendMessageBatch would require writing code to read, resend, and delete messages. ChangeMessageVisibility only changes the visibility timeout within the same queue, and PurgeQueue permanently deletes messages. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9386,7 +9387,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "The CodeDeploy agent can be installed on the local machine, and the codedeploy-local command deploys a bundle from a local directory or an S3 location specified with the --bundle-location option, which lets the developer test and debug locally with minimal configuration and without creating deployment groups. CodeDeploy deployments to a local machine as an instance are not set up that way, and CodeArtifact and CodeBuild with CodePipeline run in the cloud rather than locally. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9408,7 +9409,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (60%), D (40%).",
+      "e": "AWS AppConfig manages and deploys application configuration such as connection and transaction limits without code redeployment, and the AppConfig agent on ECS fetches updates at runtime. A deployment strategy such as Canary10Percent20Minutes rolls the change out gradually with monitoring and rollback, avoiding downtime. CodeDeploy in-place deployments and CDK deployments redeploy the application itself, and the Lambda plus CloudWatch alarm polling design is convoluted. Community vote: C (60%), D (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -9430,7 +9431,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The SAM workflow is to build the application locally (sam build), package it by uploading the artifacts to Amazon S3 and producing a transformed template (sam package), and then deploy the packaged template through CloudFormation (sam deploy), which reads the artifacts from S3. EBS and CodeCommit are not used as SAM package targets, and deploying before packaging reverses the required order. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9452,7 +9453,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (67%), D (33%).",
+      "e": "A zip deployment package is limited to 250 MB unzipped, so a 500 MB dependency does not fit, but Lambda container images support up to 10 GB. The image must be pushed to Amazon ECR, which is the only registry Lambda can pull images from. Zip packages, whether uploaded directly or from S3, are bound by the 250 MB limit, and S3 cannot be the source for a container image. Community vote: B (67%), D (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -9474,7 +9475,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (40%), D (40%), A (20%).",
+      "e": "A public API Gateway REST API with an HTTP integration can add the third-party API key as a header in the integration request, so the key stays server-side and never reaches the browser, and it avoids paying for and maintaining Lambda invocations. A private REST API is reachable only from inside a VPC, so a public browser application cannot call it. The Lambda proxy options also work but add Lambda cost and code, making them less cost-effective. Community vote: C (40%), D (40%), A (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -9496,7 +9497,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The first cdk deploy in a new account and Region needs the CDK bootstrap resources, including the staging S3 bucket that holds Lambda assets, and the NoSuchBucket error means that bucket does not exist in the second account. Running cdk bootstrap against the beta account and Region creates the CDKToolkit stack with the asset bucket and deployment roles. cdk synth only produces the CloudFormation template, cdk init scaffolds a new project, and cdk destroy deletes stacks. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9518,7 +9519,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "AWS SAM provides policy templates such as S3ReadPolicy that expand into a least-privilege IAM policy and are attached to the function's execution role through the Policies property, scoped to the named bucket. A Lambda authorizer is for API Gateway authentication and has nothing to do with S3 permissions. A bucket policy is not added to a Lambda function, and SQS is a queue service that does not grant S3 read access (and SQS has queues, not topics). Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9542,7 +9543,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (100%).",
+      "e": "CodePipeline can start immediately on change from an S3 source (via S3 event notifications/EventBridge with versioning enabled) and from a CodeCommit repository (via an EventBridge rule on repository changes), so A and C trigger a deployment whenever the source changes. Option D only polls on a schedule, so it is not immediate. CodePipeline cannot use an EBS volume or EC2 ephemeral storage as a source. Community vote: AC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9565,7 +9566,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A 502 Bad Gateway from API Gateway with Lambda proxy integration means the Lambda function returned a malformed response. The function must return a JSON object with statusCode, headers and a string body, so changing the response format resolves it. HTTP versus HTTPS, the request payload and the authorization header would produce 4xx errors rather than a 502 from a malformed integration response. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9587,7 +9588,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The AWS X-Ray SDK instruments each microservice to emit trace segments, and X-Ray builds a service map and end-to-end traces that show request flow and where errors or latency occur. CloudWatch gives logs and metrics per component but not a request-level end-to-end trace. CloudTrail records API calls for auditing, and AWS Health reports AWS service health events, not application request tracing. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9609,7 +9610,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "SQS standard queues provide at-least-once delivery, so duplicates are possible, while a FIFO queue with message deduplication drops messages with the same deduplication ID sent within the 5-minute deduplication interval, which covers duplicates submitted within 1 minute. Lowering Lambda concurrency does not prevent duplicate messages, Lambda temporary storage is not shared across execution environments, and standard queues do not support message deduplication or message group IDs. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9631,7 +9632,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Provisioned concurrency keeps a configured number of execution environments initialized and ready, which removes cold starts for latency-sensitive traffic; it must be configured on a published version or alias. Reserved concurrency only caps and guarantees capacity without pre-warming, more memory does not eliminate cold starts, and an account concurrency quota increase just raises the scaling ceiling. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9655,7 +9656,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BC (57%), AE (29%), BE (14%).",
+      "e": "Cross-account access to Kinesis Data Streams uses role assumption: create an IAM role in Account B with read permissions on the stream (B), and give it a trust policy that lets the instance profile role from Account A call sts:AssumeRole, with Account A's role also permitted to assume it (C). Granting read permissions only on the Account A role (A) is not enough because Kinesis Data Streams does not allow cross-account access via identity policy alone, a trust policy controls who may assume a role rather than allowing stream reads (D), and Kinesis Data Streams resource-based policies are not the mechanism intended here (E). Community vote: BC (57%), AE (29%), BE (14%).",
       "images": [],
       "optionImages": [
         [],
@@ -9678,7 +9679,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "EC2 publishes CPUUtilization to CloudWatch, so a CloudWatch alarm with an 80% threshold can notify an Amazon SNS topic automatically. CloudTrail records API activity and does not hold CPU metrics or support metric alarms, so B and D cannot work. A cron job calling describe commands every 15 minutes is custom, delayed and does not return CPU utilization. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9700,7 +9701,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "An S3 Lifecycle expiration rule that expires objects 90 days after creation deletes the PDFs automatically with no code, infrastructure or scheduling. Application code, a scheduled Lambda scanning every object, or a prefix-partitioning scheme with a Lambda all require building and maintaining custom logic for something S3 does natively. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9722,7 +9723,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "With a Cognito user pool authorizer, API Gateway expects a valid ID or access token issued by the user pool in the Authorization header, and a raw user ID is not a valid token so the request is rejected. The Lambda functions must obtain a token from Cognito and send it. API keys are used with usage plans and not for Cognito authorization, a resource policy is not what the Cognito authorizer checks, and an OPTIONS preflight is a CORS browser concern that does not authenticate calls. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9744,7 +9745,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified.",
+      "e": "S3 invokes Lambda asynchronously, and for asynchronous invocations Lambda by default retries a failed or timed-out function twice (three attempts total) and then discards the event unless an on-failure destination or dead-letter queue is configured. There is no default DLQ and no default SNS email notification, and Lambda does not retry until success.",
       "images": [],
       "optionImages": [
         [],
@@ -9766,7 +9767,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (80%), B (20%).",
+      "e": "Separating development and production into different AWS accounts and adding a resource-based policy on each Lambda function that allows only S3 events from the same account's bucket (using the SourceAccount/SourceArn conditions) ensures a dev bucket cannot invoke the production function. Restricting the execution role only limits what the function can read, not who can invoke it. S3 bucket policies do not control which Lambda function a bucket notification invokes; that permission is set on the function's resource policy. Community vote: D (80%), B (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -9790,7 +9791,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (100%).",
+      "e": "Session state can be externalized to a low-latency shared store: DynamoDB (with TTL for expiry) or ElastiCache (Redis or Memcached), so any instance in the Auto Scaling group can serve any user. Cognito handles authentication and identity rather than arbitrary application session state, an ALB only offers sticky sessions that tie a user to one instance, and SQS is a message queue that is not suited to storing session data. Community vote: AC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9815,7 +9816,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (100%).",
+      "e": "Publish a new Lambda version containing the fix (A), then create an alias that points to the current version with weighted alias routing sending 10% of invocations to the new version (C); API Gateway invokes the alias so production traffic is split without changing the API. Creating a new API Gateway stage does not provide weighted routing between stages, and Network Load Balancers and Route 53 weighted records do not route to specific Lambda function versions in this setup. Community vote: AC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9838,7 +9839,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "S3 Glacier Instant Retrieval provides millisecond access for the first 90 days at a lower storage cost than S3 Standard, and after 90 days a lifecycle transition to S3 Glacier Flexible Retrieval is cheaper while retrieval times in minutes to hours are acceptable. Glacier Deep Archive and Flexible Retrieval cannot give instant access in the first 90 days, and EFS and EBS are far more expensive for 2.5 TB video files and EBS cannot transition to Glacier. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9860,7 +9861,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A global secondary index with customer email as the partition key allows a single Query to return all orders for an email and can be added to an existing table, and other GSIs can be added later for other attributes. A table's primary key cannot be changed after creation, so options A and B are not possible, and a local secondary index must be defined at table creation and shares the table's partition key (order ID), so it cannot query by email across orders. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9882,7 +9883,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "DynamoDB Accelerator (DAX) is a fully managed in-memory cache built for DynamoDB that reduces read response times from milliseconds to microseconds and needs minimal code change using the DAX client. ElastiCache would require custom caching logic, DynamoDB auto scaling adjusts throughput capacity and does not reduce latency, and CloudFront caches content at the edge but does not accelerate DynamoDB queries. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9906,7 +9907,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BC (100%).",
+      "e": "AWSLambdaBasicExecutionRole only grants CloudWatch Logs permissions, so the function's execution role also needs s3:ListAllMyBuckets to list the buckets (B) and dynamodb:PutItem or similar write permissions on the table (C). Cross-account roles are unnecessary because everything is in one account, and permissions for S3 or DynamoDB to invoke the function (D, E) are invocation permissions for event-source triggers, while here the function is scheduled and calls the services itself. Community vote: BC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9929,7 +9930,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Putting a CloudFront distribution in front of the ALB caches content and uses the AWS global edge network and optimized backbone connections to the origin, improving performance worldwide, and a Route 53 alias record points the domain at the distribution with almost no operational work. Deploying to multiple Regions is much more overhead, adding instances in one Region does not reduce geographic latency, and Client VPN is meant for private network access rather than public global performance. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9951,7 +9952,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "CloudFront serves cached copies of objects until they expire, so even though the new files are in the S3 bucket, the edge locations keep returning stale content. Adding a CloudFront invalidation (aws cloudfront create-invalidation) to the buildspec after the S3 sync clears the cached objects. The S3 content is already correct, so re-syncing or deleting and redeploying files and changing the CORS policy do not affect the CloudFront cache. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9973,7 +9974,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "ElastiCache for Redis is a managed in-memory cache that the application queries first for frequently viewed products before falling back to RDS, which offloads read traffic from MySQL. RDS for MySQL has no cache node to add, DAX works only with DynamoDB, and an RDS Multi-AZ standby instance cannot serve reads and exists only for failover. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -9995,7 +9996,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "To let users update only their own record and only the user_name attribute, the policy uses dynamodb:LeadingKeys equal to the federated identity variable ${www.amazon.com:user_id} (so the partition key must match the caller) and dynamodb:Attributes restricted to user_name with ForAllValues:StringEquals. The other options restrict leading keys to user_name, which is not the key, or allow user_id and other attributes to be written. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [
@@ -10037,7 +10038,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "DynamoDB with DAX gives microsecond reads for cached items, and DAX is a write-through cache: writes made through the DAX client update the item cache as well as the table, so the cache is kept consistent when products are added, changed or deleted. Lazy loading with ElastiCache can serve stale data until TTL expiry unless the application updates the cache explicitly, DynamoDB has no built-in in-memory cache, and DAX does not work with RDS. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10061,7 +10062,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BE (50%), CE (25%), AB (25%).",
+      "e": "An AWS SAM template can be deployed with either the SAM CLI (sam package then sam deploy) or the equivalent CloudFormation CLI commands (aws cloudformation package then aws cloudformation deploy), because package uploads the code to S3 and transforms the template and deploy creates and executes the change set. Uploading only the template with aws s3 cp and update-function-code skips the SAM transform, the Serverless Application Repository is for publishing apps, and calling create-stack with a raw SAM template and manual zip lacks the packaging and transform handling. Community vote: BE (50%), CE (25%), AB (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -10084,7 +10085,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Lambda limits the unzipped .zip deployment package to 250 MB, but a container image can be up to 10 GB, so packaging the function and its dependencies as a container image stored in Amazon ECR resolves the limit. Lambda has no dependency snapshot feature for this, switching to arm64 does not change the package size quota, and Lambda cannot attach EBS volumes (EFS can be mounted, but EBS cannot). Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10106,7 +10107,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS CodeBuild can pull code from CodeCommit on each change, build it, and run unit tests defined in buildspec.yml, and its test reporting feature produces detailed test reports viewable in the console. CodeDeploy deploys applications and does not run builds or tests, CodeWhisperer generates code suggestions and does not run tests, and storing results in a Lambda layer is not a reporting solution. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10128,7 +10129,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "In Lambda, CPU power is allocated proportionally to the configured memory, so increasing the memory setting increases the available vCPU. There is no separate vCPU quota to configure, ephemeral storage only adds /tmp disk space, and a longer timeout only lets the function run longer without adding CPU. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10150,7 +10151,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Amazon Macie uses machine learning and pattern matching to discover sensitive data in S3, and it evaluates bucket security and access controls, including whether bucket encryption is missing, producing findings that can be sent as notifications through EventBridge or AWS User Notifications. Athena queries data you already have but is not a sensitive-data discovery or monitoring service, Inspector scans compute and container workloads for software vulnerabilities rather than S3 data, and a Kinesis plus Lambda design would be custom-built. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10172,7 +10173,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Resolving an SSM parameter with a CloudFormation dynamic reference (ssm or ssm-secure) in the Lambda environment variable fetches the value once at deployment time, so the functions no longer call Parameter Store on every invocation and cannot be rate limited; this works because the parameter only changes with deployments. Reserved concurrency, retries with backoff and quota increases (advanced parameters have higher throughput costs) either do not remove the calls or add cost and complexity. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10194,7 +10195,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (33%), C (33%), B (33%).",
+      "e": "The CloudWatch embedded metric format lets Lambda write structured log lines that CloudWatch automatically extracts into custom metrics, with open source client libraries available, and then graphs and alarms are created on those metrics in near real time. PutMetricData is a CloudWatch API and not a CloudTrail feature, Logs Insights queries are not turned into alarmable metrics, and the Kinesis to S3 design does not provide CloudWatch metric alarms. Community vote: A (33%), C (33%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -10218,7 +10219,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AE (100%).",
+      "e": "The HEALTH-CONSTRAINTS error means CodeDeploy could not keep the minimum number of healthy instances during the deployment. If the CodeDeploy agent is not running on the instances (A), those instances fail, and if instances are not configured with correct health checks/health status for the deployment group (E), the deployment constraints cannot be met. The CloudWatch agent is not part of deployment, and the developer's IAM role or instance profile permission problems would produce different access errors rather than this health constraint failure. Community vote: AE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10241,7 +10242,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (50%), A (33%), D (17%).",
+      "e": "Encrypting Lambda environment variables with an AWS KMS customer managed key and enabling automatic key rotation rotates the key material every year with no development work. Secrets Manager rotates secret values rather than rotating the encryption key used for environment variables, AWS managed keys rotate on their own schedule that cannot be configured and a custom Lambda for rotation adds development effort, and Parameter Store has no automatic rotation. Community vote: B (50%), A (33%), D (17%).",
       "images": [],
       "optionImages": [
         [],
@@ -10263,7 +10264,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Lambda writes a REPORT log line at the end of every invocation containing the @duration field, so filtering on @type = REPORT and using stats avg, max and min of @duration with bin(1m) gives per-minute averages, slowest and fastest times. The other queries filter on message types that do not exist (DISPLAY, STATS, PATTERN) or use a 5 minute bin rather than 1 minute. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [
@@ -10305,7 +10306,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Amazon Macie discovers sensitive data in S3 and publishes findings to EventBridge in each Region, so EventBridge rules can forward the findings to an event bus in eu-west-2 with no custom code (Macie can also use a delegated administrator for aggregation). A Lambda function would need to be written and maintained, Inspector scans for software vulnerabilities rather than sensitive data in S3, and Macie does not publish findings to CloudTrail for copying. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10327,7 +10328,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (67%), B (33%).",
+      "e": "A Kinesis data stream's throughput is determined by its shard count (1 MB/s or 1000 records/s write per shard), so increasing the shard count with UpdateShardCount provides more capacity for peak traffic and is cost effective because you can scale back afterwards. The KPL improves producer efficiency but does not add stream capacity, on-demand mode costs more for predictable peaks, and reducing retention does not increase throughput. Community vote: D (67%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -10349,7 +10350,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Provisioned concurrency initializes the requested number of execution environments in advance, running all setup and init code before any invocation, so start times are predictable and cold starts are avoided; it is configured on a published version or alias. Scheduled pings only keep a few environments warm and cannot cover concurrent scale-out, optimizing init code only reduces cold start time, and reserved concurrency does not pre-initialize environments. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10371,7 +10372,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "CloudFormation StackSets can deploy the same template to multiple Regions (and accounts) in one operation, and CodePipeline has a native CloudFormation StackSets action, so this is the most operationally efficient way to test in the primary and DR Regions. CodeDeploy deploys to compute platforms and does not deploy CloudFormation templates, CodeBuild approaches require custom scripts per Region, and Snyk is a security scanning integration and not a deployment mechanism. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10393,7 +10394,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Deploying the API to a new stage named production and using a stage variable for the Lambda alias in the integration (for example function:${stageVariables.lambdaAlias}) lets the same API definition call the dev alias in the development stage and the prod alias in the production stage. Adding a new method for production does not model environments, and the integration request configured on a stage rather than through stage variables is not how stage-specific values are set. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10415,7 +10416,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (75%), A (25%).",
+      "e": "CloudFormation only updates a Lambda function when a property in the template changes, and an updated zip with the same S3 bucket and key looks like no change. Changing the S3 key or using the S3ObjectVersion property (with bucket versioning) makes CloudFormation detect the change and deploy the new code. A new alias, another bucket with the same key, or a code signing configuration does not by itself trigger a code update. Community vote: B (75%), A (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -10437,7 +10438,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A Lambda alias supports weighted routing between two function versions, so you point the alias at the current version and put a weight on the new version, and have event sources (such as the event source mappings) invoke the alias, which is the least effort option. Route 53 cannot route to Lambda versions directly, an API Gateway canary adds a stage and more configuration, and event source mappings have no weight setting. The question text says 60% for the current version, but the intent is a split between two versions via alias weights. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10459,7 +10460,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Kinesis Data Streams supports multiple consumers reading the same ordered stream in parallel in real time, each tracking its own position with checkpoints so it can resume after an interruption, and new consumers can be added without duplicating the data. SQS messages are removed after one consumer processes them, so each added processor would need its own copy, Firehose only delivers to destinations like S3 and does not serve custom consumers, and EventBridge is for event routing without replayable consumer checkpoints. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10481,7 +10482,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (67%), B (33%).",
+      "e": "ElastiCache for Redis is a managed in-memory cache that can hold results of the existing custom views and queries so read-only requests skip the database, with no schema changes and little management. Moving to DynamoDB changes the database structure, running Memcached on EC2 means managing the servers yourself, and DAX works only with DynamoDB, not RDS. Community vote: C (67%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -10503,7 +10504,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The Fn::FindInMap function (!FindInMap) looks up a value in the Mappings section using a map name, a top-level key and a second-level key, so !FindInMap [EnvironmentData, !Ref Environment, Timeout] returns 30, 60 or 90 for the chosen environment. GetAtt retrieves resource attributes, Select picks an item from a list by index, and ForEach is the Fn::ForEach macro-like transform and does not look up mappings. Community vote: B (100%).",
       "images": [
         {
           "path": "assets/q464-s1.png",
@@ -10534,7 +10535,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (50%), C (50%).",
+      "e": "AWS Resource Access Manager can share Systems Manager Parameter Store advanced parameters across accounts in an organization, so Account B can reference the parameters in place with no duplication and almost no ongoing work. IAM users with long-term credentials are a security risk, an assumable role works but requires the application to handle role assumption, and copying values to S3 with a script duplicates the data and adds maintenance. Community vote: B (50%), C (50%).",
       "images": [],
       "optionImages": [
         [],
@@ -10556,7 +10557,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "DynamoDB Streams captures item-level changes in the Accounts table in near real time, and a consumer such as a Lambda function can apply them to the Payments data store, giving a simple, decoupled and reliable integration. Glue ETL jobs are batch oriented and not near real time, ElastiCache triggers in DynamoDB do not exist, and Firehose delivers to destinations such as S3 or Redshift and not into DynamoDB tables. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10580,7 +10581,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AD (100%).",
+      "e": "The RequestEntityTooLargeException means the .zip exceeds the limit for direct console upload (50 MB zipped), but uploading the package to S3 and referencing it from the console supports up to 250 MB unzipped (A), and a container image up to 10 GB stored in ECR avoids the zip limit entirely (D). Lambda package size quotas cannot be raised through a support ticket, update-function-code with --publish does not change the upload size limit, and code signing is for integrity, not size. Community vote: AD (100%).",
       "images": [
         {
           "path": "assets/q467-s1.png",
@@ -10608,7 +10609,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The unified CloudWatch agent collects detailed system-level metrics from EC2 instances (memory, disk, and more) and can also receive custom application metrics via StatsD or collectd, publishing them all to CloudWatch for right-sizing and monitoring. The X-Ray agent only sends trace data, using the SDK in application code to publish instance metrics is custom work, and CloudTrail records API calls, not metrics. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10630,7 +10631,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Because the table has an index defined on the date, a Query against that index with the previous day's date as the key condition reads only the matching items and consumes the least read capacity. Scan reads the entire table and then filters, while GetItem and BatchGetItem need the full primary keys of each item and cannot retrieve items by date range. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10652,7 +10653,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "API Gateway has a maximum integration timeout of 29 seconds, so a synchronous request that takes up to 10 minutes returns a 504 even if the Lambda invocation succeeds. Refactoring to start an AWS Step Functions state machine (an asynchronous workflow) lets the API return quickly while the independent tasks run. Increasing the Lambda timeout, concurrency or memory does not change the API Gateway integration timeout. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10674,7 +10675,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "An API Gateway Cognito user pool authorizer is built in: you point it at the user pool and identify the header that carries the token, and API Gateway validates it without any code. API keys and usage plans are for throttling and metering, not authentication, and Lambda token or request authorizers require writing and maintaining custom code to call Cognito. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10696,7 +10697,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "When Lambda polls SQS, each message becomes invisible for the queue's visibility timeout, and if processing takes longer than that the message becomes visible again and is delivered again. Increasing the queue's visibility timeout (AWS recommends at least six times the function timeout) prevents messages from reappearing during processing. Lambda timeout, memory and batch size changes do not stop the message from reappearing and a larger batch makes processing longer. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10718,7 +10719,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A Lambda layer is the mechanism for sharing reusable code and libraries across multiple functions, and updating the layer version and attaching it to the functions is simple and operationally efficient. Lambda has no import path setting for a zip in S3, invoking a separate function for shared code adds latency and cost, and a container image forces all functions to be repackaged as container images. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10740,7 +10741,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Creating a new API Gateway stage with a stage variable for the Lambda function name or alias lets the new stage call the new version while the existing production stage stays unchanged, with a separate invoke URL for testing and little configuration. Changing the existing integration would affect production, and adding a new resource or an entirely new REST API adds more overhead and still risks mixing environments. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10762,7 +10763,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (75%), A (25%).",
+      "e": "For a customer managed key with imported key material, you can delete the imported key material immediately, which makes the key unusable right away, whereas deleting a KMS key itself has a mandatory waiting period of 7 to 30 days. AWS managed keys cannot be deleted, you cannot delete key material of KMS-generated keys, and a CloudHSM key store requires managing a CloudHSM cluster and still has the deletion waiting period. Community vote: B (75%), A (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -10784,7 +10785,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Amazon EventBridge Pipes can take an SQS queue as the source, enrich events (through a Lambda function, API destination, API Gateway or Step Functions) and deliver them to a target, so it provides the point-to-point integration with the least code. Option A subscribes a function to SNS rather than SQS, the Step Functions design is overly complicated, and EMR is a big data platform that is far too heavy for per-message enrichment. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10806,7 +10807,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Aurora reader endpoint load balances connections using DNS round robin among the replicas, so if the application caches DNS results the connections keep going to the same replica. Disabling application-level DNS caching (or using a short TTL) lets each new connection resolve to a different replica. Enabling caching would worsen the skew, and connection pooling reuses existing connections, which keeps traffic on the same replica. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10828,7 +10829,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "AWS CodeBuild is used as the build and test stage in CodePipeline, and adding a phase (for example in the build or test phase of buildspec.yml) to run unit tests makes the stage fail if tests fail before artifacts move on. A separate pipeline, a CodeDeploy agent on EC2, or a testing branch do not integrate tests into the same pipeline run before staging. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10852,7 +10853,7 @@ window.CERTS["dva-c02-pdf"] = {
         2,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: CD (50%), CE (50%).",
+      "e": "Connectivity problems between tiers usually come from network filtering, so VPC Flow Logs show accepted and rejected traffic between the application and database network interfaces (C), and network ACLs (D), along with security groups, are where the rules blocking traffic are checked. CloudTrail records API calls, Trusted Advisor provides general best-practice checks, and AWS Config rules evaluate resource configuration compliance rather than diagnosing network traffic. Community vote: CD (50%), CE (50%).",
       "images": [],
       "optionImages": [
         [],
@@ -10875,7 +10876,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "The Elastic Beanstalk traffic-splitting deployment launches a full set of new instances in the environment and forwards a specified percentage of incoming client traffic to the new version for an evaluation period, with no downtime. Rolling and in-place deployments update existing instances in batches (in-place can cause downtime), and immutable deployments replace instances with new ones but do not send a chosen percentage of traffic during evaluation. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10899,7 +10900,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AD (100%).",
+      "e": "Elastic Beanstalk accepts source bundles as .zip (or .war) files, so packaging the code as a .zip and uploading and deploying it through the console (A) or using the AWS CLI to create an application version and update the environment (D) both deploy the new version. .tar files are not a supported source bundle format, and rebuilding the environment (E) recreates it rather than deploying the new application version. Community vote: AD (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10922,7 +10923,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The developer can write the template locally and deploy it with the AWS CLI, which authenticates with an IAM user's access key ID and secret access key (aws configure). IAM user passwords are for console sign-in, SSH keys are for instance access, and X.509 certificates are not used to configure an SDK for API calls. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -10944,7 +10945,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (67%), C (33%).",
+      "e": "API Gateway mock integrations use a Velocity Template Language mapping template in the integration request that returns a JSON object containing statusCode, and conditions use #if with $input.params() to read request parameters, with #else and #end to close the block. The marked option has syntactically valid VTL with a proper #if{ } condition on $input.params('scope') and returns 200 or 500, while the other options either use invalid syntax or an incorrect function such as $input.path() with no comparison or unbalanced parentheses. Community vote: B (67%), C (33%).",
       "images": [],
       "optionImages": [
         [
@@ -10986,7 +10987,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS X-Ray collects and visualizes trace data and supports cross-account tracing through CloudWatch cross-account observability, giving a single service map and traces across multiple accounts. CloudWatch alone is for metrics and logs, VPC flow logs capture network traffic information only, and OpenSearch Service is a search and analytics engine and not a tracing service. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11008,7 +11009,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Adding an upstream repository with an external connection to Maven Central to the existing CodeArtifact repository means the existing repository will fetch and cache packages from Maven Central on demand, so the build pipeline keeps using the same repository endpoint with minimal change. Creating a new repository or domain changes the endpoint the pipeline uses, and a repository resource policy controls access permissions and cannot allow fetching from a public repository. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11030,7 +11031,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (67%), B (33%).",
+      "e": "Step Functions can call DynamoDB GetItem directly with an optimized service integration, followed by a Choice state and a Wait state to loop until the confirmation record exists, which needs no extra code. Redriving applies to failed executions and cannot resume a running one, stopping and restarting an execution loses state, and a Lambda function that continuously polls can hit its timeout and adds cost and custom code. Community vote: A (67%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -11052,7 +11053,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A presigned S3 URL generated with the SDK gives temporary access to a specific object in a private bucket and expires after the configured time, here 15 minutes. Copying documents with a lifecycle rule cannot expire at minute granularity (lifecycle works in days), SSE-KMS and HTTPS protect data but do not limit access duration, and editing the bucket policy by hand and reverting is manual and affects all users. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11074,7 +11075,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (60%), C (40%).",
+      "e": "A Lambda layer holds shared libraries that can be attached to multiple functions, so the library is maintained in one place and updating the layer and function configuration brings in a new version across the functions with little effort. Storing dependencies in S3 still requires repackaging each function, EFS adds mounting and VPC complexity, and invoking another Lambda function to load the library adds latency and cost. Community vote: B (60%), C (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -11096,7 +11097,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A global secondary index with customerId as its partition key can be created on an existing table and supports queries by customerId. The primary key cannot be changed after the table is created, and a local secondary index can only be created at table creation and must use the same partition key as the table (orderId), so it cannot have customerId as its partition key. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11118,7 +11119,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer corrected from the PDF's stated C to B after manual review; not independently verified. Community vote: D (33%), C (33%), B (33%).",
+      "e": "A scheduled EventBridge rule invoking a Lambda function to pull logs from the HTTP endpoint and push them into CloudTrail Lake (which ingests events from outside AWS through a channel and lets you run SQL queries) is fully serverless, automated and queryable. Manual export and import to RDS is not automated, DataSync transfers files between storage systems and cannot pull from an HTTP endpoint, and the CloudWatch agent does not read audit logs from an HTTP endpoint. (The source PDF lists C; corrected to B after review.) Community vote: D (33%), C (33%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -11140,7 +11141,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Lambda deployment time and cold-start duration both grow with package size, so packaging only the AWSSDK.DynamoDBv2 and AWSSDK.S3 NuGet packages keeps the deployment small and speeds up download and assembly loading. Bundling the entire AWS SDK for .NET (B) inflates the package and slows both. Increasing memory (A) does not reduce deployment time, and downloading the SDK from S3 at runtime (D) adds network latency to every cold start. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11162,7 +11163,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Provisioned concurrency keeps a configured number of execution environments initialized and ready, so requests do not wait for the init phase and cold starts are eliminated. Reserved concurrency (A) only guarantees or caps capacity and does not pre-initialize environments. A longer timeout (B) does nothing for init time, and more memory (C) may speed up execution somewhat but does not remove the cold start. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11184,7 +11185,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer corrected from the PDF's stated A to B after manual review; not independently verified. Community vote: B (50%), A (50%).",
+      "e": "In EventBridge Pipes the filter step runs before enrichment, so it cannot see the stream status that the Lambda enrichment adds. The enrichment function itself must therefore drop non-ready streams by returning only the ready events, so only those reach the target event bus. A filter step (A) is evaluated on the original SQS events, and an input transformer (D) only reshapes the payload and cannot drop events. Filtering in every EventBridge rule (C) still publishes all events to the bus. (The source PDF lists A; corrected to B after review.) Community vote: B (50%), A (50%).",
       "images": [],
       "optionImages": [
         [],
@@ -11206,7 +11207,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Setting DelaySeconds on the SQS queue (up to 900 seconds) keeps each new message invisible to consumers for that period, and a Lambda event source mapping then polls the queue and invokes the function with no custom code. Visibility timeout (D) only hides a message after it has been received, so it does not delay first delivery. The Step Functions Wait state with a 5-minute schedule (A) and the republish-with-timestamp code (B) add needless moving parts and cost. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11228,7 +11229,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "CloudFront field-level encryption encrypts the selected fields with a public key at the edge, and the data stays ciphertext until a component holding the private key decrypts it. Because the Lambda functions wrote the received ciphertext straight into Aurora, a Lambda function must call KMS to decrypt those fields before storing them. Switching to HTTPS only (A) or a new SSL certificate (D) concerns transport encryption and does not change field-level encryption. Encrypting the DB cluster with the same key (C) encrypts storage at rest but does not decrypt the already encrypted field values. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11250,7 +11251,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "CodePipeline orchestrates the continuous delivery flow, CloudFormation StackSets deploy the same EC2 and RDS template across many target accounts with one operation, and a CodeBuild action can run the integration tests. CodeDeploy (A, D) deploys application code to compute and is not an infrastructure provisioner or test runner, and Amazon CodeGuru does code review and profiling, not integration tests. Change sets (C, D) work within a single account and region, and running tests from a CloudFormation custom resource is an awkward misuse. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11274,7 +11275,7 @@ window.CERTS["dva-c02-pdf"] = {
         1,
         4
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: BE (100%).",
+      "e": "Provisioned concurrency pre-initializes the requested number of execution environments, so library loading and client creation happen at allocation time and invocations get consistent low latency. Provisioned concurrency can only be set on a published version or alias and not on $LATEST, so the changes must be deployed and published as a new version. Reserved concurrency (D) only guarantees or limits capacity and does not pre-warm environments, a scheduled EventBridge invocation (A) is unreliable warming, and $LATEST (C) cannot have provisioned concurrency. Community vote: BE (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11297,7 +11298,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "For asynchronous invocations, Lambda supports an on-failure destination, and an SNS topic can be configured as that destination by specifying the ErrorTopic ARN. When ProcessMessages fails after its retries, Lambda publishes the failure record to ErrorTopic and the subscribers are notified. Subscribing the function to ErrorTopic (A, C) would invoke the function on error messages instead of notifying people, and an SNS delivery policy (D) only controls retry behavior for deliveries. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11319,7 +11320,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS Managed Microsoft AD with a trust relationship to the on-premises Active Directory lets employees sign in with existing credentials, and IAM roles mapped to directory groups give role-based console access with little custom code to run. IAM has no direct LDAP integration (B), so that option cannot work. A custom identity broker (C) works but means building and operating your own service, and Cognito user pools (D) manage app users and do not grant console access based on on-premises AD roles. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11341,7 +11342,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "A DynamoDB stream captures item-level changes for inserts, updates and deletes, and a Lambda function subscribed to the stream can update the spreadsheet whenever a trial begins, changes or finishes. The NEW_IMAGE view type provides the latest item state, which is what the spreadsheet needs; OLD_IMAGE (D) would give only the stale data. DAX (A, B) is a read-through cache and has no stream or view type that can trigger Lambda. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11363,7 +11364,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A CloudFront distribution caches content at edge locations for low latency and reliability, and forwarding or caching on the CloudFront-Viewer-Country and Accept-Language headers lets the origin serve content specific to each viewer's country and language. Global Accelerator (A) routes TCP/UDP traffic to endpoints but has no listeners per country or language. S3 Transfer Acceleration with Route 53 geo records (B) is for uploads and cannot vary content by language, and AWS WAF (C) only allows or blocks requests and does not serve localized content. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11385,7 +11386,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (57%), A (43%).",
+      "e": "ACM's own expiration events for imported certificates start at 45 days by default and the lead time cannot be set to 90 days. The AWS Config managed rule acm-certificate-expiration-check lets you set daysToExpiration to 90, runs on a schedule, and emits a Config Rules Compliance Change event that an EventBridge rule can send to the SNS topic. The ACM approaching-expiration event (A) cannot be configured to 90 days, and CloudTrail does not record certificate expiration notifications (C). A Lambda function that writes to SQS (B) notifies no one and the security team is subscribed only to the SNS topic. Community vote: D (57%), A (43%).",
       "images": [],
       "optionImages": [
         [],
@@ -11407,7 +11408,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "The policy must allow only read actions on the DailyOrders table, such as BatchGetItem, GetItem, Query and Scan, with no write actions like PutItem, UpdateItem or BatchWriteItem. Only the option allowing exactly BatchGetItem, GetItem, Query and Scan on the table ARN satisfies this. One option also allows PutItem, another allows batch and single writes, and the Deny statement that lists Query and Scan would block reads while leaving write actions un-denied. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [
@@ -11449,7 +11450,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "The built-in JWT authorizer is a feature of API Gateway HTTP APIs, which validate tokens from an OIDC or OAuth 2.0 issuer and can be attached directly to a route such as /auth with no custom code. WebSocket APIs (A, B) do not support JWT authorizers. A Lambda authorizer (B, C) requires writing and managing custom function code, which the developer wants to avoid. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11471,7 +11472,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (80%), C (20%).",
+      "e": "S3 Standard gives immediate access and low cost for 10 MB files, and passing only the S3 location in the SQS message keeps messages small. Glacier Deep Archive (A) has retrieval times of hours, far beyond 5 minutes. SQS messages are limited to 256 KB, so storing file contents in them (D) is impossible for 10 MB videos, and EBS (C) is attached to a single instance and costs more per GB than S3. Community vote: B (80%), C (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -11493,7 +11494,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (67%), C (33%).",
+      "e": "A Lambda alias can route traffic between two function versions by weight (routing configuration), so a staging alias can send invocations to both the production version and the updated version. Network Load Balancers (B) cannot target Lambda functions, and CodeDeploy linear deployments (C) shift traffic gradually over time but do not create a standing staging environment. Tags (D) are only metadata and do not route traffic. Community vote: A (67%), C (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -11515,7 +11516,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (75%), A (25%).",
+      "e": "The handler opens a new database connection on every invocation and closes it at the end, so each run pays connection setup time. Creating the connection outside the handler in global scope lets warm execution environments reuse it across invocations, cutting duration. Reserved concurrency (A) only affects scaling, a bigger RDS instance (B) does not remove per-invocation connect time, and moving to DynamoDB (D) is an unnecessary redesign. Community vote: C (75%), A (25%).",
       "images": [
         {
           "path": "assets/q507-s1.png",
@@ -11542,7 +11543,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The aws sts assume-role command returns temporary credentials for the role, and using them for CLI calls shows whether the role's permissions actually allow the RDS operations. The other commands change configuration instead of testing it: attach-role-policy modifies the role, add-role-to-db-cluster associates an IAM role with a DB cluster, and ssm resume-session reconnects a Session Manager session. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11564,7 +11565,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (67%), D (33%).",
+      "e": "Immutable deployments launch a full new set of instances in a temporary Auto Scaling group and swap them in only when healthy, so the existing fleet keeps serving at full capacity with no performance hit and an easy rollback. All-at-once (C) causes downtime, and rolling (A) reduces capacity while each batch updates. Canary is a traffic-splitting strategy and is not an Elastic Beanstalk deployment policy for EC2 environments. Community vote: B (67%), D (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -11586,7 +11587,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "To encrypt the file before upload, the function should call KMS GenerateDataKey and use the returned plaintext data key to encrypt the 3 MB file locally (envelope encryption), then upload the ciphertext with the encrypted data key. KMS Encrypt/direct key use is limited to 4 KB of data, and simply specifying a KMS key for S3 (A, D) triggers server-side encryption after the data reaches S3, not encryption before upload. S3 managed keys cannot be used with GenerateDataKey (B). Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11608,7 +11609,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A Lambda alias can point to two versions with a weighted routing configuration, so assigning a small percentage to the updated version sends only that share of invocations from the SDK to the new code. The caller invokes the alias ARN and no other changes are needed. A version has no weight setting of its own (A), and the Network Load Balancer cannot target Lambda functions (D). An ALB (C) would work technically, but the SDK invokes Lambda directly rather than through a load balancer. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11630,7 +11631,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Amazon Data Firehose supports data transformation with a Lambda function, which receives batches of records, can strip pattern-based identifiers, and returns the modified records for delivery to the S3 destination. Firehose cannot use an EC2 instance (B) or a Step Functions workflow (D) as a destination, and sending data to OpenSearch Service (C) and exporting it is cumbersome and does not guarantee PII is removed before storage. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11652,7 +11653,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Amazon ElastiCache for Memcached keeps session data in memory, providing sub-millisecond reads and writes and scaling easily beyond 5000 requests per minute, which gives the lowest latency while keeping the web tier stateless. RDS (A) and a shared file system (B) have higher latency and scaling limits. DynamoDB (D) is a good session store but single-digit-millisecond latency is higher than in-memory caching. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11674,7 +11675,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (38%), B (38%), D (25%).",
+      "e": "Lambda asynchronous invocation destinations can send a record for both successful and failed invocations to an SQS queue, so configuring one destination for success and one for failure captures every invocation, and the DestinationDeliveryFailures metric reveals any record that could not be delivered. A dead-letter queue (A) captures only failed events, a single success destination (D) misses failures, and custom SendMessage code at the end of the function (B) does not run when the function fails or times out. Community vote: C (38%), B (38%), D (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -11696,7 +11697,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "Writing the function's logs in CloudWatch embedded metric format (EMF) lets CloudWatch extract custom metrics from the log events automatically and publish them to a namespace specified in the EMF structure. CloudWatch Logs Insights (A, C) queries logs and does not create metrics, and CloudWatch RUM (B) monitors browser web applications and has nothing to do with Lambda logs. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11718,7 +11719,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (67%), D (33%).",
+      "e": "To reach resources in a private subnet, the Lambda function is configured with the VPC, subnets and security groups, which creates elastic network interfaces in that VPC so it can reach the EC2 instances over private IPs. A VPC endpoint (A) provides private access to AWS services and is not attached to a function to reach EC2 instances, a VPN (C) is for connecting external networks, and route tables (D) cannot reference a Lambda function's IP address. Community vote: B (67%), D (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -11740,7 +11741,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Having S3 publish event notifications to an SNS topic, with each department's SQS queue subscribed using a filter policy, fans the event out to the right queues with no Lambda code changes. An S3 event notification can target a given prefix or SQS queue but overlapping notification rules for one event type are not allowed, so sending to every department queue directly (D) is not possible. Options B and C require changing the Lambda function code. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11762,7 +11763,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Enabling ECS_ENABLE_TASK_IAM_ROLE in the ECS agent configuration turns on IAM roles for tasks, so each task definition can have its own task role. Giving the Aurora microservice a read-only role for its database and the DynamoDB microservice a read-only role for DynamoDB gives each only the minimum privilege. Setting the flag to false (A, B) disables task roles, and granting both services' permissions to the instance profile (D) gives every container on the instance access to both. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11784,7 +11785,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Amazon Cognito identity pools support web identity federation, letting users sign in with Login with Amazon and social providers such as Google and Facebook and exchange the token for temporary AWS credentials to read from S3. SAML federation (B) is for enterprise identity providers, not social logins. Embedding access keys in the app (C) is insecure, and calling AssumeRole from the app code (D) requires already having AWS credentials. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11806,7 +11807,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "An S3 bucket policy that denies requests when aws:SecureTransport is false forces all access to use HTTPS, so any unencrypted request is rejected. Installing certificates on EC2 (A) does not stop clients from using HTTP, a VPC endpoint (B) controls the network path and not the protocol, and SSE-KMS (C) encrypts data at rest and not in transit. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11828,7 +11829,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Provisioned concurrency keeps execution environments initialized and ready, so infrequent invocations do not hit a cold start and the function's startup time is optimized. API Gateway caching (A) only avoids calling the function for repeated identical requests, and Lambda proxy integration (C) changes how the request and response are mapped. Global Accelerator (D) cannot front a Lambda function and does not change initialization. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11850,7 +11851,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "VPC Flow Logs record accepted and rejected traffic at the ENIs of the ALB, so they show whether the laptop's request actually reaches the VPC and whether security groups or network ACLs are rejecting it. Route 53 logs (B) only show DNS queries, and Systems Manager Agent logs (C) and CloudWatch agent logs (D) come from the instances and say nothing about traffic arriving at the ALB. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11872,7 +11873,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The default sts.amazonaws.com endpoint is a single global endpoint hosted in us-east-1, so calls from Asia Pacific incur extra latency and can fail intermittently. Pointing the SDK at the nearest Regional STS endpoint, such as sts.ap-southeast-1.amazonaws.com, reduces latency and improves reliability. Changing to GetSessionToken, AssumeRoleWithSAML or AssumeRoleWithWebIdentity (A, B, D) alters the credential type or federation flow and does not address endpoint location. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11894,7 +11895,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Lambda allocates CPU power, network bandwidth and other resources in proportion to configured memory, so increasing memory (up to 10,240 MB) speeds up CPU-intensive image processing. Lambda does not let you set vCPUs directly (A), choose an EC2 instance type (B), or configure burstable performance (D). Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11918,7 +11919,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (100%).",
+      "e": "An Amazon Cognito user pool provides the sign-up and sign-in directory for the mobile app, and MFA can be enabled on that user pool (SMS or TOTP) so users must provide a second factor. Sending your own codes with SNS Publish (B) means building the MFA flow yourself, and IAM users (D, E) are meant for administrators and workloads, not for app end users. Community vote: AC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11943,7 +11944,7 @@ window.CERTS["dva-c02-pdf"] = {
         0,
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: AC (100%).",
+      "e": "Long polling (WaitTimeSeconds greater than zero) cuts down empty responses and the number of ReceiveMessage requests, lowering SQS cost. Retrieving up to 10 messages per request with batching further reduces request count. Short polling (B) generates many empty responses, ElastiCache (D) cannot cache queue messages, and a FIFO queue (E) costs more and is not needed for cost efficiency. Community vote: AC (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11966,7 +11967,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Storing the connection string as a secret in AWS Secrets Manager lets the function retrieve it at runtime, so it can be changed per environment or rotated without modifying the Lambda code. An IAM user (B) is not a configuration store, KMS (C) manages encryption keys and not arbitrary strings, and a Lambda layer (D) is part of the deployed artifact and would require redeployment to change. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -11988,7 +11989,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "AWS Step Functions state machines define a workflow that invokes Lambda functions in a specified order, with built-in retries and error handling, and need no custom infrastructure. SQS ordering (A) is unreliable on standard queues and still needs orchestration code, SNS with filters (B) does not guarantee ordering between functions, and EventBridge Scheduler (D) runs on time schedules and cannot enforce step dependencies. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12010,7 +12011,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "The message \"Task timed out after 3.01 seconds\" means the function reached its configured timeout, and 3 seconds is the default. Raising the timeout setting (up to 900 seconds) lets larger images finish without any code change. Skipping larger images (B) would need a code change and drops work, and concurrency quotas or provisioned concurrency (C, D) address scaling and cold starts rather than execution time. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12032,7 +12033,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "When a Lambda function polls an SQS queue, the message becomes invisible for the visibility timeout; if processing takes longer than that, the message reappears and is processed again. Setting the queue visibility timeout greater than the maximum time of the third-party call (and AWS recommends at least six times the function timeout) prevents the duplicate deliveries. Increasing memory or function timeout (A, B) does not change the visibility timeout, and delivery delay (C) only postpones when new messages first become visible. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12054,7 +12055,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (67%), B (33%).",
+      "e": "AWS AppConfig is designed for feature flags that are shared among applications, and the AppConfig Agent on the EC2 instances polls for updates on an interval, caches the configuration locally and serves it from a localhost endpoint. This requires almost no custom code. Secrets Manager with ElastiCache (A) and DynamoDB with DAX (B) require building and operating caching layers, and Parameter Store with the SDK (D) needs custom polling and caching code and is not feature-flag aware. Community vote: C (67%), B (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -12076,7 +12077,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "A DynamoDB table name is an immutable property, so changing the TableName in the template requires replacement. CloudFormation creates the new table first and then deletes the old one during update cleanup, because DeletionPolicy defaults to Delete and the table is no longer part of the stack. It does not keep the old table (B, D) or rename or overwrite it (C). Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12098,7 +12099,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Fargate tasks can mount Amazon EFS file systems, configured with the efsVolumeConfiguration in the task volume and a mountPoints entry in the container definition. The data is shared among many tasks and persists after containers stop. FSx for Windows File Server (A) is not supported for Linux (Ubuntu) containers on Fargate, Docker volumes (B) are not supported on Fargate, and an EBS volume (D) attaches to a single task and is not shared among tasks. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12120,7 +12121,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Configuring the Lambda function with VPC private subnets and a security group creates the network interfaces it needs to reach private resources, using only built-in configuration. A VPN (B) is not something you attach to a Lambda function, a VPC endpoint routed through a NAT gateway (C) does not give the function VPC access, and PrivateLink for the resources (D) adds extra infrastructure that is not needed. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12142,7 +12143,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "AWS SAM provides standardized templates for serverless infrastructure and the SAM CLI (sam local invoke, sam local start-api) for testing functions locally before deployment. The existing CodePipeline stages can run SAM CLI build and deploy commands to incorporate infrastructure changes. Step Functions (B) is an orchestration service and not an infrastructure template, plain CloudFormation (C) lacks local testing, and a separate deploy script (D) bypasses the existing pipeline. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12164,7 +12165,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (60%), B (40%).",
+      "e": "An SNS FIFO topic preserves message ordering and provides deduplication, and SNS can send SMS text messages directly to phone numbers. Data Firehose (A) cannot deliver to phone numbers, and an SQS FIFO queue (B) with its invented SendMessageIn and SendMessageOut calls cannot send text messages, since SQS cannot deliver SMS. EventBridge Pipes (C) cannot target a phone number directly and provide no ordering or deduplication guarantee for SMS. Community vote: D (60%), B (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -12186,7 +12187,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (60%), D (40%).",
+      "e": "Because the Lambda function can see connection surges, RDS Proxy pools and shares database connections so the Aurora database is not exhausted by unpredictable spikes in concurrent invocations. A proxy is the option intended to let the function handle bursts of connections. Making the database public (C) is insecure and the NAT gateway (B) cannot be attached to a function. A VPC-attached function with an empty security group (D) can reach nothing useful and does nothing for connection spikes. Community vote: A (60%), D (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -12208,7 +12209,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (60%), D (40%).",
+      "e": "ACM's own expiration events for imported certificates start at 45 days by default and the lead time cannot be set to 90 days. The AWS Config managed rule acm-certificate-expiration-check lets you set daysToExpiration to 90, runs on a schedule, and emits a Config Rules Compliance Change event that an EventBridge rule can send to the SNS topic. The ACM approaching-expiration event (A) cannot be configured to 90 days, and CloudTrail does not record certificate expiration notifications (C). A Lambda function that writes to SQS (B) notifies no one and the security team is subscribed only to the SNS topic. Community vote: A (60%), D (40%).",
       "images": [],
       "optionImages": [
         [],
@@ -12230,7 +12231,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (75%), C (25%).",
+      "e": "S3 encryption in the development account needs a key that account controls, and a customer managed KMS key can have a key policy that grants the production account access. A new customer managed key in the development account with the production account in its key policy meets the requirement. KMS keys cannot be copied between accounts (A, D), and AWS managed keys (C) have key policies that you cannot edit, so you cannot grant cross-account access to them. Community vote: B (75%), C (25%).",
       "images": [],
       "optionImages": [
         [],
@@ -12252,7 +12253,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "The IAM_ROLE_PERMISSIONS error means the CodeDeploy service role lacks the permissions CodeDeploy needs, such as describing EC2 instances and Auto Scaling groups. Attaching the AWSCodeDeployRole managed policy to the service role grants those permissions. AWSCodeDeployRoleECS (B) is for ECS deployments, and an agent that is not installed or running (D) produces different errors. The role name in the deployment group (A) matters only if it points to a role without the policy. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12274,7 +12275,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "SNS supports active tracing with AWS X-Ray, which provides trace maps and latency data for message publishing and delivery, and it works with FIFO topics. That gives the message rate and latency with only a configuration change. The NumberOfNotificationsFailed metric (B) shows only failures, CloudTrail (C) logs API calls and not latency, and GuardDuty runtime monitoring (D) is a security threat detection feature. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12296,7 +12297,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "Lambda ephemeral storage (/tmp) can be configured up to 10 GB and is local, fast storage, so copying the up-to-2 GB file once and reading it repeatedly from /tmp is the most performant for I/O-heavy processing. Lambda functions cannot attach EBS volumes (A) or an ENA (B), and reading directly from S3 repeatedly (D) adds network latency for each read. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12318,7 +12319,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "Adding an aws:SourceArn condition with ArnLike set to the exact state machine ARN, including the account ID 111111111111, restricts the trust policy so that only myStateMachine can assume the role. Using a wildcard in the account position would allow a state machine with the same name in any account, a condition on aws:SourceAccount alone allows every state machine in the account, and StringNotEquals would exclude myStateMachine instead of allowing it. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [
@@ -12360,7 +12361,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "S3 Object Lambda attaches a Lambda function to an Object Lambda Access Point and transforms the object on the fly as it is retrieved with standard GET requests, so the function can call a PII redaction API before the analytics service receives the data. Loading data into Redshift (A) and publishing through SNS data protection (D) require refactoring the analytics service, and KMS encryption (C) controls access to data and does not redact PII. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12382,7 +12383,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "The sam local generate-event command produces sample event payloads that match the real structure of events from services such as S3, SNS and API Gateway, and these can be piped into sam local invoke. This requires almost no effort. Hand-built payloads stored locally (B) or in S3 (C) must be written and kept accurate manually, and shareable test events (A) are a Lambda console feature and not part of local testing with SAM. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12404,7 +12405,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "An Amazon Cognito user pool provides the sign-up and sign-in directory with a hosted or custom UI, password policy, MFA and account recovery, and the app client lets the mobile app authenticate users and obtain tokens for securing backend resources. The IAM-based options (A, B) have no user registration or sign-in, and an identity pool alone (C) exchanges tokens for AWS credentials but is not a user directory for sign-up and sign-in. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12426,7 +12427,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A single SNS topic with each consumer Lambda function subscribed and a filter policy on the subscription lets SNS route messages by an attribute or body field, so the producer only publishes once and filtering needs no code. Routing logic in the producer (A, C) adds code and, for C, one topic per consumer. Filtering logic inside each consumer (B) invokes all four functions for every message, which wastes invocations. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12448,7 +12449,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (57%), A (43%).",
+      "e": "SSE-KMS encrypts each object at rest with a KMS key whose key policy and grants you control, so only principals you authorize to use the key can read the contents, and every use is logged in CloudTrail. SSE-S3 (B) uses keys that S3 manages entirely, so there is no key-level access control or audit. DSSE-KMS (D) applies two layers of encryption for compliance needs that are not required here, and client-side encryption with a raw RSA key kept on the user's device (A) places key management on every user and risks losing the data. Community vote: C (57%), A (43%).",
       "images": [],
       "optionImages": [
         [],
@@ -12470,7 +12471,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (67%), D (33%).",
+      "e": "Storing the credentials in Secrets Manager and fetching the secret at runtime from the Lambda function means a rotated or updated secret is picked up on the next fetch, with no code or configuration update. Environment variable references to a secret (B, D) are resolved at deploy or cold-start time and need a configuration update to refresh, containerDefinitions and valueFrom apply to ECS and not Lambda, and a trigger cannot inject Parameter Store values into a function (C). Community vote: A (67%), D (33%).",
       "images": [],
       "optionImages": [
         [],
@@ -12492,7 +12493,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (60%), C (20%), D (20%).",
+      "e": "A Lambda@Edge function on the CloudFront distribution can encrypt individual fields at the edge with an RSA public key, so that only backend components that hold the private key can decrypt them, which meets the requirement for many fields and selective decryption. AWS WAF (B) filters requests and does not encrypt, WebSockets with forwarded headers (C) does not apply, and HTTPS with signed URLs or cookies (D) secures transport and access to content but does not encrypt the sensitive fields. Community vote: A (60%), C (20%), D (20%).",
       "images": [],
       "optionImages": [
         [],
@@ -12514,7 +12515,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         3
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: D (100%).",
+      "e": "A Query against the accountIndex GSI with a KeyConditionExpression on accountId reads only the items for that partition key, consuming the least read capacity. Scan with a FilterExpression (C) reads the whole index and filters afterward, so it consumes capacity for every item. GetItem and BatchGetItem (A, B) require the table's primary key (id) and do not accept a GSI key. Community vote: D (100%).",
       "images": [],
       "optionImages": [
         [
@@ -12556,7 +12557,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "An S3 Lifecycle rule for noncurrent versions can specify the number of newer noncurrent versions to retain (NewerNoncurrentVersions) together with an expiration, so only the current version plus one previous version are kept and older ones are removed. A bucket policy (A) cannot manage version retention, S3 Object Lock (C) prevents deletion rather than limiting versions, and suspending versioning (D) loses the previous version and requires code changes. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12578,7 +12579,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "A canary deployment sends a small percentage of traffic or users to the new version first, keeping the current version for everyone else, and after validation shifts all the remaining traffic at once. Linear deployment (D) shifts traffic in equal increments over time, all-at-once (A) releases to everyone immediately, and an in-place deployment (C) replaces the application on existing instances without a small test group. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12600,7 +12601,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "When a role uses a Secrets Manager secret encrypted with a KMS key in another account, the key policy must allow the role to call kms:Decrypt, which Secrets Manager uses to decrypt the secret value, and kms:DescribeKey. That is the least privilege set for the key policy. The secretsmanager permissions (B, D) belong on the secret's resource policy or the role's identity policy and not the KMS key policy, and kms:* (C) is far broader than needed. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12622,7 +12623,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         0
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: A (100%).",
+      "e": "With X-Ray active tracing on the Lambda function, the service map shows edges between the function and downstream services, and selecting the edge between Lambda and Amazon S3 shows latency and response information for those calls specifically. Logs Insights duration (B) and Lambda Insights latency (C) measure the whole function and not the S3 call, and selecting the S3 node (D) shows the latency of S3 across everything rather than the edge from this function. Community vote: A (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12644,7 +12645,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         2
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: C (100%).",
+      "e": "CloudWatch Lambda Insights is enabled by adding the Lambda Insights extension layer to each function and attaching the CloudWatchLambdaInsightsExecutionRolePolicy managed policy so the extension can publish its metrics and logs. Adding a stack output (A) or a log group name parameter (B) does not turn on monitoring, and setting Tracing to Active (D) enables X-Ray rather than Lambda Insights. Community vote: C (100%).",
       "images": [],
       "optionImages": [
         [],
@@ -12666,7 +12667,7 @@ window.CERTS["dva-c02-pdf"] = {
       "ma": [
         1
       ],
-      "e": "Answer as stated in the source PDF; not independently verified. Community vote: B (100%).",
+      "e": "Using country as the partition key concentrates traffic on one partition when players surge in a single country, creating a hot partition and throttling that exceeds the partition's capacity. Revising the key to use more unique, high-cardinality values (for example a player ID) spreads requests evenly across partitions. Strongly consistent reads (A) use twice the read capacity, pagination (C) does not reduce consumed capacity, and Scan (D) consumes even more. Community vote: B (100%).",
       "images": [],
       "optionImages": [
         [],

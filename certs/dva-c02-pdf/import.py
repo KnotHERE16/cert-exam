@@ -10,6 +10,7 @@ import pymupdf
 HERE = Path(__file__).resolve().parent
 ASSET_DIR = HERE / "assets"
 OUT_JS = HERE / "bank.js"
+EXPLANATIONS = HERE / "data" / "explanations.json"
 CERT_ID = HERE.name
 
 HEADER = re.compile(r"^Question #(\d+)$")
@@ -22,7 +23,7 @@ WRAP_RIGHT = 490
 
 
 OVERRIDES = {
-    119: "CE", 128: "A", 140: "C", 269: "A", 303: "A",
+    119: "CE", 128: "A", 138: "AD", 140: "C", 269: "A", 303: "A",
     385: "C", 409: "BC", 490: "B", 493: "B",
 }
 
@@ -148,6 +149,7 @@ def parse(doc):
 
 def build(doc, parsed):
     ASSET_DIR.mkdir(parents=True, exist_ok=True)
+    explanations = json.loads(EXPLANATIONS.read_text(encoding="utf-8"))
     out, problems = [], []
     for p in parsed:
         n = p["number"]
@@ -161,18 +163,19 @@ def build(doc, parsed):
         option_images = [[{"path": save_image(doc, x, f"q{n}-{l}{k}"), "alt": f"Question {n} option {l}"}
                           for k, x in enumerate(p["option_images"].get(l, []), 1)] for l in letters]
         votes = ", ".join(p["votes"])
+        if str(n) not in explanations:
+            problems.append(f"#{n}: no explanation in data/explanations.json")
+            continue
+        text = explanations[str(n)]
         if n in OVERRIDES:
-            note = (f"Answer corrected from the PDF's stated {answer} to {OVERRIDES[n]} after manual review; "
-                    "not independently verified.")
+            text += f" (The source PDF lists {answer}; corrected to {OVERRIDES[n]} after review.)"
             answer = OVERRIDES[n]
-        else:
-            note = "Answer as stated in the source PDF; not independently verified."
         out.append({
             "d": 0,
             "q": join_stem(p["stem"]),
             "o": [p["options"][l] for l in letters],
             "ma": [letters.index(c) for c in answer],
-            "e": note + (f" Community vote: {votes}." if votes else ""),
+            "e": text + (f" Community vote: {votes}." if votes else ""),
             "images": images,
             "optionImages": option_images,
             "sourceNumber": n,
@@ -190,8 +193,8 @@ def main():
         "code": "DVA-C02 · PDF",
         "title": "Developer Associate — PDF export",
         "level": "Imported bank",
-        "blurb": f"{len(questions)} questions from the downloaded PDF. Unverified answers.",
-        "notice": f"Imported {len(questions)} questions from a PDF export. Answers are as stated in the PDF and not independently verified; community votes may disagree. Topics are not classified into official exam domains. 72% is a local practice target, not a conversion to AWS scaled scoring.",
+        "blurb": f"{len(questions)} questions from the downloaded PDF, with explanations.",
+        "notice": f"Imported {len(questions)} questions from a PDF export. Answers come from the PDF with a few manual corrections; explanations were written separately and are not AWS-verified. Topics are not classified into official exam domains. 72% is a local practice target, not a conversion to AWS scaled scoring.",
         "exam": {"count": 65, "minutes": 130, "pass": 72},
         "domains": [{"name": "Imported questions (unclassified)", "weight": 100}],
         "questions": questions,

@@ -22,7 +22,7 @@ frame.onload = () => {
     const bank = win.CERTS["dva-c02-pdf"];
     assert(bank.questions.length > 0, "PDF question bank is nonempty");
     doc.querySelector('[data-id="dva-c02-pdf"]').click();
-    assert($("bankNotice").textContent.includes("not independently verified"), "Imported accuracy warning is visible");
+    assert($("bankNotice").textContent.includes("not AWS-verified"), "Accuracy warning is visible");
     assert($("bankSize").textContent === String(bank.questions.length), "Bank count matches export");
     doc.querySelector('input[value="practice"]').checked = true;
     $("startBtn").click();
@@ -34,7 +34,7 @@ frame.onload = () => {
     });
     if (correct.length > 1) $("checkBtn").click();
     assert($("feedback").classList.contains("ok"), "Shuffled imported answers score correctly");
-    assert($("feedback").textContent.includes("not independently verified"), "Imported answer provenance is shown");
+    assert($("feedback").textContent.length > 200, "A written explanation is shown with the answer");
     Array.from($("map").children).at(-1).click();
     $("nextBtn").click();
     assert(!$("results").classList.contains("hidden"), "Results and review render");

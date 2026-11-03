@@ -34,7 +34,7 @@ Delete its folder and run `python scripts/build_manifest.py`.
 
 ## Importers
 
-**DVA-C02 · PDF** holds all 557 questions from the source PDF. Discussion comments are dropped; the stated answer and community vote split are kept. Nine answers (#119, 128, 140, 269, 303, 385, 409, 490, 493) were overridden after manual review; see `OVERRIDES` in the script. Needs `pip install pymupdf`, and the PDF saved as `certs/dva-c02-pdf/source.pdf`:
+**DVA-C02 · PDF** holds all 557 questions from the source PDF. Discussion comments are dropped; the community vote split is kept. Every question has a written explanation in `certs/dva-c02-pdf/data/explanations.json` (merged in by the importer). Ten answers (#119, 128, 138, 140, 269, 303, 385, 409, 490, 493) were overridden after manual review; see `OVERRIDES` in the script. Explanations are not AWS-verified. Needs `pip install pymupdf`, and the PDF saved as `certs/dva-c02-pdf/source.pdf`:
 
 ```powershell
 python -I certs/dva-c02-pdf/import.py
