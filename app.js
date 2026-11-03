@@ -134,7 +134,7 @@
 
   function appendImages(container, images = []) {
     images.forEach(image => {
-      if (!/^assets\/(?:examtopics-dva-c02\/[a-f0-9]{24}|ditectrev-dva-c02\/[\w-]+)\.(png|jpe?g|gif|webp|svg|avif|bmp|ico)$/.test(image.path || "")) {
+      if (!/^assets\/(?:examtopics-dva-c02\/[a-f0-9]{24}|ditectrev-dva-c02\/[\w-]+|pdf-dva-c02\/q\d+-[A-Fs]\d+)\.(png|jpe?g|gif|webp|svg|avif|bmp|ico)$/.test(image.path || "")) {
         const note = document.createElement("span");
         note.className = "image-warning";
         note.textContent = `Image unavailable offline: ${image.alt || "diagram"}`;

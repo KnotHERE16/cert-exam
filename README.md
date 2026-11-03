@@ -4,6 +4,16 @@ Open `C:\Users\AUNGMYINTKELVIN\Documents\dev\cert-exam\index.html` in a browser.
 
 The original CLF-C02 and DVA-C02 practice banks remain separate from **DVA-C02 · ExamTopics**. Imported questions retain the source's stated answer, original option order, community-supported answer, and vote distribution. The app shuffles options while preserving the correct-answer mapping, including multiple-response questions.
 
+## PDF import
+
+**DVA-C02 · PDF** holds all 557 questions from `AWS Certified Developer - Associate DVA-C02.pdf`. Discussion comments are dropped; the stated answer and community vote split are kept. Regenerate it (needs `pip install pymupdf`) with:
+
+```powershell
+python -I "C:\Users\AUNGMYINTKELVIN\Documents\dev\cert-exam\scripts\import_pdf.py" "C:\Users\AUNGMYINTKELVIN\Documents\dev\cert-exam\AWS Certified Developer - Associate DVA-C02.pdf"
+```
+
+Outputs: `certs/dva-c02-pdf.js` and `assets/pdf-dva-c02/`.
+
 ## ExamTopics download
 
 Use this only for material you have permission to download. The downloader does not bypass login, subscription checks, CAPTCHA, or rate limits. It uses Python's standard library (no package installation required).

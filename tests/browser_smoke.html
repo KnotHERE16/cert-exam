@@ -18,7 +18,7 @@ frame.onload = () => {
       passed.push(label);
     };
     win.confirm = () => true;
-    assert(doc.querySelectorAll(".cert-card").length === 3, "All three banks load locally");
+    assert(doc.querySelectorAll(".cert-card").length === 4, "All four banks load locally");
     const imported = win.CERTS["dva-c02-examtopics"];
     assert(imported.questions.length > 0, "Imported question bank is nonempty");
     doc.querySelector('[data-id="dva-c02-examtopics"]').click();
